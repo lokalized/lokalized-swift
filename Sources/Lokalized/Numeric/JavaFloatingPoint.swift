@@ -56,6 +56,13 @@ package enum JavaFloatingPoint {
         let denominator: FloatingUnsigned
     }
 
+    private struct DecimalTrial {
+        let exponent: Int
+        let floor: UInt64
+        let left: Fraction
+        let right: Fraction
+    }
+
     /// The largest input is binary64: every exact intermediate is bounded by
     /// 2,176 bits (68 base-2^32 words). Powers are mathematical, not oracle data.
     private static let decimalPowers: [FloatingUnsigned] = {
@@ -88,6 +95,13 @@ package enum JavaFloatingPoint {
         return Fraction(numerator: numerator, denominator: denominator)
     }
 
+    private static func trial(_ c: UInt64, _ q: Int, _ e: Int,
+                              lower: UInt64, upper: UInt64) -> DecimalTrial {
+        let value = scaled(c, q, e)
+        return DecimalTrial(exponent: e, floor: value.numerator.quotient(dividingBy: value.denominator),
+            left: scaled(lower, q - 2, e), right: scaled(upper, q - 2, e))
+    }
+
     private static func convert(_ c: UInt64, _ q: Int, minimumExponent: Int,
                                 precision: Int, maximumDigits: Int, negative: Bool) -> String {
         // Adjacent binary values define the rounding interval. At a normal power
@@ -99,21 +113,36 @@ package enum JavaFloatingPoint {
         let magnitude = 63 - c.leadingZeroBitCount + q
         let product = magnitude * 30_103
         var decade = product >= 0 ? product / 100_000 : (product - 99_999) / 100_000
-        while scaled(c, q, decade).numerator < scaled(c, q, decade).denominator { decade -= 1 }
-        while !(scaled(c, q, decade + 1).numerator < scaled(c, q, decade + 1).denominator) { decade += 1 }
+        while true {
+            let value = scaled(c, q, decade)
+            if !(value.numerator < value.denominator) { break }
+            decade -= 1
+        }
+        while true {
+            let value = scaled(c, q, decade + 1)
+            if value.numerator < value.denominator { break }
+            decade += 1
+        }
 
         // Java's minimum-length rule considers both one and two significant
         // digits when a one-digit decimal round-trips. Searching from two and
         // normalizing trailing zeros implements precisely that union.
+        var trials: [DecimalTrial] = []
         for digits in 2...maximumDigits {
             var best: DecimalCandidate?
             let base = decade - digits + 1
             // Including adjoining decades handles rounding across a power of 10.
-            for e in (base - 1)...(base + 1) {
-                let value = scaled(c, q, e)
-                let floor = value.numerator.quotient(dividingBy: value.denominator)
-                let left = scaled(lower, q - 2, e)
-                let right = scaled(upper, q - 2, e)
+            // Increasing digit count shifts this window down one exponent.
+            // Its upper two exact trials are the preceding window's lower two;
+            // only the newly introduced lower exponent needs scaling/division.
+            if trials.isEmpty {
+                trials = ((base - 1)...(base + 1)).map { trial(c, q, $0, lower: lower, upper: upper) }
+            } else {
+                trials = [trial(c, q, base - 1, lower: lower, upper: upper), trials[0], trials[1]]
+            }
+            for trial in trials {
+                let e = trial.exponent, floor = trial.floor
+                let left = trial.left, right = trial.right
                 for coefficient in [floor, floor + 1] where coefficient != 0 {
                     let candidate = DecimalCandidate(coefficient, e)
                     if String(candidate.coefficient).utf8.count > digits { continue }

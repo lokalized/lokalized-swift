@@ -27,3 +27,7 @@ The report retains all five actual native observations, frozen reference observa
 ## Missing JVM carriers
 
 Ninety `loadClasspath` cases request JVM package discovery, including classloader roots, package-name normalization, namespace rules, and JAR discovery. Sixty-nine `loadClasspathResources` cases map locale tags to classloader-relative resource names. Swift's native URL map accepts already resolved URLs, and Bundle lookup has its own platform semantics. Neither reproduces those inputs by relabeling a directory. All 159 remain pending with explicit carrier categories; native URL-map and packaged Bundle qualification are separate evidence and do not turn them into corpus passes.
+
+## M8C native disposition evidence
+
+The [loader disposition qualification](LOADER-DISPOSITIONS.md) now accounts for all 164 pending IDs individually. All are informational in the frozen corpus. It compiles an isolated current standalone executable, executes twenty named Bundle/resource-map/ordering controls, and requires the five native messages to differ only in the specifically derived authored filename. Twenty-five corrupted-receipt controls are refused. The 159 JVM inputs remain unreplayed platform-specific carriers and the five filename mappings remain unratified; the original 145 passing observations and all frozen observations are unchanged.

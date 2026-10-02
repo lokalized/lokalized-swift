@@ -122,4 +122,48 @@ describes the resource recipes and metadata declaration.
 
 The final M7A report `/private/tmp/lokalized-swift-deployment-m7a-report.json` records output directory `/private/tmp/lokalized-deployment-7hxs6p_y`, 116 frozen Swift source hashes, all four target triples and 16 inspected Mach-O files with macOS 12/iOS 15 deployment floors. The public consumer now executes manifest claim construction, canonical identity/projection, validation, complete locale configuration and subset candidate/fetch planning. CryptoKit remains an Apple system dependency; there are no external runtime packages.
 
-Host arm64 execution passes 973 standalone checks, both data audits, the retained 2,197/184 main-corpus sets, 145 native filesystem observations, the separately scoped 468/31 manifest inventory (165 strict native-equal and 303 explicit error projections), and 3,250 qualified URL observations with 229 named pending IDNA capabilities. Source and input hashes remain unchanged after qualification. The packaged consumer report `/private/tmp/lokalized-swift-local-delivery-m7a.json` additionally executes the actual Bundle.module manifest planning example in Swift 6/MainActor and Swift 5 caller language modes. These results retain the earlier limits on minimum compiler, old-OS, iOS and Intel runtime execution; they do not certify full verified network loading or release parity.
+Host arm64 execution passes 973 standalone checks, both data audits, the retained 2,197/184 main-corpus sets, 145 native filesystem observations, the separately scoped 468/31 manifest inventory (165 strict native-equal and 303 explicit error projections), and 3,250 qualified URL observations with 229 named pending IDNA capabilities. Source and input hashes remain unchanged after qualification. The packaged consumer report `/private/tmp/lokalized-swift-local-delivery-m7a.json` additionally executes the actual Bundle.module manifest planning example in Swift 6/MainActor and Swift 5 caller language modes. These results retain the earlier limits on minimum compiler, old-OS, iOS and Intel runtime execution; they do not certify release parity. HTTP loading is outside the Swift scope following the October 2 decision.
+
+## M7B1 qualification
+
+The final report `/private/tmp/lokalized-swift-deployment-m7b1-report.json` records all four target triples and 16 inspected Mach-O outputs from 124 frozen Swift sources, retaining macOS 12/iOS 15 deployment floors and Apple/system-only dependencies. Both source and qualification-input hashes remain unchanged after the run. The host public consumer uses a Unicode manifest base and observes the expected Punycode fetch URL from compiled tables, without Reference artifacts. Fresh source-only SwiftPM consumers compile and execute with zero external package dependencies.
+
+Host arm64 execution passes 973 standalone checks, the retained runtime/data/filesystem/manifest gates, all 59,992 URL observations and 1,195,148 canonical NFC checks. The new URL archive independently pins mapping, compatibility normalization/properties, input recipes and the Node executable plus five actual loaded URL/Unicode engine images. Table decoders qualify every codepoint separately; those development archives and engines are absent from consumer requirements. The combined evidence is `.build/reports/m7b1-qualification-summary.json`.
+
+The packaged consumer report `/private/tmp/lokalized-swift-local-delivery-m7b1.json` passes actual SwiftPM Bundle.module consumers in Swift 6/MainActor and Swift 5 modes, the unsigned macOS Bundle.main app, and macOS/iOS simulator/iOS device compilation/resource checks. The complete XCTest suite passes 263 methods with the existing malformed-filename fixture skipped. Swift 6.2, macOS 12/iOS 15 runtime, iOS app runtime, Intel runtime and hosted CI execution remain unverified locally. Full WHATWG suite coverage and shared corrections to the recorded URL compatibility policy remain separate release work.
+
+## M8E qualification
+
+The current-source report `.build/reports/m8e-deployment.json` passes all four
+target triples and sixteen compiled/imported/linked/inspected binaries, retaining
+macOS 12/iOS 15 SDK floors and local-source/Apple-system-only dependencies. On
+the arm64 macOS host, the public consumer and qualification executable pass
+1,030 standalone checks, both data audits, the exact 2,197/184 main-corpus sets,
+filesystem/component/manifest checks, all 59,992 URL observations and 1,195,148
+canonical NFC checks. Source/input identities are revalidated after execution.
+
+This refresh follows immutable locale fact reuse; the public symbol graph is
+unchanged. The separate full native suite passes 265 methods with one existing
+filesystem skip. Current source-only optimized SwiftPM consumers also compile
+and execute twelve checked workloads, preserving the exact SDK privacy resource.
+[Performance evidence](PERFORMANCE.md) records the gains and memory/size costs.
+Swift 6.2, minimum-OS/iOS/Intel runtime and hosted CI execution remain open;
+this slice does not rerun packaged SwiftUI applications. Scoped evidence is
+`.build/reports/m8e-qualification-summary.json`.
+
+## M8F qualification
+
+`.build/reports/m8f-deployment.json` refreshes all four target triples and sixteen
+compiled/imported/linked/inspected binaries after floating trial-window reuse.
+The SDK floors and Apple/system-only dependencies are unchanged. Host arm64
+consumer/standalone/data/component/filesystem/manifest/URL/NFC checks pass,
+including the unchanged 2,197/184 main-corpus sets and 1,030 standalone checks.
+The public symbol graph remains identical and all 747 reference dispositions
+are checked again, with eighteen corrupted reports refused.
+
+The targeted native numeric/translation suite passes 110 methods; the independent
+pinned Java oracle matches all 103,310 Float/Double inputs and the normal offline
+check passes all 1,592 archived goldens. Minimum compiler and other-platform/
+minimum-OS runtime remain unverified locally. Packaged SwiftUI applications are
+not rerun in this slice. Scoped evidence is
+`.build/reports/m8f-qualification-summary.json`.

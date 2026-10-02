@@ -1,7 +1,7 @@
 import Foundation
 
-/// Original special-URL parsing for manifest references. Unicode domain/IDNA
-/// processing is explicitly unqualified; no host Foundation/ICU data is used.
+/// Original special-URL parsing for manifest references, including pinned
+/// Unicode domain processing. No host Foundation/ICU URL or Unicode data is used.
 package enum ManifestURL {
     package struct Failure: Error, Sendable, CustomStringConvertible {
         package enum Kind: Sendable { case invalidURL, unsupportedFeature }
@@ -37,9 +37,6 @@ package enum ManifestURL {
         return try parse(clean(reference), base: parsedBase).serialized
     }
     private static func invalid() -> Failure { .init(feature: nil, kind: .invalidURL, description: "Invalid URL") }
-    private static func unsupported(_ feature: UnqualifiedFeature) -> Failure {
-        .init(feature: feature, kind: .unsupportedFeature, description: "URL feature is not yet qualified: " + feature.rawValue)
-    }
     private static func clean(_ text: String) -> String {
         let scalars = Array(text.unicodeScalars)
         let first = scalars.firstIndex { $0.value > 32 } ?? scalars.endIndex
@@ -232,15 +229,14 @@ package enum ManifestURL {
             return "[" + left + "::" + right + "]"
         }
         let decoded = try percentDecode(raw)
-        guard decoded.utf8.allSatisfy({ $0 < 128 }) else { throw unsupported(.unicodeDomain) }
-        let host = asciiLower(decoded)
-        guard !host.utf8.contains(where: { $0 <= 32 || $0 == 127 || [35, 37, 47, 58, 60, 62, 63, 64, 91, 92, 93, 94, 124].contains($0) }) else { throw invalid() }
-        if host.split(separator: ".", omittingEmptySubsequences: false).contains(where: { $0.hasPrefix("xn--") }) {
-            throw unsupported(.punycodeDomain)
-        }
+        // Escaped hosts take the oracle's bounded decoding path even when
+        // the decoded domain is entirely ASCII. Raw escape length is irrelevant.
+        guard !raw.utf8.contains(37) || decoded.utf8.count <= 16_384 else { throw invalid() }
+        guard let host = IDNAProcessor.toASCII(decoded), !host.isEmpty,
+              !host.utf8.contains(where: { $0 <= 32 || $0 == 127 || [35, 37, 47, 58, 60, 62, 63, 64, 91, 92, 93, 94, 124].contains($0) }) else { throw invalid() }
         var parts = host.split(separator: ".", omittingEmptySubsequences: false).map(String.init)
         if parts.last == "" { parts.removeLast() }
-        guard let last = parts.last else { return host }
+        guard let last = parts.last, !last.isEmpty else { return host }
         let lastBytes = Array(last.utf8)
         let hexadecimalNumber = asciiLower(last).hasPrefix("0x") && lastBytes.dropFirst(2).allSatisfy { hexDigit($0) != nil }
         if last.utf8.allSatisfy(digit) || hexadecimalNumber || ipv4Number(last) != nil {
@@ -311,8 +307,10 @@ package enum ManifestURL {
                 result.append(UInt8(a * 16 + b)); index += 3
             } else { result.append(bytes[index]); index += 1 }
         }
-        guard let decoded = String(bytes: result, encoding: .utf8) else { throw invalid() }
-        return decoded
+        // Preserve U+FEFF: stripping a BOM here changes whether the original
+        // domain takes the ASCII fast path or Unicode/ACE validation.
+        guard String(bytes: result, encoding: .utf8) != nil else { throw invalid() }
+        return String(decoding: result, as: UTF8.self)
     }
     private static func asciiLower(_ text: String) -> String { String(decoding: text.utf8.map { (65...90).contains($0) ? $0 + 32 : $0 }, as: UTF8.self) }
     private static func alpha(_ byte: UInt8) -> Bool { (65...90).contains(byte) || (97...122).contains(byte) }

@@ -28,6 +28,12 @@ final class LoaderAdapterTests: XCTestCase {
     func testNativeLoadedSnapshotsAndDeterministicDiagnosticOrder() throws {
         XCTAssertEqual(try LoaderQualification.runNative(), 12)
     }
+    func testNativeBundleResourceAndFilenameBoundaries() throws {
+        let report = try LoaderBoundaryQualification.run()
+        XCTAssertEqual(report.status, "passed")
+        XCTAssertEqual(report.passed.count, 20)
+        XCTAssertEqual(Set(report.passed), Set(report.observations.keys))
+    }
     func testExpectedFieldsCannotConfigureActualLoad() throws {
         let corpus = try ConformanceRunner.load(referenceDirectory: reference)
         let row = try XCTUnwrap(corpus.cases.first { $0.id == "loader-smoke.load.clean-directory-reports-locales-and-keys" })

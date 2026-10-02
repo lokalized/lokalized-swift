@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import platform
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -34,6 +35,13 @@ let options = try TranslationOptions(locale: en, bidiIsolation: .disabled,
 let emptyOptions = TranslationOptions()
 let configuration = StringsConfiguration(localizedStringSupplier: catalogs,
     localeSupplier: locale, fallbackLocale: en, phoneticResolver: resolver)
+let catalog = LocalizedCatalog(strings: try LocalizedStringLoader.parse("{}", locale: "en").strings)
+let catalogMap: [LocaleTag: LocalizedCatalog] = [en: catalog]
+let catalogEntries = LocalizedCatalog(entries: [])
+let tieConfiguration = StringsConfiguration(localizedStringSupplier: { catalogMap },
+    localeSupplier: locale, fallbackLocale: en, tiebreakerLocalesByLanguageCode: ["en": [en]])
+let inheritedTies = StringsConfiguration(localizedStringSupplier: catalogs,
+    localeSupplier: locale, fallbackLocale: en, tiebreakerLocalesByLanguageCode: nil)
 func construct() throws { _ = try DefaultStrings(configuration: configuration) }
 func consume(_ strings: any Strings) throws {
     _ = try strings.get("hello")
@@ -53,7 +61,36 @@ NEGATIVE = {
     "locale-match-supplier-nil": ("let value: LocaleMatchSupplier = { _ in nil }", "LocaleMatchResult"),
     "replacement-string-nil": ("let value = TranslationFailureResponse.returnString(nil)", "String"),
     "placeholder-value-nil": ("let value: PlaceholderValues = [\"name\": nil]", "PlaceholderValue"),
+    "catalog-value-nil": ('let value: LocalizedStringSupplier = { [try LocaleTag("en"): nil] }', "LocalizedCatalog"),
+    "catalog-key-nil": ('let catalog = LocalizedCatalog(strings: []); let value: LocalizedStringSupplier = { [nil: catalog] }', "LocaleTag"),
+    "catalog-entry-nil": ('let value = LocalizedCatalog(strings: [nil])', "LocalizedString"),
+    "catalog-entry-value-nil": ('let value = LocalizedCatalog(entries: [("k", nil)])', "LocalizedString"),
+    "catalog-entry-key-nil": ('let string = try LocalizedStringLoader.parse("{\\\"k\\\":\\\"v\\\"}", locale: "en").strings[0]; let value = LocalizedCatalog(entries: [(nil, string)])', "ExactString"),
+    "tiebreaker-list-nil": ('let value = StringsConfiguration(fallbackLocale: try LocaleTag("en"), tiebreakerLocalesByLanguageCode: ["en": nil])', "LocaleTag"),
+    "tiebreaker-entry-nil": ('let value = StringsConfiguration(fallbackLocale: try LocaleTag("en"), tiebreakerLocalesByLanguageCode: ["en": [nil]])', "LocaleTag"),
+    "tiebreaker-key-nil": ('let value = StringsConfiguration(fallbackLocale: try LocaleTag("en"), tiebreakerLocalesByLanguageCode: [nil: []])', "String"),
+    "placeholder-key-nil": ('let value = PlaceholderValues(entries: [(nil, .text("value"))])', "ExactString"),
 }
+
+
+def intended_nil_refusal(diagnostics: str, token: str) -> bool:
+    errors = [line.split("error: ", 1)[1] for line in diagnostics.splitlines() if "error: " in line]
+    return bool(errors) and all(
+        re.match(r"'nil' (?:is not compatible with .+ type|cannot initialize specified type) '", error)
+        and token in error for error in errors)
+
+
+RUNTIME_IDS = sorted([
+    "handler-unconsulted-on-success", "policy-unconsulted-on-single-candidate", "handler-after-complete-walk",
+    "policy-error-get", "policy-error-getResult", "policy-before-handler-get", "policy-before-handler-getResult",
+    "policy-receives-current-resolution-cause", "handler-retains-first-same-type-cause",
+    "result-retains-first-same-type-cause", "get-rethrows-first-cause-verbatim", "expression-resolver-error-retains-cause",
+    "other-is-valid-phonetic-category", "unmapped-resolver-can-throw-explicitly", "policy-error-preserves-consultation-cause",
+    "explicit-null-remains-runtime-refusal", "missing-binding-remains-runtime-refusal",
+    "nil-locale-supplier-keeps-match-supplier", "nil-match-supplier-keeps-locale-supplier",
+    "nil-whole-tiebreaker-setting-is-valid", "raw-null-catalog-refused", "raw-null-entry-refused",
+    "raw-null-placeholder-definition-refused",
+])
 
 
 def run(command: list[str]) -> subprocess.CompletedProcess[str]:
@@ -79,6 +116,8 @@ def main() -> int:
     if not args.target and platform.system() != "Darwin":
         parser.error("Apple qualification requires macOS, or an explicit --target and --sdk")
     target = args.target or f"{platform.machine()}-apple-macosx12.0"
+    if target != f"{platform.machine()}-apple-macosx12.0":
+        parser.error("This qualification executes a host consumer; use verify_deployment.py for cross-target builds")
     sdk = args.sdk
     if sdk is None:
         sdk_result = run(["xcrun", "--sdk", "macosx", "--show-sdk-path"])
@@ -86,9 +125,12 @@ def main() -> int:
             parser.error(sdk_result.stderr.strip())
         sdk = Path(sdk_result.stdout.strip())
     version = run([compiler, "--version"])
-    report: dict = {"formatVersion": 1, "qualification": "native-public-nonoptional-contracts",
+    controls_path = root / "Tools/Fixtures/NativeTypeControls.swift"
+    controls_source = controls_path.read_text()
+    report: dict = {"formatVersion": 2, "qualification": "native-public-nonoptional-contracts",
                     "compiler": version.stdout.strip(), "target": target, "sdk": str(sdk),
-                    "sourceFiles": [], "positive": None, "negative": [], "passed": False}
+                    "hostOS": platform.platform(), "sourceFiles": [], "positive": None,
+                    "negative": [], "runtimeControls": None, "sourceInputsRevalidated": False, "passed": False}
     with tempfile.TemporaryDirectory(prefix="lokalized-callback-types-", dir="/private/tmp") as temporary:
         scratch = Path(temporary)
         sources: list[str] = []
@@ -104,7 +146,7 @@ def main() -> int:
         report["sourceManifestSha256"] = hashlib.sha256(serialized).hexdigest()
         common = [compiler, "-swift-version", "6", "-target", target, "-sdk", str(sdk),
                   "-module-cache-path", str(scratch / "module-cache")]
-        emitted = run(common + ["-parse-as-library", "-emit-module", "-module-name", "Lokalized",
+        emitted = run(common + ["-parse-as-library", "-emit-module", "-emit-library", "-o", str(scratch / "libLokalized.dylib"), "-module-name", "Lokalized",
                                 "-package-name", "lokalized_swift", "-emit-module-path", str(scratch / "Lokalized.swiftmodule")] + sources)
         report["moduleCompilation"] = {"exitCode": emitted.returncode, "diagnostics": emitted.stdout + emitted.stderr}
         if emitted.returncode == 0:
@@ -119,11 +161,33 @@ def main() -> int:
                 file.write_text(source)
                 result = run(common + ["-typecheck", "-I", str(scratch), str(file)])
                 diagnostics = result.stdout + result.stderr
-                valid = result.returncode != 0 and "'nil' is not compatible with" in diagnostics and token in diagnostics
+                valid = result.returncode != 0 and intended_nil_refusal(diagnostics, token)
                 report["negative"].append({"name": name, "source": source,
                     "sourceSha256": hashlib.sha256(source.encode()).hexdigest(), "requiredType": token,
                     "exitCode": result.returncode, "diagnostics": diagnostics, "passed": valid})
-            report["passed"] = outcome.returncode == 0 and all(item["passed"] for item in report["negative"])
+            controls = scratch / "NativeTypeControls.swift"
+            controls.write_text(controls_source)
+            binary = scratch / "native-type-controls"
+            built = run(common + ["-I", str(scratch), "-L", str(scratch), "-lLokalized",
+                                  "-Xlinker", "-rpath", "-Xlinker", str(scratch), str(controls), "-o", str(binary)])
+            executed = run([str(binary)]) if built.returncode == 0 else None
+            observed = None
+            if executed and executed.returncode == 0:
+                try: observed = json.loads(executed.stdout)
+                except json.JSONDecodeError: pass
+            report["runtimeControls"] = {
+                "sourcePath": "Tools/Fixtures/NativeTypeControls.swift", "source": controls_source,
+                "sourceSha256": hashlib.sha256(controls_source.encode()).hexdigest(),
+                "compilationExitCode": built.returncode, "compilationDiagnostics": built.stdout + built.stderr,
+                "executionExitCode": executed.returncode if executed else None,
+                "stdout": executed.stdout if executed else "", "stderr": executed.stderr if executed else "",
+                "observed": observed, "passed": built.returncode == 0 and executed is not None
+                    and executed.returncode == 0 and observed == {"passed": RUNTIME_IDS}}
+            report["passed"] = outcome.returncode == 0 and all(item["passed"] for item in report["negative"]) and report["runtimeControls"]["passed"]
+        current_sources = [{"path": str(p.relative_to(root)), "sha256": hashlib.sha256(p.read_bytes()).hexdigest(),
+                            "bytes": len(p.read_bytes())} for p in sorted((root / "Sources/Lokalized").rglob("*.swift"))]
+        report["sourceInputsRevalidated"] = current_sources == report["sourceFiles"] and controls_path.read_text() == controls_source
+        report["passed"] = report["passed"] and report["sourceInputsRevalidated"]
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, sort_keys=True, indent=2) + "\n")
@@ -139,6 +203,8 @@ def main() -> int:
             for item in report["negative"]:
                 if not item["passed"]:
                     print(f"{item['name']}: unexpected compilation outcome\n{item['diagnostics']}")
+            if report["runtimeControls"] and not report["runtimeControls"]["passed"]:
+                print(json.dumps(report["runtimeControls"], indent=2))
     return 0 if report["passed"] else 1
 
 

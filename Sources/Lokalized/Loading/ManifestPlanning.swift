@@ -26,7 +26,7 @@ public extension LocalizedStringLoader {
             return try manifestFetchEntry(tag, file: file, base: validated.baseUrl)
         }
     }
-    /// Internal complete-catalog projection for a future whole-manifest loader.
+    /// Internal complete-catalog projection; performs no catalog I/O.
     package static func wholeManifestPlan(_ manifest: StringsManifestV1,
         loadingOptions: LocalizedStringLoadingOptions = .defaults) throws -> [FetchEntry] {
         let validated = try validateStringsManifest(manifest, loadingOptions: loadingOptions)

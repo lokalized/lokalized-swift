@@ -1,0 +1,7 @@
+# Preserve the exact bytes of the shared URL oracle's frozen development copy.
+Tools/URLOracle/** -text
+Reference/manifest-idna-goldens.json.gz -text
+Reference/manifest-idna-lock.json -text
+Reference/IDNA-Compatibility/*.json -text
+Reference/IDNA-Compatibility/LICENSE-MIT.txt -text
+Reference/Unicode-17.0.0/*.txt -text

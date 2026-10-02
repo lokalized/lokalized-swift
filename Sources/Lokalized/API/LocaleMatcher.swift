@@ -30,16 +30,21 @@ public extension LocaleMatcher {
     }
 
     func bestMatchForAcceptLanguage(_ acceptLanguage: String?) throws -> String {
-        guard let acceptLanguage, acceptLanguage.utf16.count <= DefaultLocaleMatcher.maximumAcceptLanguageCharacters,
-              !MatchingLocale.javaTrim(acceptLanguage).isEmpty else { return try bestMatchFor([]) }
-        let normalized = MatchingLocale.normalizedAcceptLanguage(acceptLanguage)
-        if normalized.isEmpty { return try bestMatchFor([]) }
-        let ranges: [LanguageRange]
-        do { ranges = try parseLanguageRanges(normalized) }
-        catch is LanguageRangeError { return try bestMatchFor([]) }
-        if ranges.count > DefaultLocaleMatcher.maximumLanguageRanges { return try bestMatchFor([]) }
-        return try bestMatchFor(ranges)
+        try bestMatchFor(usableAcceptLanguageRanges(acceptLanguage, using: self))
     }
+}
+
+/// Shared fail-soft header ingress. Unrelated custom parser errors propagate.
+/// Returning no ranges preserves an unmatched diagnostic at the options door.
+package func usableAcceptLanguageRanges(_ header: String?, using matcher: any LocaleMatcher) throws -> [LanguageRange] {
+    guard let header, header.utf16.count <= DefaultLocaleMatcher.maximumAcceptLanguageCharacters,
+          !MatchingLocale.javaTrim(header).isEmpty else { return [] }
+    let normalized = MatchingLocale.normalizedAcceptLanguage(header)
+    if normalized.isEmpty { return [] }
+    let ranges: [LanguageRange]
+    do { ranges = try matcher.parseLanguageRanges(normalized) }
+    catch is LanguageRangeError { return [] }
+    return ranges.count <= DefaultLocaleMatcher.maximumLanguageRanges ? ranges : []
 }
 
 public struct LocaleMatcherError: Error, Hashable, Sendable, CustomStringConvertible {

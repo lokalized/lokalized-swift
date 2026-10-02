@@ -297,6 +297,7 @@ let key: ExactString = "hello"
 let limits = TranslationRuntimeLimits.defaults
 precondition(key.utf16Count == 5 && Gender.masculine.rawValue == "GENDER_MASCULINE")
 precondition(BuildMetadata.current.producerImplementation == "lokalized-swift")
+precondition(BuildMetadata.current.localeDataMode == "pinned" && BuildMetadata.current.cardinalityMode == "exact")
 precondition(limits.maximumExpressionTokens == 256)
 let model = try LocalizedString(key: key, translation: "Hello")
 let defined = try LocalizedStringLoader.defineCatalog([model], locale: "en")
@@ -323,6 +324,14 @@ precondition(direct.locale == "fr" && direct.matchType == .exact && direct.isMat
 let retained = try matcher.validateSuppliedMatch(direct)
 precondition(retained === direct)
 let ranges = try matcher.parseLanguageRanges("fr;q=0.8, en;q=0.7")
+let standaloneRanges = try LanguageRange.parse("fr;q=0.8, en;q=0.7")
+precondition(standaloneRanges == ranges)
+let headerOptions = try TranslationOptions.forAcceptLanguage("fr;q=0.8,en;q=0.7", using: matcher)
+let rangeOptions = try TranslationOptions.forLanguageRanges(ranges, using: matcher)
+let invalidOptions = try TranslationOptions.forAcceptLanguage("fr;q=abc", using: matcher)
+precondition(headerOptions.localeMatchResult?.locale == "fr")
+precondition(rangeOptions.localeMatchResult?.requestedLanguageRanges == ranges)
+precondition(invalidOptions.localeMatchResult?.matchType == .noMatch)
 let weighted = try matcher.matchFor(ranges)
 precondition(weighted.locale == "fr" && weighted.effectiveWeight == 0.8)
 let likely = try matcher.bestMatchFor(taiwan)
@@ -416,7 +425,7 @@ let manifestIdentity = try LocalizedStringLoader.computeCatalogIdentity(.init(
     localeToSha256: manifestFiles.mapValues(\\.sha256)))
 let manifestClaim = StringsManifestV1(catalogVersion: manifestIdentity.catalogVersion,
     catalogFingerprint: manifestIdentity.catalogFingerprint, fallbackLocale: "en",
-    baseUrl: "https://cdn.example/catalogs/v1/", files: manifestFiles)
+    baseUrl: "https://bücher.example/catalogs/v1/", files: manifestFiles)
 let validatedManifest = try LocalizedStringLoader.validateStringsManifest(manifestClaim)
 let projectedIdentity = LocalizedStringLoader.catalogIdentityInputFor(validatedManifest)
 let recomputedManifestIdentity = try LocalizedStringLoader.computeCatalogIdentity(projectedIdentity)
@@ -429,7 +438,7 @@ let manifestChain = try LocalizedStringLoader.chain(validatedManifest, lookupLoc
 let manifestFetches = try LocalizedStringLoader.fetchSet(validatedManifest, lookupLocale: "fr-CA")
 precondition(manifestChain == ["fr-CA", "fr", "en"])
 precondition(manifestFetches.map(\\.locale) == ["fr", "en"])
-precondition(manifestFetches.map(\\.url) == ["https://cdn.example/catalogs/fr.json", "https://cdn.example/catalogs/v1/en.json"])
+precondition(manifestFetches.map(\\.url) == ["https://xn--bcher-kva.example/catalogs/fr.json", "https://xn--bcher-kva.example/catalogs/v1/en.json"])
 precondition(manifestFetches.last?.expectedDecodedBytes == 10)
 print("consumer-import-passed")
 ''')
@@ -455,6 +464,7 @@ def main():
     parser.add_argument("--loader-report", type=Path)
     parser.add_argument("--manifest-contract-report", type=Path)
     parser.add_argument("--manifest-urls-report", type=Path)
+    parser.add_argument("--idna-normalization-report", type=Path)
     parser.add_argument("--reference", type=Path, default=ROOT / "Reference")
     parser.add_argument("--binary", type=Path)
     parser.add_argument("--binary-platform", choices=tuple(EXPECTED_PLATFORMS), default="macos")
@@ -478,6 +488,9 @@ def main():
     if args.manifest_urls_report:
         from verify_manifest_urls import report_check
         result["manifestURLs"] = report_check(args.manifest_urls_report, args.reference)
+    if args.idna_normalization_report:
+        from verify_idna_normalization import report_check
+        result["idnaNormalization"] = report_check(args.idna_normalization_report, args.reference)
     if args.binary:
         result["binaryFloor"] = binary_check(args.binary, args.binary_platform)
     print(json.dumps(result, sort_keys=True))

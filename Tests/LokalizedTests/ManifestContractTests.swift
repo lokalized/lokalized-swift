@@ -41,29 +41,29 @@ final class ManifestContractTests: XCTestCase {
         }
     }
 
-    func testURLCapabilityPendingRequiresActualConsultation() throws {
+    func testUnicodeDomainsExecuteThroughTheNativeManifestContract() throws {
         let original = try XCTUnwrap(ManifestContractQualification.load(referenceDirectory: reference).first { $0.id == "m7a.validate.valid" })
         let text = try original.input.string("manifestJSON", at: original.id)
-        for (url, category) in [("https://é.example/v1/", "native-url-unicodeDomain"), ("https://xn--bcher-kva.example/v1/", "native-url-punycodeDomain")] {
+        for url in ["https://é.example/v1/", "https://xn--bcher-kva.example/v1/"] {
             var value = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(text.utf8)) as? [String: Any])
             value["baseUrl"] = url
             let bytes = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
             let input: [ExactString: JSONValue] = ["manifestJSON": .string(String(decoding: bytes, as: UTF8.self))]
-            let row = ManifestContractQualification.Row(id: "native.capability", operation: "validateStringsManifest", input: input, expected: .null)
-            guard case .pending(let pending, let actual) = try ManifestContractQualification.execute(row) else { return XCTFail("Unqualified URL capability must remain pending") }
-            XCTAssertEqual(pending.category, category)
-            let observation = try XCTUnwrap(actual).checkedObject(at: "actual")
-            let error = try observation.value("error", at: "actual").checkedObject(at: "actual.error")
-            let cause = try error.value("cause", at: "actual.error").checkedObject(at: "actual.cause")
-            XCTAssertEqual(try cause.string("kind", at: "actual.cause"), "unsupportedFeature")
+            let row = ManifestContractQualification.Row(id: "native.unicode-url", operation: "validateStringsManifest", input: input, expected: .null)
+            guard case .observed(let native, _, let rules) = try ManifestContractQualification.execute(row) else { return XCTFail("Unicode URL validation must execute") }
+            XCTAssertTrue(rules.isEmpty)
+            let observation = try native.checkedObject(at: "actual")
+            XCTAssertEqual(try observation.string("outcome", at: "actual"), "returned")
+            let manifest = try observation.value("value", at: "actual").checkedObject(at: "actual.value")
+            XCTAssertEqual(try manifest.string("baseUrl", at: "actual.value"), url)
 
             value["formatVersion"] = 2
             let earlierBytes = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys])
             let earlier = ManifestContractQualification.Row(id: "native.earlier-refusal", operation: "validateStringsManifest",
                 input: ["manifestJSON": .string(String(decoding: earlierBytes, as: UTF8.self))], expected: .null)
-            guard case .observed(let native, _, let rules) = try ManifestContractQualification.execute(earlier) else { return XCTFail("An earlier actual validation refusal must execute") }
-            XCTAssertEqual(rules, ["native-configuration-error-envelope"])
-            let earlierError = try native.checkedObject(at: "earlier").value("error", at: "earlier").checkedObject(at: "earlier.error")
+            guard case .observed(let earlierNative, _, let earlierRules) = try ManifestContractQualification.execute(earlier) else { return XCTFail("An earlier actual validation refusal must execute") }
+            XCTAssertEqual(earlierRules, ["native-configuration-error-envelope"])
+            let earlierError = try earlierNative.checkedObject(at: "earlier").value("error", at: "earlier").checkedObject(at: "earlier.error")
             guard case .null = earlierError["cause"] else { return XCTFail("Earlier refusal must have no URL capability cause") }
         }
     }

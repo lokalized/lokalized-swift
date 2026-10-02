@@ -210,14 +210,14 @@ public final class DefaultStrings: Strings, Sendable {
     private func candidateChain(_ locale: LocaleTag) -> [LocaleTag] {
         var proposed: [LocaleTag] = [], proposedSet = Set<LocaleTag>()
         func add(_ value: LocaleTag) { if proposedSet.insert(value).inserted { proposed.append(value) } }
-        for parent in CldrLocaleData.fallbackLocalesFor(locale.tag) { add(parent) }
+        for parent in matcher.fallbackLocalesFor(locale.tag) { add(parent) }
         if let likely = matcher.likelyMatch(locale.tag, candidates: matcher.supportedLocales),
            let loaded = matcher.supportedTags.first(where: { $0.tag == likely }) { add(loaded) }
         let primary = MatchingLocale.primary(locale.tag)
         if !primary.isEmpty {
+            let requestedScript = matcher.likelyLanguageScriptFor(locale.tag)
             for tie in matcher.tiebreakerLocaleTagsByLanguageCode[primary] ?? [] {
-                if MatchingLocale.compatible(CldrLocaleData.languageScriptForLikelySubtag(locale.tag),
-                    CldrLocaleData.languageScriptForLikelySubtag(tie.tag)) { add(tie) }
+                if MatchingLocale.compatible(requestedScript, matcher.likelyLanguageScriptFor(tie.tag)) { add(tie) }
             }
         }
         add(matcher.fallbackTag)

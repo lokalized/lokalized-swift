@@ -15,7 +15,7 @@ struct CommandOptions {
         while index < arguments.count {
             let argument = arguments[index]
             switch argument {
-            case "--self-test", "--inventory", "--audit", "--plural-data", "--locale-data", "--resolution-components", "--runtime-adapter", "--loader", "--manifest-contract", "--manifest-urls":
+            case "--self-test", "--inventory", "--audit", "--plural-data", "--locale-data", "--resolution-components", "--runtime-adapter", "--loader", "--loader-boundaries", "--manifest-contract", "--manifest-urls", "--idna-normalization":
                 guard command == nil else { throw UsageError("Choose exactly one command") }
                 command = argument
             case "--reference", "--report":
@@ -27,7 +27,7 @@ struct CommandOptions {
             }
             index += 1
         }
-        guard let command else { throw UsageError("Choose --self-test, --inventory, --audit, --plural-data, --locale-data, --resolution-components, --runtime-adapter, --loader, --manifest-contract, or --manifest-urls") }
+        guard let command else { throw UsageError("Choose --self-test, --inventory, --audit, --plural-data, --locale-data, --resolution-components, --runtime-adapter, --loader, --loader-boundaries, --manifest-contract, --manifest-urls, or --idna-normalization") }
         self.command = command
         self.reference = reference
         self.report = report
@@ -37,7 +37,7 @@ struct CommandOptions {
 struct UsageError: Error, CustomStringConvertible {
     let description: String
     init(_ message: String) {
-        description = message + "\nUsage: LokalizedConformance (--self-test | --inventory | --audit | --plural-data | --locale-data | --resolution-components | --runtime-adapter | --loader | --manifest-contract | --manifest-urls) [--reference PATH] [--report PATH]"
+        description = message + "\nUsage: LokalizedConformance (--self-test | --inventory | --audit | --plural-data | --locale-data | --resolution-components | --runtime-adapter | --loader | --loader-boundaries | --manifest-contract | --manifest-urls | --idna-normalization) [--reference PATH] [--report PATH]"
     }
 }
 
@@ -83,6 +83,10 @@ do {
         let report = try ConformanceRunner.manifestURLAudit(referenceDirectory: options.reference)
         output = try encode(report)
         code = report.status == "passed" ? 0 : 1
+    case "--idna-normalization":
+        let report = try ConformanceRunner.idnaNormalizationAudit(referenceDirectory: options.reference)
+        output = try encode(report)
+        code = report.status == "passed" ? 0 : 1
     case "--manifest-contract":
         let report = try ManifestContractQualification.run(referenceDirectory: options.reference)
         output = try encode(report)
@@ -91,6 +95,9 @@ do {
         let report = try LoaderQualification.run(referenceDirectory: options.reference)
         output = try encode(report)
         code = report.status == "passed" ? 0 : 1
+    case "--loader-boundaries":
+        output = try encode(LoaderBoundaryQualification.run())
+        code = 0
     default:
         let report = try ConformanceRunner.audit(referenceDirectory: options.reference)
         output = try encode(report)

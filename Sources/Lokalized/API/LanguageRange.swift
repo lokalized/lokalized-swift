@@ -17,6 +17,11 @@ public struct LanguageRangeError: Error, Hashable, Sendable, CustomStringConvert
 public struct LanguageRange: Hashable, Sendable, CustomStringConvertible {
     public let range: String
     public let weight: Double
+    /// Strict header parsing with pinned equivalence expansion. This applies no
+    /// raw header length or matcher range-count cap; callers choose those policies.
+    public static func parse(_ ranges: String, equivalents: LanguageRangeEquivalents = .ianaRegistry) throws -> [LanguageRange] {
+        try LanguageRangeParser.parse(ranges, equivalents: equivalents)
+    }
     private final class NaNIdentity: Sendable {}
     private let nanIdentity: NaNIdentity?
 

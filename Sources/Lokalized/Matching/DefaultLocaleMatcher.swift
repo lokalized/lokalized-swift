@@ -10,6 +10,7 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
     package let supportedTags: [LocaleTag]
     package let fallbackTag: LocaleTag
     package let localeStatics: [MatcherLocale]
+    private let localeStaticsByTag: [String: MatcherLocale]
     public var supportedLocaleTags: [LocaleTag] { supportedTags }
     public var fallbackLocaleTag: LocaleTag { fallbackTag }
     public let tiebreakerLocaleTagsByLanguageCode: [String: [LocaleTag]]
@@ -110,7 +111,9 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
         self.tiebreakerLocalesByLanguageCode = resolved.mapValues { $0.map(\.tag) }
         self.tiebreakerLocaleTagsByLanguageCode = resolved
         self.languageRangeEquivalents = languageRangeEquivalents
-        localeStatics = loaded.map { MatcherLocale($0.tag) }
+        let statics = loaded.map { MatcherLocale($0.tag) }
+        localeStatics = statics
+        localeStaticsByTag = Dictionary(uniqueKeysWithValues: statics.map { ($0.tag, $0) })
     }
 
     public func parseLanguageRanges(_ ranges: String) throws -> [LanguageRange] {
@@ -160,11 +163,11 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
         return candidates[0]
     }
     package func likelyMatch(_ range: String, candidates: [String]) -> String? {
-        guard !range.contains("*"), !CldrLocaleData.hasUndeterminedLanguage(range),
-              let requested = CldrLocaleData.languageScriptForLikelySubtag(range) else { return nil }
+        guard !range.contains("*"), !hasUndeterminedLanguage(range),
+              let requested = likelyLanguageScriptFor(range) else { return nil }
         let matching = candidates.filter { tag in
-            !CldrLocaleData.hasUndeterminedLanguage(tag)
-                && CldrLocaleData.languageScriptForLikelySubtag(tag).map { MatchingLocale.equal($0, requested) } == true
+            !hasUndeterminedLanguage(tag)
+                && likelyLanguageScriptFor(tag).map { MatchingLocale.equal($0, requested) } == true
         }
         if matching.isEmpty { return nil }
         if matching.count == 1 { return matching[0] }
@@ -184,6 +187,20 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
         return nil
     }
 
+    // Reuse immutable facts for loaded tags. Unloaded and differently spelled
+    // requests retain the same pinned calculation, without a growing cache.
+    package func likelyLanguageScriptFor(_ tag: String) -> String? {
+        if let known = localeStaticsByTag[tag] { return known.likelyLanguageScript }
+        return CldrLocaleData.languageScriptForLikelySubtag(tag)
+    }
+    package func fallbackLocalesFor(_ tag: String) -> [LocaleTag] {
+        if let known = localeStaticsByTag[tag] { return known.fallbackLocales }
+        return CldrLocaleData.fallbackLocalesFor(tag)
+    }
+    private func hasUndeterminedLanguage(_ tag: String) -> Bool {
+        localeStaticsByTag[tag]?.undetermined ?? CldrLocaleData.hasUndeterminedLanguage(tag)
+    }
+
     /// The later per-key resolution walk is deliberately separate from matchFor.
     /// Unloaded ancestors remain observable; canonical rewrites deduplicate after
     /// election, and the configured fallback is always the last added candidate.
@@ -191,12 +208,13 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
         let tag = try MatchingLocale.validated(locale, description: "Requested locale").tag
         var proposed: [String] = [], seenProposed = Set<String>()
         func add(_ candidate: String) { if seenProposed.insert(candidate).inserted { proposed.append(candidate) } }
-        for candidate in CldrLocaleData.fallbackLocaleTagsFor(tag) { add(candidate) }
+        for candidate in fallbackLocalesFor(tag) { add(candidate.tag) }
         if let likely = likelyMatch(tag, candidates: supportedLocales) { add(likely) }
         let primary = MatchingLocale.primary(tag)
         if !primary.isEmpty {
+            let requestedScript = likelyLanguageScriptFor(tag)
             for tie in tiebreakerLocalesByLanguageCode[primary] ?? [] {
-                if MatchingLocale.compatible(CldrLocaleData.languageScriptForLikelySubtag(tag), CldrLocaleData.languageScriptForLikelySubtag(tie)) { add(tie) }
+                if MatchingLocale.compatible(requestedScript, likelyLanguageScriptFor(tie)) { add(tie) }
             }
         }
         add(fallbackLocale)

@@ -20,4 +20,4 @@ The pinned JS normalizer is not idempotent for some undetermined/private-use spe
 
 Swift's typed identity door uses `ConfigurationError(.invalidArgument)` where JS uses `TypeError` or `RangeError`. The differential adapter records native observations and explicitly reports semantic error projections separately. Typed dictionary inputs use deterministic UTF-16 validation order; the ordered decoded manifest door preserves JS declaration order. Dynamic JS identity shapes that the typed Swift input cannot carry are inventoried without fabricated execution.
 
-Identity detects disagreement with supplied claims. Authentication, verified loaded records, streaming body hashing before parsing, cancellation and publishing remain later M7 work.
+Identity detects disagreement with supplied claims. It does not verify catalog bodies or authenticate manifests. HTTP acquisition, verified-network records, cancellation and publishing are outside the Swift runtime scope; applications own those workflows.

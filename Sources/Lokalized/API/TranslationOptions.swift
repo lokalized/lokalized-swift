@@ -34,6 +34,17 @@ public struct TranslationOptions: Hashable, Sendable {
         try Self(locale: MatchingLocale.validated(locale, description: "Locale override"))
     }
     public static func forLanguageRanges(_ languageRanges: [LanguageRange]) throws -> Self { try Self(languageRanges: languageRanges) }
+    /// Negotiates immediately and retains the match object for later consumption.
+    /// The existing one-argument factory keeps strict deferred-range semantics.
+    public static func forLanguageRanges(_ languageRanges: [LanguageRange], using matcher: any LocaleMatcher) throws -> Self {
+        _ = try Self(languageRanges: languageRanges)
+        return forLocaleMatch(try matcher.matchFor(languageRanges))
+    }
+    /// Processes an already combined header value, without acquiring any input.
+    /// Unusable headers negotiate an empty list; no fallback match is invented.
+    public static func forAcceptLanguage(_ acceptLanguage: String?, using matcher: any LocaleMatcher) throws -> Self {
+        forLocaleMatch(try matcher.matchFor(usableAcceptLanguageRanges(acceptLanguage, using: matcher)))
+    }
     public static func forLocaleMatch(_ localeMatchResult: LocaleMatchResult) -> Self {
         // The final public match class has already validated structural invariants.
         // Instance-dependent provenance validation remains at consumption.

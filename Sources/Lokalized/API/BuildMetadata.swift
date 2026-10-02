@@ -11,6 +11,8 @@ public struct BuildMetadata: Hashable, Sendable {
     public let ianaRegistryDate: String
     public let ianaDataFingerprint: String
     public let behavioralVectorsVersion: String
+    public let localeDataMode: String
+    public let cardinalityMode: String
     public let identifierUnicodeVersion: String
 
     public static let current = Self(
@@ -21,13 +23,15 @@ public struct BuildMetadata: Hashable, Sendable {
         ianaRegistryDate: "2026-09-17",
         ianaDataFingerprint: "87b3a43b03f490206cead05d865357bd7cfc3953a52ec4d8405243f699385815",
         behavioralVectorsVersion: "1.1.0",
+        localeDataMode: "pinned",
+        cardinalityMode: "exact",
         identifierUnicodeVersion: "15.0"
     )
 
     private init(
         producerImplementation: String, producerVersion: String, cldrVersion: String,
         dataFingerprint: String, ianaRegistryDate: String, ianaDataFingerprint: String,
-        behavioralVectorsVersion: String, identifierUnicodeVersion: String
+        behavioralVectorsVersion: String, localeDataMode: String, cardinalityMode: String, identifierUnicodeVersion: String
     ) {
         self.producerImplementation = producerImplementation
         self.producerVersion = producerVersion
@@ -36,6 +40,8 @@ public struct BuildMetadata: Hashable, Sendable {
         self.ianaRegistryDate = ianaRegistryDate
         self.ianaDataFingerprint = ianaDataFingerprint
         self.behavioralVectorsVersion = behavioralVectorsVersion
+        self.localeDataMode = localeDataMode
+        self.cardinalityMode = cardinalityMode
         self.identifierUnicodeVersion = identifierUnicodeVersion
     }
 }

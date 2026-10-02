@@ -1,0 +1,96 @@
+{
+  "formatVersion": 1,
+  "unicodeVersion": "17.0.0",
+  "scope": "UTS #46 IDNA mapping; NFC canonical decomposition/composition; CCC; General_Category=Mark; RFC 5893 bidi classes; RFC 5892 joining types",
+  "generator": {
+    "path": "Tools/generate_idna_tables.py",
+    "sha256": "9b783895210073d42aede285f4f1b246276fc51e29dc76651381d702ec038ef9"
+  },
+  "inputs": {
+    "IdnaMappingTable.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/idna/IdnaMappingTable.txt",
+      "sha256": "87f05505dc026fdb2bff16132bdc68a8014675836882a9a2b1844540ad3be382",
+      "byteCount": 787378
+    },
+    "UnicodeData.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/UnicodeData.txt",
+      "sha256": "2e1efc1dcb59c575eedf5ccae60f95229f706ee6d031835247d843c11d96470c",
+      "byteCount": 2198209
+    },
+    "DerivedNormalizationProps.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/DerivedNormalizationProps.txt",
+      "sha256": "71fd6a206a2c0cdd41feb6b7f656aa31091db45e9cedc926985d718397f9e488",
+      "byteCount": 1377582
+    },
+    "DerivedBidiClass.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedBidiClass.txt",
+      "sha256": "4867b4b7f0731ed1bfcd34cc6251211ff1542541fce0734b6fbda139ee80b3a4",
+      "byteCount": 173433
+    },
+    "DerivedJoiningType.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/extracted/DerivedJoiningType.txt",
+      "sha256": "f39ebe974825d6736aee15582250307aa532b2cfab3caf3f86bd23fddc9c5c4d",
+      "byteCount": 40635
+    },
+    "NormalizationTest.txt": {
+      "url": "https://www.unicode.org/Public/17.0.0/ucd/NormalizationTest.txt",
+      "sha256": "5019ffd530751a741900c849c0e010332f142a3612234639bd200b82138a87db",
+      "byteCount": 2827429
+    },
+    "LICENSE.txt": {
+      "url": "https://www.unicode.org/license.txt",
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "byteCount": 1995
+    }
+  },
+  "tables": {
+    "mappings": {
+      "recordWidth": 21,
+      "recordCount": 8201,
+      "sha256": "1c5da7a4e5d0ead0c0fc1161997b8377c739b304dc09262b94a460cb7259037a"
+    },
+    "combiningClasses": {
+      "recordWidth": 14,
+      "recordCount": 403,
+      "sha256": "e345431cdd3e1aa959bac529013c2987de3881756a13a0273577f61bc3c3c581"
+    },
+    "marks": {
+      "recordWidth": 13,
+      "recordCount": 327,
+      "sha256": "758b6ac9763ba0538fdaf0c2a68a2c4293f41de388308daf9d0105b40e33df6f"
+    },
+    "bidiClasses": {
+      "recordWidth": 13,
+      "recordCount": 748,
+      "sha256": "75c95a1fab465d7cfe2b4c9c99e596eb9be003645dfc33c697661d78625f2274"
+    },
+    "joiningTypes": {
+      "recordWidth": 13,
+      "recordCount": 529,
+      "sha256": "67f1a5b49be6eca24fe989b3c72b732b4f6d91e6d535cece30b00685598d9d38"
+    },
+    "decompositions": {
+      "recordWidth": 14,
+      "recordCount": 2081,
+      "sha256": "3807a8c08bea237871566dd42933a901e573a35dd8bc0d00b9e7e67a647d0d77"
+    },
+    "compositions": {
+      "recordWidth": 18,
+      "recordCount": 961,
+      "sha256": "69c21127c389c58f33d7a1672435ad83970d7eb58464e73bad0bce3070034429"
+    },
+    "scalarSequences": {
+      "recordWidth": 6,
+      "recordCount": 7450,
+      "sha256": "50cd34201521151b1ed5b4d65b6dea65a574ca1cb28b7fee6d3393d7acc462e1"
+    }
+  },
+  "output": {
+    "path": "Sources/Lokalized/Data/IDNAUnicodeTables.swift",
+    "sha256": "8edcb9a7a149d4539f6c8d5f870bda398fe58dc0a80c117bc1d70de93625599a"
+  },
+  "normalization": "Canonical-only UnicodeData decomposition; Full_Composition_Exclusion removes forbidden pairs; Hangul normalization is algorithmic in PinnedNFC",
+  "defaults": "All @missing derived-property defaults applied before explicit rows; L and U table defaults omitted",
+  "consumerPolicy": "Committed Swift StaticString constants only; no host Unicode/ICU data; no generator/network/build hook; zero external runtime dependencies",
+  "license": "UNICODE LICENSE V3; complete notice also embedded in generated Swift source"
+}

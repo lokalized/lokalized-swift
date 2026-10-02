@@ -20,6 +20,7 @@ package struct MatcherLocale: Sendable {
     package let canonicalSubtags: [String]
     package let undetermined: Bool
     package let likelyLanguageScript: String?
+    package let fallbackLocales: [LocaleTag]
     package let primary: String?
     package init(_ tag: String) {
         self.tag = tag
@@ -28,6 +29,7 @@ package struct MatcherLocale: Sendable {
         canonicalSubtags = MatchingLocale.split(canonical)
         undetermined = CldrLocaleData.hasUndeterminedLanguage(tag)
         likelyLanguageScript = CldrLocaleData.languageScriptForLikelySubtag(tag)
+        fallbackLocales = CldrLocaleData.fallbackLocalesFor(tag)
         let language = MatchingLocale.primary(tag)
         primary = language.isEmpty ? nil : language
     }

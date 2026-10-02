@@ -1,4 +1,4 @@
-name: Swift M7A qualification
+name: Swift M8F qualification
 
 on:
   push:
@@ -33,11 +33,24 @@ jobs:
           xcodebuild -version
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}'
           python3 Tools/reference_baseline.py --check
+          python3 Tools/sync_url_oracle.py --check
           python3 Tools/api_inventory.py --check
+          python3 Tools/verify_api_coverage.py --check
+          python3 Tools/measure_package.py --check
           python3 Tools/manifest_contract.py --check
           mkdir -p .build/reports
+          python3 Tools/test_idna_archive.py
           python3 Tools/verify_manifest_urls.py --check > .build/reports/manifest-url-probe.json
+          python3 Tools/verify_idna_urls.py --check > .build/reports/manifest-idna-probe.json
           python3 Tools/generate_identifier_tables.py --check
+          python3 Tools/generate_idna_tables.py --check
+          python3 Tools/generate_idna_compatibility.py --check
+          python3 Tools/generate_idna_normalization_compatibility.py --check
+          python3 Tools/oracle_runtime.py --check
+          python3 Tools/verify_idna_tables.py --check --report .build/reports/idna-tables-probe.json
+          python3 Tools/verify_idna_compatibility.py --check --report .build/reports/idna-compatibility.json
+          python3 Tools/verify_idna_compatibility_normalization_tables.py --check --report .build/reports/idna-compatibility-normalization-tables.json
+          python3 Tools/verify_idna_normalization.py --check --report .build/reports/idna-normalization-probe.json
           python3 Tools/materialize_fixtures.py --check
           python3 Tools/generate_warning_forms.py --check
           python3 Tools/generate_plural_data.py --check
@@ -51,6 +64,8 @@ jobs:
           swift build
           swift test
           swift run --skip-build LokalizedConformance --self-test
+          python3 Tools/verify_api_coverage.py --qualify --report .build/reports/api-coverage.json
+          python3 Tools/verify_api_coverage.py --report-check .build/reports/api-coverage.json --negative-controls > .build/reports/api-coverage-controls.json
           python3 Tools/verify_callback_types.py --check --report .build/reports/callback-types.json
           mkdir -p .build/reports
           swift run --skip-build LokalizedConformance --inventory --reference Reference --report .build/reports/inventory.json
@@ -58,10 +73,16 @@ jobs:
           swift run --skip-build LokalizedConformance --locale-data --reference Reference --report .build/reports/locale-data.json
           swift run --skip-build LokalizedConformance --resolution-components --reference Reference --report .build/reports/resolution-components.json
           swift run --skip-build LokalizedConformance --runtime-adapter --reference Reference --report .build/reports/runtime-adapter.json
+          python3 Tools/verify_native_representations.py --type-report .build/reports/callback-types.json --runtime-adapter-report .build/reports/runtime-adapter.json --report .build/reports/native-representations.json
+          python3 Tools/verify_native_representations.py --type-report .build/reports/callback-types.json --runtime-adapter-report .build/reports/runtime-adapter.json --report-check .build/reports/native-representations.json --negative-controls > .build/reports/native-representation-controls.json
           swift run --skip-build LokalizedConformance --loader --reference Reference --report .build/reports/loader.json
+          python3 Tools/verify_loader_dispositions.py --qualify --report .build/reports/loader-dispositions.json
+          python3 Tools/verify_loader_dispositions.py --report-check .build/reports/loader-dispositions.json --negative-controls > .build/reports/loader-disposition-controls.json
           swift run --skip-build LokalizedConformance --manifest-urls --reference Reference --report .build/reports/manifest-urls.json
+          swift run --skip-build LokalizedConformance --idna-normalization --reference Reference --report .build/reports/idna-normalization.json
           swift run --skip-build LokalizedConformance --manifest-contract --reference Reference --report .build/reports/manifest-contract.json
-          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --manifest-contract-report .build/reports/manifest-contract.json --manifest-urls-report .build/reports/manifest-urls.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --manifest-contract-report .build/reports/manifest-contract.json --manifest-urls-report .build/reports/manifest-urls.json --idna-normalization-report .build/reports/idna-normalization.json
+          python3 Tools/verify_manifest_urls.py --report-check .build/reports/manifest-urls.json --negative-controls > .build/reports/manifest-url-report-controls.json
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --inventory-report .build/reports/inventory.json
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --resolution-components-report .build/reports/resolution-components.json
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --runtime-adapter-report .build/reports/runtime-adapter.json
@@ -75,6 +96,10 @@ jobs:
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --audit-report .build/reports/audit.json --binary "$(swift build --show-bin-path)/LokalizedConformance"
       - name: Build a fresh package without reference artifacts or resolver inputs
         run: python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --offline-build
+      - name: Measure optimized public consumers and enforce measured size caps
+        run: |
+          python3 Tools/measure_package.py --measure --samples 3 --compiler-track '${{ matrix.track }}' --report .build/reports/package-performance.json > .build/reports/package-performance.log
+          python3 Tools/measure_package.py --report-check .build/reports/package-performance.json --negative-controls > .build/reports/package-performance-check.json
       - name: Compile and inspect iOS and macOS deployment targets
         run: python3 Tools/verify_deployment.py --compiler-track '${{ matrix.track }}' --output-directory .build/deployment --report .build/reports/deployment.json
       - name: Build packaged SwiftPM and Apple application resource consumers
@@ -83,7 +108,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m7a-audit-${{ matrix.track }}
+          name: m8f-audit-${{ matrix.track }}
           path: .build/reports/
           if-no-files-found: error
 

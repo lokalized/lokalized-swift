@@ -59,11 +59,13 @@ Constructor validation checks the requested count, selected locale, fallback loc
 
 Directly constructed `LanguageRange` values reproduce Java's unusual acceptance of NaN weights. Java ordering and NaN propagation are retained through election, and a selected NaN effective weight is refused by result validation. Signed zero remains an exclusion. Range equality preserves copied NaN identity and distinguishes separately constructed NaNs; its Swift hash normalizes signed zero to satisfy Swift's equality/hash contract. Header grammar does not admit NaN.
 
-## Strict parsing and HTTP handling
+## Strict parsing and supplied header handling
 
-`parseLanguageRanges` exposes strict parsing and equivalent expansion. It has no header-length or matching-count cap. `matchFor` and result construction accept at most 32 expanded ranges and reject a larger list whole; they do not truncate it.
+`LanguageRange.parse(_:equivalents:)` exposes standalone strict parsing with pinned IANA (default) or JDK expansion. A configured matcher’s `parseLanguageRanges` uses its configured equivalence mode. It has no header-length or matching-count cap. `matchFor` and result construction accept at most 32 expanded ranges and reject a larger list whole; they do not truncate it.
 
 `bestMatchForAcceptLanguage` accepts an optional header and imposes a 4,096 UTF-16-code-unit limit before parsing. Missing or blank input, an empty normalized list, a `LanguageRangeError`, or more than 32 expanded preferences delegates to `bestMatchFor([])`. HTTP normalization removes empty comma members, trims spaces/tabs at member boundaries and replaces interior tabs with spaces before strict parsing. It preserves weighted negotiation and exclusions for a valid header. A custom matcher's unrelated parser errors or negotiation errors propagate through the throwing API; grammar refusal alone fails soft.
+
+`TranslationOptions.forAcceptLanguage(_:using:)` shares that ingress policy but calls `matchFor` to retain the actual diagnostic result. Unusable headers produce an empty-range unmatched result for the default matcher; no exact fallback match is invented. `forLanguageRanges(_:using:)` negotiates strict supplied ranges immediately, while the existing one-argument factory retains ranges for negotiation during translation. These factories perform no I/O. Instance-dependent supplied-match validation remains at consumption. See [public API qualification](API-COVERAGE.md).
 
 Malformed locale syntax/rebuildability and range grammar use their native `LocaleTagError`/`LanguageRangeError`. Matcher configuration and result invariant refusals use `LocaleMatcherError` with a stable `message` and `kind`. Nonoptional Swift types make Java/JS null-element and null-callback shapes unrepresentable; they do not turn those cases into runtime successes.
 

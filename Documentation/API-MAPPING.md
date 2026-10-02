@@ -1,8 +1,10 @@
-# Swift API mapping and M7A status
+# Swift API mapping
 
 The public vocabulary follows the frozen [naming policy](../Reference/API-NAMING.md). The mechanically generated [API inventory](../Reference/api-inventory.json) records 53 externally public Java types and nine JavaScript code entry points, with 127 runtime-export occurrences across those entry points. Repeated exports are intentional; they are not 127 distinct concepts. Java package-private helpers and unexported JavaScript declarations are excluded.
 
-This document separates the implemented M0–M6 and M7A APIs from planned verified network delivery. Whole-runtime qualification compares every recorded translation observation separately from component checks.
+This document maps the implemented M0–M6 runtime/local APIs and M7A/M7B1 pure manifest utilities, including the application-owned remote-acquisition boundary. Whole-runtime qualification compares every recorded translation observation separately from component checks.
+
+The M8B [coverage ledger and compiler qualification](API-COVERAGE.md) account for all 53 Java types, 443 members and 251 JS declaration occurrences. Public presence is checked separately from full overload/behavioral equivalence and corpus representation mappings.
 
 ## Reference identities
 
@@ -30,7 +32,7 @@ The first command needs only Python's standard library and this checkout. The se
 
 | Public API | Implemented behavior | Limit of this implementation |
 |---|---|---|
-| `BuildMetadata.current` | Immutable build identity with producer, CLDR, IANA, corpus, and identifier-Unicode fields | Describes the intended baseline; metadata does not certify data-backed matching or plural evaluation |
+| `BuildMetadata.current` | Immutable build identity with producer, CLDR, IANA, corpus, identifier-Unicode, `localeDataMode` and `cardinalityMode` fields | Describes the intended baseline; metadata does not certify data-backed matching or plural evaluation |
 | `ExactString` | String-literal construction; exact UTF-16 equality, hashing, ordering and length; access to the original `String` | All catalog/placeholder keys use this carrier; ordinary Swift dictionaries keyed by `String` still use native canonical equivalence |
 | `LanguageFormAxis`, `LanguageForm` | Ten axes, raw wire tokens, portable display names | Package-visible expression evaluation is implemented in M4 |
 | `Cardinality`, `Ordinality`, `Gender`, `GrammaticalCase`, `Definiteness`, `Classifier`, `Formality`, `Clusivity`, `Animacy`, `Phonetic` | All 61 forms as `CaseIterable`, immutable, `Sendable` enums; cardinal/ordinal services below | Selection is internal; public `DefaultStrings` translation is implemented |
@@ -105,7 +107,7 @@ Parsed models retain authored placeholder declaration order internally, while ty
 
 ## Runtime APIs and remaining delivery
 
-The table distinguishes implemented runtime/local APIs from remaining conveniences and verified manifest delivery; see [runtime contracts](RUNTIME-API.md) and [runtime semantics](RUNTIME-SEMANTICS.md) for exact signatures and native adaptations.
+The table distinguishes implemented runtime/local APIs, pure manifest helpers and JS-specific delivery APIs; see [runtime contracts](RUNTIME-API.md) and [runtime semantics](RUNTIME-SEMANTICS.md) for exact signatures and native adaptations.
 
 | Java / JavaScript concept | Swift surface and disposition |
 |---|---|
@@ -114,7 +116,7 @@ The table distinguishes implemented runtime/local APIs from remaining convenienc
 | `TranslationOptions`, `forLocale`, `forLocaleMatch`, Java per-call ranges | `TranslationOptions` with `forLocale`, `forLanguageRanges`, `forLocaleMatch` option factories. These are per-call options, not bound `Strings` views |
 | `localizedStringSupplier` | Supplies catalogs once during construction; do not call it on every lookup |
 | `localeSupplier`, `localeMatchSupplier` | Named callbacks with a matcher context where needed. Preserve Java's matcher argument explicitly; JS currently uses closures without a matcher argument |
-| `TranslationResult`, `TranslationResultStatus` | Immutable text, requested/resolved locale, match diagnostic, status and failure; exact optional-field semantics. Verified-record provenance belongs to later delivery |
+| `TranslationResult`, `TranslationResultStatus` | Immutable text, requested/resolved locale, match diagnostic, status and failure; exact optional-field semantics. No verified-network provenance claim |
 | `TranslationFailure`, reason, policy, handler, response | Shared vocabulary with typed nonoptional decisions/responses, throwing callbacks and preserved causes |
 | `TranslationFallbackEvent`, observer, preceding failures | Observer receives a successful fallback event after translation; immutable snapshots and exact candidate/callback order. The shared corpus has no observer cases; native standalone and XCTest evidence checks them |
 | Programmatic model conveniences | Core models and `defineCatalog` are implemented above; additional convenience factories can follow the actual consumer API |
@@ -122,9 +124,10 @@ The table distinguishes implemented runtime/local APIs from remaining convenienc
 | Inspection methods | Supported locales, exact keys for one locale, exact missing keys between locales; inspection does not negotiate or translate |
 | `LocalizedStringLoader`, JS parse/local loaders | Implemented M6 text/data/stream/file/directory and explicit Bundle/resource maps; loading options, warnings and limits. JVM classloader/JAR behavior remains pending native carrier mappings |
 | JS preferred-language/browser chooser | Apple preferred-language adapter plus portable preferred-language chooser; UI state read on its actor and supplied explicitly |
-| JS `StringsManifestV1`, identity and loading | Native manifest parsing/validation, JCS/SHA-256 identity, plan/chain/fetch set, subset and entire loading, immutable loaded records, partial diagnostics and cancellation |
-| JS directory-to-manifest publishing | Development macOS publishing command; consumer loads do not require it |
-| JS `createSsrStamp` / `validateSsrStamp` | Preserve identity/provenance needed by native results and transferred verified records. Defer a native producer-only SSR stamp API until a concrete consumer exists; SSR is a JS transport-specific API |
+| JS `StringsManifestV1`, identity and planning | Existing pure manifest parsing/validation, JCS/SHA-256 identity, chain/fetch set; no catalog I/O |
+| JS HTTP/manifest load execution | JS browser delivery only; outside Swift scope. Applications supply acquired bytes/text/streams/files to native local parsers |
+| JS directory-to-manifest publishing | JS/application development tooling; no Swift runtime or release requirement |
+| JS `createSsrStamp` / `validateSsrStamp` | JS-specific delivery/hydration API; outside Swift scope. Native build metadata and pure identity helpers remain available |
 | JS data subpath imports | All ordinal/range data included in the Swift runtime; no caller prerequisite imports or package dependencies |
 | JS metadata exports and configuration snapshots | Expose independent build metadata plus runtime `localeDataMode`/`cardinalityMode`, settings and immutable effective configuration when those runtime services exist |
 | i18next/plugin interoperation | JavaScript integration; Swift gets platform-appropriate UI adapters with deliberate error display policy |
@@ -133,7 +136,7 @@ The table distinguishes implemented runtime/local APIs from remaining convenienc
 
 The implemented per-call locale source is a mutually exclusive sum: direct locale, language ranges, or a presupplied `LocaleMatchResult`. Constructing one options value cannot silently overwrite an earlier source or contain two simultaneously active sources. The immutable options initializer and factories retain the shared setting names and reject simultaneous locale sources. Absent overrides inherit instance configuration. Nil policy/handler/bidi overrides represent omission; `.disabled` explicitly disables bidi isolation. Assigning nil to one construction supplier must not clear the other supplier.
 
-Match-result validity includes provenance and requested-context rules, not merely structural type validity. Call-scoped matching diagnostics, loaded-record verification and retained failures must remain isolated under concurrent and reentrant calls. Public callbacks should declare `@Sendable` where shared immutable instances use them; actor-isolated state must be sampled on its actor, not accessed through an isolation bypass.
+Match-result validity includes provenance and requested-context rules, not merely structural type validity. Call-scoped matching diagnostics and retained failures must remain isolated under concurrent and reentrant calls. Public callbacks should declare `@Sendable` where shared immutable instances use them; actor-isolated state must be sampled on its actor, not accessed through an isolation bypass.
 
 ### Native errors, context and identity
 
@@ -149,11 +152,11 @@ Match-result validity includes provenance and requested-context rules, not merel
 | Application errors thrown by policy, handler, supplier, resolver or observer | Propagate the original thrown error through the required callback precedence; do not wrap away its identity or payload |
 | Invalid nil callback return | Compile-time mapping only after typed API and negative-compile evidence; no invented runtime error in the runner |
 
-`StringsParseError`, `CatalogModelError`, loading/runtime limit validation errors and package-visible reader/compiler errors exist in M1. The M4 evaluation taxonomy is implemented above; public translation failures are implemented in M5; M6 adds `LocalizedStringLoadingError` with discovery/I/O/invalid-resource/duplicate-locale kinds and immediate native causes. Verified-delivery errors remain planned. Expected error/context fields require explicit comparisons; an error-name-only match cannot pass a corpus case. Identity-sensitive result and cause objects require immutable reference carriers or another documented identity projection; value equality is insufficient for a test that requires the same retained object. NSError/Foundation bridging is not an identity guarantee.
+`StringsParseError`, `CatalogModelError`, loading/runtime limit validation errors and package-visible reader/compiler errors exist in M1. The M4 evaluation taxonomy is implemented above; public translation failures are implemented in M5; M6 adds `LocalizedStringLoadingError` with discovery/I/O/invalid-resource/duplicate-locale kinds and immediate native causes. JS verified-network error aggregates are outside Swift scope. Expected error/context fields require explicit comparisons; an error-name-only match cannot pass a corpus case. Identity-sensitive result and cause objects require immutable reference carriers or another documented identity projection; value equality is insufficient for a test that requires the same retained object. NSError/Foundation bridging is not an identity guarantee.
 
 ### Null and typed callback cases: explicit dispositions
 
-The baseline proposes ten native representation mapping candidates. None is ratified or counted as mapped in M6. Negative-compile consumers now qualify eight actual type boundaries, without substituting for callback timing or approving per-ID mappings. Each requires a compiler-negative consumer example against the actual nonoptional public callback type, with the relevant operation/input and error-context difference documented. Runtime timing and callback traces from Java remain visible obligations; a compile-time mapping does not replay them. Mappings must be recorded per ID and approved as part of the shared contract before a future release claim.
+The baseline proposes ten native representation mapping candidates. None is ratified or counted as mapped in M6. M8A negative-compile consumers qualify seventeen actual type boundaries. The per-case dossier links all twenty unavailable inputs to compiler evidence and 23 adjacent runtime controls, without substituting those controls for Java null behavior or approving mappings. See [native representation evidence](NATIVE-REPRESENTATIONS.md). Each requires a compiler-negative consumer example against the actual nonoptional public callback type, with the relevant operation/input and error-context difference documented. Runtime timing and callback traces from Java remain visible obligations; a compile-time mapping does not replay them. Mappings must be recorded per ID and approved as part of the shared contract before a future release claim.
 
 | Required corpus ID | Proposed disposition after typed API exists |
 |---|---|
@@ -196,11 +199,11 @@ Implemented numeric values preserve distinct integer, binary32 `Float`, binary64
 
 Bundle loading takes an explicit consumer bundle and resource directory; `Bundle.module` in the library cannot locate another package's resources. M6 qualifies a constructed framework-style bundle, real packaged main apps and a real caller SwiftPM bundle; additional application packaging recipes require their own qualification. Preserve subdirectories with consumer `.copy` resources and enumerate valid extensionless locale files as well as supported named files. Native file/Bundle loading adapts Java classpath semantics without exposing a classloader. Unsupported archive-container features need a documented transport disposition, not a claim of classpath parity.
 
-Manifest APIs stay in full runtime scope. Freeze the reviewed HEAD wire contract and golden canonical bytes/digests before implementation: HEAD uses `tiebreakerLocalesByLanguageCode` in the fingerprint projection and `localeMatchResult` in stamps, whereas the published package has earlier names under the same format version. Preserve the distinction between `chain` (including absent attempted candidates), `fetchSet` (declared files in first-use order), the plan, the actual `LoadedStrings` fields, and construction-time load-verification/coverage records. Loaded records include catalogs, fallback/tiebreakers, whole-manifest locale configuration, identity, data pins, limits, coverage, requested files, failures, warnings and completeness. Revalidate them at construction; a claimed identity is not trusted provenance.
+The already implemented pure manifest utilities retain the reviewed HEAD wire contract and frozen canonical-byte/digest evidence: HEAD uses `tiebreakerLocalesByLanguageCode` in the fingerprint projection; the published package has an earlier name under the same format version. `chain` includes absent attempted candidates; `fetchSet` retains declared files in first-use order. These helpers validate claims and plans without reading catalog bodies or establishing verified runtime provenance. HTTP(S) URLs remain accepted shared manifest metadata and do not trigger requests.
 
-Use the seven declared failure stages (`fetch`, `read`, `limit`, `digest`, `decode`, `parse`, `validate`) as a public vocabulary. Reviewed JS currently emits five: decoding/catalog validation are included in `parse`; a Swift refinement needs an explicit mapping. Verify delivered body bytes before parsing, retain deterministic plan-order diagnostics, bound active reads and sizes, and reject partial loads if the fallback failed. `URLSession` and Apple system CryptoKit are permitted platform facilities; adding `swift-crypto` or any other package violates the zero-dependency requirement. Foundation URL resolution must be qualified against the accepted manifest URL contract.
+Swift follows Java's synchronous local-loading model. The JS HTTP loader, injectable asynchronous transport, seven-stage load-failure vocabulary, partial-network-load policies, `LoadedStrings`/verified-network records and publishing command are outside Swift release scope. Apps own remote acquisition and pass resulting data/text/streams/files to the implemented parsers. System CryptoKit supplies pure identity hashing; adding `swift-crypto` or any other package violates the zero-dependency requirement.
 
-Swift structured cancellation should complete promptly even if an injected transport ignores cancellation. This is a documented native strengthening: the reviewed JS abort path can remain pending for a nonsettling transport. The Swift design must define task ownership and bounded cleanup rather than relying on a cooperative transport as the only way out.
+Local loads preserve caller-owned stream lifecycle, deterministic resource processing and aggregate budgets. Remote request cancellation, retries, caching and integrity checks remain application responsibilities; no asynchronous transport or cancellation scheduler is part of Lokalized.
 
 Apple's `Locale.preferredLanguages` is an ordered source of tags, not the matching implementation. Apply pinned semantics to each direct preferred entry, then resolve fallback; malformed entries and expansion limits follow the documented preferred-language versus strict-range policies. Keep browser header acquisition and JavaScript plugin APIs in their own platform integrations. The proposed Swift UI helper must use an explicit thrown-error display policy so a nonthrowing rendering function does not silently discard a configured throwing failure handler.
 
@@ -212,7 +215,7 @@ The package declares Swift tools 6.2, Swift 6 language mode, iOS 15 and macOS 12
 
 CI selects a documented Xcode 26.0.1 path on `macos-15` for an actual Swift 6.2 compiler run, plus the current `macos-26` hosted default and reports its actual version. It runs build/tests, standalone self-test/inventory/audit and exhaustive CLDR qualification, archive/API/identifier/materialization/plural/locale/range checks, Java-derived floating/locale/range goldens, a fresh package and consumer build/run, the direct iOS/macOS deployment/link probe and actual packaged SwiftPM/Apple app resource consumers. The behavioral audit must exit 1 and enumerate all IDs; CI checks the exact 2,197 whole-runtime passing-ID set, the 1,432-ID runtime adapter inventory, 145-ID native load ratchet and separate 578 component-projection ratchet and rejects failures, omitted IDs, arbitrary native mappings or a claim of completed parity. Update that ratchet only alongside real new runtime comparisons.
 
-The local installed toolchain is Swift 6.4 / Xcode 27; it cannot establish minimum-compiler coverage. Hosted CI configuration remains unexecuted until GitHub runs it. [Deployment evidence](DEPLOYMENT.md) records successful compilation/import/link inspection of all four triples and current-host arm64 execution; emitted deployment versions are compilation evidence only. Older iOS/macOS runtime execution, Intel execution, XCTest's separate framework floor, verified transports, decomposed strings through future network ingresses and release-wide portable behavior remain qualification work. An M6 CI pass qualifies the core runtime, local delivery and an honest incomplete report; verified delivery and release qualification remain pending.
+The local installed toolchain is Swift 6.4 / Xcode 27; it cannot establish minimum-compiler coverage. Hosted CI configuration remains unexecuted until GitHub runs it. [Deployment evidence](DEPLOYMENT.md) records successful compilation/import/link inspection of all four triples and current-host arm64 execution; emitted deployment versions are compilation evidence only. Older iOS/macOS runtime execution, Intel execution, XCTest's separate framework floor and release-wide portable behavior remain qualification work. Browser network delivery is outside Swift scope; existing data/text/stream/file ingresses qualify supplied catalog content. An M6 CI pass qualifies the core runtime, local delivery and an honest incomplete report; release qualification remains pending.
 
 ## Implemented M7A manifest foundation
 
@@ -224,6 +227,15 @@ The local installed toolchain is Swift 6.4 / Xcode 27; it cannot establish minim
 | `CatalogIdentity`, `CatalogIdentityInputV1` | Exact version/fingerprint identity and typed narrow projection input | Arbitrary exact identity keys are independent of manifest locale recognition; unrepresentable dynamic JS shapes remain inventoried |
 | `computeCatalogIdentity` / `catalogIdentityBytes` / `catalogIdentityInputFor` | Full SHA-256, exact canonical UTF-8 and named manifest field projection | System CryptoKit, narrow JCS with fixed numeric 1, no I/O or verified content claim |
 | `ManifestLocaleConfiguration`, `localeConfigurationForManifest` | Full declared matching configuration with elected fallback and explicit ties | Keeps serialized case-distinct variant keys; public native matcher retains its stricter typed constructor |
-| `chain` / `fetchSet`, `FetchEntry` | Absent attempted candidates versus manifest-backed first-use fetch entries, with serialized absolute URLs and optional decoded sizes | Raw string lookup preserves pinned JS normalization behavior; unfinished Unicode/punycode hosts are refused explicitly |
+| `chain` / `fetchSet`, `FetchEntry` | Absent attempted candidates versus manifest-backed first-use fetch entries, with serialized absolute URLs and optional decoded sizes | Raw string lookup preserves pinned JS normalization behavior; M7B1 qualifies Unicode/punycode hosts against the separately pinned compatibility profile |
 
-See [manifest validation](MANIFEST-VALIDATION.md), [identity](MANIFEST-IDENTITY.md), [planning](MANIFEST-PLANNING.md) and the separately frozen [contract archive](MANIFEST-CONTRACT.md). `wholeManifestPlan` remains package-only preparation for the future complete loader. Network transport, `LoadedStrings`/verified records, partial-load policies, cancellation and publishing remain unimplemented.
+See [manifest validation](MANIFEST-VALIDATION.md), [identity](MANIFEST-IDENTITY.md), [planning](MANIFEST-PLANNING.md) and the separately frozen [contract archive](MANIFEST-CONTRACT.md). `wholeManifestPlan` remains a package-only pure projection. HTTP delivery and its result/policy/cancellation APIs are intentionally outside Swift scope; they are not pending Swift features. Release qualification remains open.
+
+## M8B public additions
+
+| API | Behavior |
+|---|---|
+| `LanguageRange.parse(_:equivalents:)` | Strict parsing and pinned expansion independent of a configured matcher; no convenience-header/count cap |
+| `TranslationOptions.forLanguageRanges(_:using:)` | Immediate strict negotiation retaining the result object; the existing one-argument factory stays deferred |
+| `TranslationOptions.forAcceptLanguage(_:using:)` | Fail-soft processing of caller-supplied combined header text, preserving unmatched diagnostics and custom error identity; no acquisition |
+| `BuildMetadata.current.localeDataMode` / `.cardinalityMode` | Existing `pinned` / `exact` data modes exposed alongside unchanged identity values |

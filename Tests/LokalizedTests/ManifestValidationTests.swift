@@ -34,7 +34,7 @@ final class ManifestValidationTests: XCTestCase {
         XCTAssertEqual(fromText.files["en"]?.url, "en.json")
         XCTAssertEqual(try LocalizedStringLoader.validateStringsManifest(fromBytes).catalogFingerprint, fromText.catalogFingerprint)
     }
-    func testUnfinishedURLCapabilityCauseSurvivesEveryValidationDoor() throws {
+    func testUnicodeURLProcessingWorksThroughEveryValidationDoor() throws {
         let text = try text()
         let unicodeBase = text.replacingOccurrences(of: "https://cdn.example/v1/", with: "https://bücher.example/v1/")
         let unicodeEntry = text.replacingOccurrences(of: #""url":"en.json""#, with: #""url":"https://xn--bcher-kva.example/en.json""#)
@@ -43,21 +43,25 @@ final class ManifestValidationTests: XCTestCase {
                 { try LocalizedStringLoader.parseStringsManifest(input) },
                 { try LocalizedStringLoader.parseStringsManifest(Data(input.utf8)) }
             ] {
-                XCTAssertThrowsError(try parse()) {
-                    guard let failure = ($0 as? ConfigurationError)?.cause as? ManifestURL.Failure,
-                          case .unsupportedFeature = failure.kind else { return XCTFail("URL capability cause was lost: \($0)") }
-                }
+                let claim = try parse()
+                XCTAssertEqual(claim.catalogFingerprint, try manifest().catalogFingerprint)
+                let plan = try LocalizedStringLoader.fetchSet(claim, lookupLocale: "en")
+                XCTAssertEqual(plan.map(\.url), [input == unicodeBase
+                    ? "https://xn--bcher-kva.example/v1/en.json" : "https://xn--bcher-kva.example/en.json"])
             }
         }
         guard case .object(var members) = try manifest().decodedValue else { return XCTFail("fixture shape") }
         members.removeAll { $0.name == "baseUrl" }
         members.append(.init(name: "baseUrl", value: .string("https://bücher.example/")))
-        XCTAssertThrowsError(try LocalizedStringLoader.validateStringsManifest(.object(members))) {
-            XCTAssertNotNil(($0 as? ConfigurationError)?.cause as? ManifestURL.Failure)
-        }
-        let malformed = text.replacingOccurrences(of: "https://cdn.example/v1/", with: "relative/base")
-        XCTAssertThrowsError(try LocalizedStringLoader.parseStringsManifest(malformed)) {
-            XCTAssertNil(($0 as? ConfigurationError)?.cause)
+        let decodedClaim = try LocalizedStringLoader.validateStringsManifest(.object(members))
+        XCTAssertEqual(decodedClaim.baseUrl, "https://bücher.example/")
+        XCTAssertEqual(try LocalizedStringLoader.fetchSet(decodedClaim, lookupLocale: "en").first?.url,
+                       "https://xn--bcher-kva.example/en.json")
+        for invalidBase in ["relative/base", "https://a\u{200D}b.example/", "https://é.xn--/"] {
+            let malformed = text.replacingOccurrences(of: "https://cdn.example/v1/", with: invalidBase)
+            XCTAssertThrowsError(try LocalizedStringLoader.parseStringsManifest(malformed)) {
+                XCTAssertNil(($0 as? ConfigurationError)?.cause)
+            }
         }
     }
     func testRootDuplicateWinsBeforeEarlierNestedDuplicateAndSchemaError() throws {

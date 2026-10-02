@@ -182,7 +182,7 @@ let manifestIdentity = try LocalizedStringLoader.computeCatalogIdentity(.init(
     localeToSha256: manifestFiles.mapValues(\\.sha256)))
 let manifestClaim = StringsManifestV1(catalogVersion: manifestIdentity.catalogVersion,
     catalogFingerprint: manifestIdentity.catalogFingerprint, fallbackLocale: "en",
-    baseUrl: "https://cdn.example/catalogs/v1/", files: manifestFiles)
+    baseUrl: "https://bücher.example/catalogs/v1/", files: manifestFiles)
 let validatedManifest = try LocalizedStringLoader.validateStringsManifest(manifestClaim)
 let projectedIdentity = LocalizedStringLoader.catalogIdentityInputFor(validatedManifest)
 let recomputedManifestIdentity = try LocalizedStringLoader.computeCatalogIdentity(projectedIdentity)
@@ -195,7 +195,7 @@ let manifestChain = try LocalizedStringLoader.chain(validatedManifest, lookupLoc
 let manifestFetches = try LocalizedStringLoader.fetchSet(validatedManifest, lookupLocale: "fr-CA")
 precondition(manifestChain == ["fr-CA", "fr", "en"])
 precondition(manifestFetches.map(\\.locale) == ["fr", "en"])
-precondition(manifestFetches.map(\\.url) == ["https://cdn.example/catalogs/fr.json", "https://cdn.example/catalogs/v1/en.json"])
+precondition(manifestFetches.map(\\.url) == ["https://xn--bcher-kva.example/catalogs/fr.json", "https://xn--bcher-kva.example/catalogs/v1/en.json"])
 precondition(manifestFetches.last?.expectedDecodedBytes == 10)
 print("Lokalized deployment consumer passed")
 '''
@@ -339,7 +339,18 @@ def verify(report, args, output):
               reference / "cldr-conformance-vectors.json",
               reference / "manifest-contract-vectors.json", reference / "manifest-contract-lock.json",
               ROOT / "Tools/verify_manifest_contract_report.py",
-              reference / "manifest-url-goldens.json", ROOT / "Tools/verify_manifest_urls.py"]
+              reference / "manifest-url-goldens.json", ROOT / "Tools/verify_manifest_urls.py",
+              reference / "manifest-idna-goldens.json.gz", ROOT / "Tools/verify_idna_urls.py",
+              reference / "Unicode-17.0.0/IdnaTestV2.txt", reference / "Unicode-17.0.0/NormalizationTest.txt",
+              reference / "Unicode-17.0.0/data-lock.json", ROOT / "Tools/generate_idna_tables.py",
+              ROOT / "Tools/verify_idna_normalization.py", ROOT / "Tools/verify_idna_tables.py",
+              reference / "IDNA-Compatibility/property-profile.json", reference / "IDNA-Compatibility/LICENSE-MIT.txt",
+              reference / "IDNA-Compatibility/normalization-profile.json", reference / "IDNA-Compatibility/oracle-runtime-lock.json",
+              ROOT / "Tools/generate_idna_compatibility.py", ROOT / "Tools/verify_idna_compatibility.py",
+              ROOT / "Tools/generate_idna_normalization_compatibility.py",
+              ROOT / "Tools/verify_idna_compatibility_normalization_tables.py", ROOT / "Tools/oracle_runtime.py",
+              ROOT / "Tools/sync_url_oracle.py", reference / "manifest-idna-lock.json"]
+    inputs += sorted((ROOT / "Tools/URLOracle").glob("*.py"))
     input_hashes = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}
     report["inputSha256"] = input_hashes
     report["consumerSourceSha256"] = hashlib.sha256(CONSUMER.encode("utf-8")).hexdigest()
@@ -416,6 +427,13 @@ def verify(report, args, output):
             from verify_manifest_urls import report_check as url_report_check
             url_report_check(urls_path, reference)
             compiled["runtimeExecution"]["manifestURLs"] = urls
+            normalization_path = directory / "idna-normalization-report.json"
+            normalization = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--idna-normalization",
+                "--reference", str(reference), "--report", str(normalization_path)],
+                "Run arm64 macOS pinned Unicode 17 NFC qualification on host"))
+            from verify_idna_normalization import report_check as normalization_report_check
+            normalization_report_check(normalization_path, reference)
+            compiled["runtimeExecution"]["idnaNormalization"] = normalization
             if platform.mac_ver()[0].split(".")[0] == "12":
                 report["minimumOSRuntimeExecution"]["macOS12"] = "verified by arm64 consumer and development harness"
     final_modules = {name: source_files(name) for name in modules}

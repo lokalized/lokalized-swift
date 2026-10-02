@@ -32,7 +32,7 @@ public struct StringsManifestFile: Sendable {
 
 /// An immutable manifest claim. Creating this value is not verification:
 /// parsing, validation and every planning door revalidate its contents and
-/// recompute its catalog identity before a future loader may perform I/O.
+/// recompute its catalog identity. These helpers perform no catalog I/O.
 public struct StringsManifestV1: Sendable {
     public let formatVersion: Int
     public let catalogVersion: String
@@ -106,7 +106,7 @@ public struct ManifestLocaleConfiguration: Sendable {
 }
 
 /// A manifest-backed file in first-use planning order. The URL is already
-/// resolved; a transport must not resolve it a second time.
+/// resolved. This planning value does not initiate catalog I/O.
 public struct FetchEntry: Sendable {
     public let locale: String
     public let url: String

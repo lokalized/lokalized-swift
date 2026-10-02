@@ -141,3 +141,17 @@ initialization probe measured a 4.15 ms median for all 18,675 rows. That probe
 does not measure heap/RSS or certify the M0 blob's zero observed allocation for
 these different production schemas. Allocation, linked-size and minimum-track
 measurements remain separate release qualification work.
+
+[M8D package measurements](PERFORMANCE.md) now cover the actual compiled data,
+optimized public consumer size, construction/lookup costs and live malloc/RSS
+on the current arm64 Swift 6.4 host. Generated Swift data totals 810,025 bytes;
+the cold one-entry runtime observes a 1,260,688-byte live malloc increase.
+Minimum-toolchain and other platform execution remain open. These production
+schema observations supersede any attempt to apply the M0 static-blob's zero
+observed heap delta to the finished library.
+
+M8E adds an immutable index of already computed loaded-locale facts and retains
+their parent sequences to avoid repeated lookup-time computation. Current-host
+measurements record a 1,279,248-byte cold live malloc delta, 18,496 bytes above a
+repeated M8D baseline, with unchanged generated data. The lookup savings and
+limits are recorded in [the current performance comparison](PERFORMANCE.md).
