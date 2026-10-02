@@ -1,0 +1,42 @@
+{
+  "formatVersion": 2,
+  "ianaRegistryDate": "2026-09-17",
+  "sourceSha256": "755fad43283be7b41ebe3c89ad054b6eaf928f404f9c0edb74799e0eab74beb1",
+  "closureSchemaVersion": "lokalized-iana-language-equivalences/1",
+  "compatibilityOverridesSha256": "4ce249f3d5b47890ed367dc0f6ae61925c47eddbd18af26f9b612606ccb82c54",
+  "note": "IANA lock v2. ianaDataFingerprint is the SHA-256 of the JCS bytes of {formatVersion, ianaRegistryDate, sourceSha256, closureSchemaVersion, artifacts (each projected to {path, sha256}), compatibilityOverridesSha256} (plan v7 5.1 :1680-1682); note, generator, inputs and inputsSha256 are outside it. Written by tools/iana-oracle/generate.mjs --write; do not edit.",
+  "generator": {
+    "path": "tools/iana-oracle/generate.mjs",
+    "version": 1
+  },
+  "inputs": [
+    {
+      "role": "compatibility-overlay",
+      "path": "tools/iana-oracle/jdk-compatibility.json",
+      "sha256": "4ce249f3d5b47890ed367dc0f6ae61925c47eddbd18af26f9b612606ccb82c54"
+    },
+    {
+      "role": "generator",
+      "path": "tools/iana-oracle/generate.mjs",
+      "sha256": "7fb009dda84f5d0a339c2d26dbb4face4d210685390de259c9dca01efe8efa9a"
+    },
+    {
+      "role": "schema",
+      "path": "schema/iana-language-equivalences.schema.json",
+      "sha256": "3f969e00ce0e6d9e2e0978d229d0cf1a03aca30ac6feac5e8057f15d3e7afaa7"
+    },
+    {
+      "role": "source",
+      "path": "tools/iana-oracle/language-subtag-registry.txt",
+      "sha256": "755fad43283be7b41ebe3c89ad054b6eaf928f404f9c0edb74799e0eab74beb1"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "generated/iana-language-equivalences.json",
+      "sha256": "2398b866e6739ae81d9484da929567e68e8255fe31aefe5bf2ef25846c611462",
+      "inputsSha256": "1437d79212e7f075b77a9a868e1de1d55edf7ad4f402f38a7ba2e211144f3ac4"
+    }
+  ],
+  "ianaDataFingerprint": "87b3a43b03f490206cead05d865357bd7cfc3953a52ec4d8405243f699385815"
+}

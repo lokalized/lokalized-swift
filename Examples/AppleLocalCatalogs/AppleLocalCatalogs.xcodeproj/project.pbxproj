@@ -1,0 +1,42 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		000000000000000000000001 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogApp.swift; sourceTree = "<group>"; };
+		000000000000000000000002 = { isa = PBXFileReference; lastKnownFileType = folder; name = Lokalized; path = ../SharedCatalogs/Lokalized; sourceTree = "<group>"; };
+		000000000000000000000003 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = MacCatalogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000004 = { isa = PBXFileReference; explicitFileType = wrapper.application; path = IOSCatalogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000005 = { isa = PBXGroup; children = (000000000000000000000001, 000000000000000000000002, 000000000000000000000006); sourceTree = "<group>"; };
+		000000000000000000000006 = { isa = PBXGroup; children = (000000000000000000000003, 000000000000000000000004); name = Products; sourceTree = "<group>"; };
+		00000000000000000000000A = { isa = PBXBuildFile; fileRef = 000000000000000000000001; };
+		00000000000000000000000B = { isa = PBXBuildFile; fileRef = 000000000000000000000002; };
+		00000000000000000000000C = { isa = PBXBuildFile; productRef = 000000000000000000000012; };
+		00000000000000000000000D = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000000A); runOnlyForDeploymentPostprocessing = 0; };
+		00000000000000000000000E = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000000B); runOnlyForDeploymentPostprocessing = 0; };
+		00000000000000000000000F = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000000C); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000010 = { isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000013; buildPhases = (00000000000000000000000D, 00000000000000000000000F, 00000000000000000000000E); buildRules = (); dependencies = (); name = MacCatalogs; packageProductDependencies = (000000000000000000000012); productName = MacCatalogs; productReference = 000000000000000000000003; productType = "com.apple.product-type.application"; };
+		000000000000000000000012 = { isa = XCSwiftPackageProductDependency; package = 00000000000000000000003C; productName = Lokalized; };
+		000000000000000000000013 = { isa = XCConfigurationList; buildConfigurations = (000000000000000000000014, 000000000000000000000015); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000014 = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.lokalized.examples.MacCatalogs; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; MACOSX_DEPLOYMENT_TARGET = 12.0;  SWIFT_VERSION = 6.0; SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor; SWIFT_APPROACHABLE_CONCURRENCY = YES; ENABLE_APP_SANDBOX = YES; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		000000000000000000000015 = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.lokalized.examples.MacCatalogs; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = macosx; MACOSX_DEPLOYMENT_TARGET = 12.0;  SWIFT_VERSION = 6.0; SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor; SWIFT_APPROACHABLE_CONCURRENCY = YES; ENABLE_APP_SANDBOX = YES; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
+		00000000000000000000001E = { isa = PBXBuildFile; fileRef = 000000000000000000000001; };
+		00000000000000000000001F = { isa = PBXBuildFile; fileRef = 000000000000000000000002; };
+		000000000000000000000020 = { isa = PBXBuildFile; productRef = 000000000000000000000026; };
+		000000000000000000000021 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001E); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000022 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001F); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000023 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000020); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000024 = { isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000027; buildPhases = (000000000000000000000021, 000000000000000000000023, 000000000000000000000022); buildRules = (); dependencies = (); name = IOSCatalogs; packageProductDependencies = (000000000000000000000026); productName = IOSCatalogs; productReference = 000000000000000000000004; productType = "com.apple.product-type.application"; };
+		000000000000000000000026 = { isa = XCSwiftPackageProductDependency; package = 00000000000000000000003C; productName = Lokalized; };
+		000000000000000000000027 = { isa = XCConfigurationList; buildConfigurations = (000000000000000000000028, 000000000000000000000029); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000028 = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.lokalized.examples.IOSCatalogs; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 15.0; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTS_MACCATALYST = NO; SWIFT_VERSION = 6.0; SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor; SWIFT_APPROACHABLE_CONCURRENCY = YES; ENABLE_APP_SANDBOX = YES; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		000000000000000000000029 = { isa = XCBuildConfiguration; buildSettings = { CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = com.lokalized.examples.IOSCatalogs; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 15.0; TARGETED_DEVICE_FAMILY = "1,2"; SUPPORTS_MACCATALYST = NO; SWIFT_VERSION = 6.0; SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor; SWIFT_APPROACHABLE_CONCURRENCY = YES; ENABLE_APP_SANDBOX = YES; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
+		00000000000000000000003C = { isa = XCLocalSwiftPackageReference; relativePath = ../..; };
+		00000000000000000000003D = { isa = XCConfigurationList; buildConfigurations = (00000000000000000000003E, 00000000000000000000003F); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		00000000000000000000003E = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 6.0; }; name = Debug; };
+		00000000000000000000003F = { isa = XCBuildConfiguration; buildSettings = { CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 6.0; }; name = Release; };
+		000000000000000000000040 = { isa = PBXProject; attributes = { BuildIndependentTargetsInParallel = YES; LastSwiftUpdateCheck = 2600; LastUpgradeCheck = 2600; }; buildConfigurationList = 00000000000000000000003D; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 000000000000000000000005; packageReferences = (00000000000000000000003C); productRefGroup = 000000000000000000000006; projectDirPath = ""; projectRoot = ""; targets = (000000000000000000000010, 000000000000000000000024); };
+	};
+	rootObject = 000000000000000000000040;
+}

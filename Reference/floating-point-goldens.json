@@ -1,0 +1,7983 @@
+{
+  "formatVersion": 1,
+  "selection": "Java21 shortest/one-or-two-digit, closest, even-significand tie",
+  "jdk": {
+    "vendor": "Amazon.com Inc.",
+    "javaVersion": "21.0.11",
+    "build": "Corretto-21.0.11.10.1",
+    "releaseSHA256": "31c8dd26f07b2bd2c394663b57a93879ea139f525c76c730b13956890c151239",
+    "sources": {
+      "java.base/java/lang/Float.java": "cb82e6f79de34e09e62e9be3dfd8c8e180319fce76d34f7769f8689d4920fd24",
+      "java.base/java/lang/Double.java": "67b1cc47b33b99eab0d2f41da98b2d84ebc5e727cac4c09badca043bb5ea2a39",
+      "java.base/jdk/internal/math/FloatToDecimal.java": "7424783724b75cda0eaebc7d42e81e91c25a1eac243ebe3fdf9d2770ca4d0228",
+      "java.base/jdk/internal/math/DoubleToDecimal.java": "3317806f576950308c67c11be997f45d83691258eec9b9166120df85a0cdae0e",
+      "java.base/jdk/internal/math/MathUtils.java": "bdc4f9def2088610109f74a01ce79c21202f824b059bea0d213ed94000bbff2c"
+    },
+    "versionOutput": "openjdk version \"21.0.11\" 2026-04-21 LTS\nOpenJDK Runtime Environment Corretto-21.0.11.10.1 (build 21.0.11+10-LTS)\nOpenJDK 64-Bit Server VM Corretto-21.0.11.10.1 (build 21.0.11+10-LTS, mixed mode, sharing)\n"
+  },
+  "oracleSourceSHA256": "79465a1aa10d6f12c29f2af9fb57ab54d8160ed5d173bf520f14bacb4f8af3a7",
+  "seed": "8d351a69c27f045b",
+  "inputSHA256": "3ee7e3ca37e83bfc4bbdd9ddd9726899319642a4e464e3919bf5530c535090b2",
+  "samples": [
+    {
+      "width": "double",
+      "bits": "0000000000000000",
+      "decimal": "0.0"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000001",
+      "decimal": "4.9E-324"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000002",
+      "decimal": "9.9E-324"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000003",
+      "decimal": "1.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000004",
+      "decimal": "2.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000005",
+      "decimal": "2.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000006",
+      "decimal": "3.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000007",
+      "decimal": "3.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000008",
+      "decimal": "4.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000009",
+      "decimal": "4.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000a",
+      "decimal": "4.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000b",
+      "decimal": "5.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000c",
+      "decimal": "5.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000d",
+      "decimal": "6.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000e",
+      "decimal": "6.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000000f",
+      "decimal": "7.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000010",
+      "decimal": "7.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000011",
+      "decimal": "8.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000012",
+      "decimal": "8.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000013",
+      "decimal": "9.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000014",
+      "decimal": "9.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000015",
+      "decimal": "1.04E-322"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000016",
+      "decimal": "1.1E-322"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000017",
+      "decimal": "1.14E-322"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000018",
+      "decimal": "1.2E-322"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000019",
+      "decimal": "1.24E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001a",
+      "decimal": "1.3E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001b",
+      "decimal": "1.33E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001c",
+      "decimal": "1.4E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001d",
+      "decimal": "1.43E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001e",
+      "decimal": "1.5E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000000000000001f",
+      "decimal": "1.53E-322"
+    },
+    {
+      "width": "double",
+      "bits": "0000000000000020",
+      "decimal": "1.6E-322"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff0",
+      "decimal": "2.2250738585071935E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff1",
+      "decimal": "2.225073858507194E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff2",
+      "decimal": "2.2250738585071945E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff3",
+      "decimal": "2.225073858507195E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff4",
+      "decimal": "2.2250738585071955E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff5",
+      "decimal": "2.225073858507196E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff6",
+      "decimal": "2.2250738585071964E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff7",
+      "decimal": "2.225073858507197E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff8",
+      "decimal": "2.2250738585071974E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffff9",
+      "decimal": "2.225073858507198E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffffa",
+      "decimal": "2.2250738585071984E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffffb",
+      "decimal": "2.225073858507199E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffffc",
+      "decimal": "2.2250738585071994E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffffd",
+      "decimal": "2.2250738585072E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000ffffffffffffe",
+      "decimal": "2.2250738585072004E-308"
+    },
+    {
+      "width": "double",
+      "bits": "000fffffffffffff",
+      "decimal": "2.225073858507201E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000000",
+      "decimal": "2.2250738585072014E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000001",
+      "decimal": "2.225073858507202E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000002",
+      "decimal": "2.2250738585072024E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000003",
+      "decimal": "2.225073858507203E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000004",
+      "decimal": "2.2250738585072034E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000005",
+      "decimal": "2.225073858507204E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000006",
+      "decimal": "2.2250738585072043E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000007",
+      "decimal": "2.225073858507205E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000008",
+      "decimal": "2.2250738585072053E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000009",
+      "decimal": "2.225073858507206E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000a",
+      "decimal": "2.2250738585072063E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000b",
+      "decimal": "2.225073858507207E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000c",
+      "decimal": "2.2250738585072073E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000d",
+      "decimal": "2.225073858507208E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000e",
+      "decimal": "2.2250738585072083E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001000000000000f",
+      "decimal": "2.225073858507209E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0010000000000010",
+      "decimal": "2.2250738585072093E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001ffffffffffffe",
+      "decimal": "4.450147717014402E-308"
+    },
+    {
+      "width": "double",
+      "bits": "001fffffffffffff",
+      "decimal": "4.4501477170144023E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0020000000000000",
+      "decimal": "4.450147717014403E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0020000000000001",
+      "decimal": "4.450147717014404E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0020000000000002",
+      "decimal": "4.450147717014405E-308"
+    },
+    {
+      "width": "double",
+      "bits": "002ffffffffffffe",
+      "decimal": "8.900295434028804E-308"
+    },
+    {
+      "width": "double",
+      "bits": "002fffffffffffff",
+      "decimal": "8.900295434028805E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0030000000000000",
+      "decimal": "8.900295434028806E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0030000000000001",
+      "decimal": "8.900295434028808E-308"
+    },
+    {
+      "width": "double",
+      "bits": "0030000000000002",
+      "decimal": "8.90029543402881E-308"
+    },
+    {
+      "width": "double",
+      "bits": "003ffffffffffffe",
+      "decimal": "1.7800590868057607E-307"
+    },
+    {
+      "width": "double",
+      "bits": "003fffffffffffff",
+      "decimal": "1.780059086805761E-307"
+    },
+    {
+      "width": "double",
+      "bits": "00e8c81fd3e6fcd8",
+      "decimal": "2.8232290390799417E-304"
+    },
+    {
+      "width": "double",
+      "bits": "0140000000000000",
+      "decimal": "1.1665795231290236E-302"
+    },
+    {
+      "width": "double",
+      "bits": "0140000000000001",
+      "decimal": "1.1665795231290239E-302"
+    },
+    {
+      "width": "double",
+      "bits": "0140000000000002",
+      "decimal": "1.166579523129024E-302"
+    },
+    {
+      "width": "double",
+      "bits": "014ffffffffffffe",
+      "decimal": "2.3331590462580467E-302"
+    },
+    {
+      "width": "double",
+      "bits": "014fffffffffffff",
+      "decimal": "2.333159046258047E-302"
+    },
+    {
+      "width": "double",
+      "bits": "028fb2a9de6f1ac0",
+      "decimal": "2.4233984857315524E-296"
+    },
+    {
+      "width": "double",
+      "bits": "058cd7f3ff82c49c",
+      "decimal": "6.207018457085278E-282"
+    },
+    {
+      "width": "double",
+      "bits": "05bd29dcaab62182",
+      "decimal": "5.020697436112262E-281"
+    },
+    {
+      "width": "double",
+      "bits": "05eeda33f74254cd",
+      "decimal": "4.249153023934188E-280"
+    },
+    {
+      "width": "double",
+      "bits": "061e9f2967dc5970",
+      "decimal": "3.373911544422761E-279"
+    },
+    {
+      "width": "double",
+      "bits": "061fd9a957bd5471",
+      "decimal": "3.509269684212001E-279"
+    },
+    {
+      "width": "double",
+      "bits": "071f39a2a87e6090",
+      "decimal": "2.2546977557851504E-274"
+    },
+    {
+      "width": "double",
+      "bits": "073f5b9e2e5666f0",
+      "decimal": "9.057131671775763E-274"
+    },
+    {
+      "width": "double",
+      "bits": "07de557372f50983",
+      "decimal": "8.97161499024389E-271"
+    },
+    {
+      "width": "double",
+      "bits": "0a0e890f910d6dbb",
+      "decimal": "3.1031108102591235E-260"
+    },
+    {
+      "width": "double",
+      "bits": "0aa95d93c6e71f41",
+      "decimal": "2.6395978280355528E-257"
+    },
+    {
+      "width": "double",
+      "bits": "0c98be092989b6c5",
+      "decimal": "5.529223297179553E-248"
+    },
+    {
+      "width": "double",
+      "bits": "0c9a9998b988c890",
+      "decimal": "5.944358590340493E-248"
+    },
+    {
+      "width": "double",
+      "bits": "0e39b90caf461812",
+      "decimal": "3.8576475893277513E-240"
+    },
+    {
+      "width": "double",
+      "bits": "0e41f1f93aad43b3",
+      "decimal": "5.382474608153139E-240"
+    },
+    {
+      "width": "double",
+      "bits": "0f367e6007b12cac",
+      "decimal": "2.2107691050850786E-235"
+    },
+    {
+      "width": "double",
+      "bits": "0f78163af868c66c",
+      "decimal": "3.7877661753457903E-234"
+    },
+    {
+      "width": "double",
+      "bits": "0fa99ca0b6030b35",
+      "decimal": "3.222062297084054E-233"
+    },
+    {
+      "width": "double",
+      "bits": "0fe850e6b5d0c159",
+      "decimal": "4.894472019182576E-232"
+    },
+    {
+      "width": "double",
+      "bits": "1033a259569714a1",
+      "decimal": "1.2646664660961154E-230"
+    },
+    {
+      "width": "double",
+      "bits": "10a4f2580e413791",
+      "decimal": "1.7269827624242746E-228"
+    },
+    {
+      "width": "double",
+      "bits": "1116e7425399a7d1",
+      "decimal": "2.4170319399289456E-226"
+    },
+    {
+      "width": "double",
+      "bits": "11f64b71dd7903da",
+      "decimal": "3.8548276205236385E-222"
+    },
+    {
+      "width": "double",
+      "bits": "1209e4f068ef9a25",
+      "decimal": "8.954416030893889E-222"
+    },
+    {
+      "width": "double",
+      "bits": "12331bde0996dfda",
+      "decimal": "5.286374136951302E-221"
+    },
+    {
+      "width": "double",
+      "bits": "12cb792eb5bdc550",
+      "decimal": "3.89139280309919E-218"
+    },
+    {
+      "width": "double",
+      "bits": "13a3166d93eaf924",
+      "decimal": "4.42960125585344E-214"
+    },
+    {
+      "width": "double",
+      "bits": "13c8d7a740caaa6e",
+      "decimal": "2.3060385350746054E-213"
+    },
+    {
+      "width": "double",
+      "bits": "14a9c56298343202",
+      "decimal": "3.919447887390262E-209"
+    },
+    {
+      "width": "double",
+      "bits": "14d958a5046ae1ad",
+      "decimal": "3.0838768807977925E-208"
+    },
+    {
+      "width": "double",
+      "bits": "1508e393804ec5c0",
+      "decimal": "2.4225899466569552E-207"
+    },
+    {
+      "width": "double",
+      "bits": "1598a81b4b37da5d",
+      "decimal": "1.2287890077861622E-204"
+    },
+    {
+      "width": "double",
+      "bits": "16068191a38f876b",
+      "decimal": "1.4356670117572918E-202"
+    },
+    {
+      "width": "double",
+      "bits": "162df44ae03d6184",
+      "decimal": "7.643136613133343E-202"
+    },
+    {
+      "width": "double",
+      "bits": "166393cc0b034b00",
+      "decimal": "7.992569309334955E-201"
+    },
+    {
+      "width": "double",
+      "bits": "17ab8a12bbe5dc60",
+      "decimal": "1.1789258046133611E-194"
+    },
+    {
+      "width": "double",
+      "bits": "17ae76fb0dbae7b5",
+      "decimal": "1.3041594515483461E-194"
+    },
+    {
+      "width": "double",
+      "bits": "18b9638bf4fa2d7e",
+      "decimal": "1.4245767236294792E-189"
+    },
+    {
+      "width": "double",
+      "bits": "18d097171e8d24c9",
+      "decimal": "3.723524898951952E-189"
+    },
+    {
+      "width": "double",
+      "bits": "19631e9688d3085b",
+      "decimal": "2.197095176875986E-186"
+    },
+    {
+      "width": "double",
+      "bits": "199dae805667a905",
+      "decimal": "2.728667746827861E-185"
+    },
+    {
+      "width": "double",
+      "bits": "19ff62084c7848c6",
+      "decimal": "1.8464445417611269E-183"
+    },
+    {
+      "width": "double",
+      "bits": "1b0996186343457d",
+      "decimal": "1.9731505870684632E-178"
+    },
+    {
+      "width": "double",
+      "bits": "1bff35a74d4794d5",
+      "decimal": "7.886612373598371E-174"
+    },
+    {
+      "width": "double",
+      "bits": "1c6bfecf023c57d3",
+      "decimal": "9.055205841531532E-172"
+    },
+    {
+      "width": "double",
+      "bits": "1ca1d249a572d48f",
+      "decimal": "9.223062861705523E-171"
+    },
+    {
+      "width": "double",
+      "bits": "1ca5dc297e42253a",
+      "decimal": "1.131313022877323E-170"
+    },
+    {
+      "width": "double",
+      "bits": "1cee2e28e5aad8cb",
+      "decimal": "2.499057037365017E-169"
+    },
+    {
+      "width": "double",
+      "bits": "1e845d082b5d8899",
+      "decimal": "1.1315734661213562E-161"
+    },
+    {
+      "width": "double",
+      "bits": "1e9f88fde083b48c",
+      "decimal": "3.504748623321891E-161"
+    },
+    {
+      "width": "double",
+      "bits": "1ea010f02331f03b",
+      "decimal": "3.571120706213945E-161"
+    },
+    {
+      "width": "double",
+      "bits": "1eb10771835173df",
+      "decimal": "7.570305455059854E-161"
+    },
+    {
+      "width": "double",
+      "bits": "1f3e4846973cc7f6",
+      "decimal": "3.4462877482128428E-158"
+    },
+    {
+      "width": "double",
+      "bits": "202733c066565c54",
+      "decimal": "8.652478711850293E-154"
+    },
+    {
+      "width": "double",
+      "bits": "21364965451d85b6",
+      "decimal": "1.0893512777132823E-148"
+    },
+    {
+      "width": "double",
+      "bits": "21886965a6a288ab",
+      "decimal": "3.818302074199046E-147"
+    },
+    {
+      "width": "double",
+      "bits": "2217972b7c9cf561",
+      "decimal": "1.889206235321427E-144"
+    },
+    {
+      "width": "double",
+      "bits": "22c0543a0c0e969d",
+      "decimal": "2.6781316170079533E-141"
+    },
+    {
+      "width": "double",
+      "bits": "23b56d264375db0e",
+      "decimal": "1.1515173296836694E-136"
+    },
+    {
+      "width": "double",
+      "bits": "24f13db7f5536a3d",
+      "decimal": "9.715978941881853E-131"
+    },
+    {
+      "width": "double",
+      "bits": "24f3a151ce43f8bf",
+      "decimal": "1.1062304493436792E-130"
+    },
+    {
+      "width": "double",
+      "bits": "2523deb22e687a78",
+      "decimal": "8.957930678113599E-130"
+    },
+    {
+      "width": "double",
+      "bits": "253039904385dcd1",
+      "decimal": "1.462927370568769E-129"
+    },
+    {
+      "width": "double",
+      "bits": "2595c76d8e684bc7",
+      "decimal": "1.2567823995670904E-127"
+    },
+    {
+      "width": "double",
+      "bits": "259b24e3d2177aa4",
+      "decimal": "1.566380666264907E-127"
+    },
+    {
+      "width": "double",
+      "bits": "2662ea53647160d4",
+      "decimal": "8.94181802458147E-124"
+    },
+    {
+      "width": "double",
+      "bits": "289b23b9f08ca640",
+      "decimal": "4.40823132971494E-113"
+    },
+    {
+      "width": "double",
+      "bits": "28d0cc7a62dc464b",
+      "decimal": "4.365745286730335E-112"
+    },
+    {
+      "width": "double",
+      "bits": "292507f8bb41908a",
+      "decimal": "1.7490184695155306E-110"
+    },
+    {
+      "width": "double",
+      "bits": "293d18c68dba071e",
+      "decimal": "4.839567163446364E-110"
+    },
+    {
+      "width": "double",
+      "bits": "2a40bfb80cecfdcc",
+      "decimal": "3.6513870165105436E-105"
+    },
+    {
+      "width": "double",
+      "bits": "2cbc2e27105857af",
+      "decimal": "3.377432761452102E-93"
+    },
+    {
+      "width": "double",
+      "bits": "2cc42b7a2b67f06c",
+      "decimal": "4.83474584628928E-93"
+    },
+    {
+      "width": "double",
+      "bits": "2cce412252426373",
+      "decimal": "7.252042205713599E-93"
+    },
+    {
+      "width": "double",
+      "bits": "2d09eca298fe1333",
+      "decimal": "9.942584909547325E-92"
+    },
+    {
+      "width": "double",
+      "bits": "2ddef71f3f09c180",
+      "decimal": "9.728745770484067E-88"
+    },
+    {
+      "width": "double",
+      "bits": "2e24826b6fddafdb",
+      "decimal": "2.0619840735997E-86"
+    },
+    {
+      "width": "double",
+      "bits": "2fbb6faf4ca67636",
+      "decimal": "9.255634383247633E-79"
+    },
+    {
+      "width": "double",
+      "bits": "2fe82885ab4f02ae",
+      "decimal": "6.519845663912095E-78"
+    },
+    {
+      "width": "double",
+      "bits": "305bba76e4622976",
+      "decimal": "9.578677380280829E-76"
+    },
+    {
+      "width": "double",
+      "bits": "308cc0ef1f78380a",
+      "decimal": "7.946283423183396E-75"
+    },
+    {
+      "width": "double",
+      "bits": "30d8acd7fc932027",
+      "decimal": "2.182133076392749E-73"
+    },
+    {
+      "width": "double",
+      "bits": "30ef69e469e7f81a",
+      "decimal": "5.556090951614085E-73"
+    },
+    {
+      "width": "double",
+      "bits": "32bd7fb96ff8f1e4",
+      "decimal": "2.801090246226362E-64"
+    },
+    {
+      "width": "double",
+      "bits": "3453ed5a7dc1f49e",
+      "decimal": "1.2698320261032038E-56"
+    },
+    {
+      "width": "double",
+      "bits": "351a77a860e655f4",
+      "decimal": "6.908317132794535E-53"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376ab6",
+      "decimal": "9.999999999999995E-46"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376ab7",
+      "decimal": "9.999999999999997E-46"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376ab8",
+      "decimal": "9.999999999999998E-46"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376ab9",
+      "decimal": "1.0E-45"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376aba",
+      "decimal": "1.0000000000000001E-45"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376abb",
+      "decimal": "1.0000000000000003E-45"
+    },
+    {
+      "width": "double",
+      "bits": "3696d601ad376abc",
+      "decimal": "1.0000000000000005E-45"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854564",
+      "decimal": "9.999999999999996E-45"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854565",
+      "decimal": "9.999999999999997E-45"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854566",
+      "decimal": "9.999999999999998E-45"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854567",
+      "decimal": "1.0E-44"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854568",
+      "decimal": "1.0000000000000001E-44"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b8218854569",
+      "decimal": "1.0000000000000002E-44"
+    },
+    {
+      "width": "double",
+      "bits": "36cc8b821885456a",
+      "decimal": "1.0000000000000003E-44"
+    },
+    {
+      "width": "double",
+      "bits": "37c6a2cefdd94b86",
+      "decimal": "5.196964055987905E-40"
+    },
+    {
+      "width": "double",
+      "bits": "383147f61ad2a841",
+      "decimal": "5.07845856582181E-38"
+    },
+    {
+      "width": "double",
+      "bits": "38e982bce4a65b60",
+      "decimal": "1.5353690931477293E-34"
+    },
+    {
+      "width": "double",
+      "bits": "39027550e83929d7",
+      "decimal": "4.4436658519368095E-34"
+    },
+    {
+      "width": "double",
+      "bits": "390969d3ddc0a13d",
+      "decimal": "6.11805087525851E-34"
+    },
+    {
+      "width": "double",
+      "bits": "39a07f351e30b459",
+      "decimal": "4.06680088502143E-31"
+    },
+    {
+      "width": "double",
+      "bits": "3abd778411750e35",
+      "decimal": "9.521255639392522E-26"
+    },
+    {
+      "width": "double",
+      "bits": "3b13fd0cd40f4452",
+      "decimal": "4.133520161224572E-24"
+    },
+    {
+      "width": "double",
+      "bits": "3c1059e56f151913",
+      "decimal": "2.215995010879309E-19"
+    },
+    {
+      "width": "double",
+      "bits": "3c34e7848f913939",
+      "decimal": "1.1332279769211962E-18"
+    },
+    {
+      "width": "double",
+      "bits": "3c51bb7ec7711c4c",
+      "decimal": "3.845102024341336E-18"
+    },
+    {
+      "width": "double",
+      "bits": "3cca1d74cebbec38",
+      "decimal": "7.24838622230335E-16"
+    },
+    {
+      "width": "double",
+      "bits": "3cdb51fca1018f5d",
+      "decimal": "1.5165791434654118E-15"
+    },
+    {
+      "width": "double",
+      "bits": "3e4a6972209c3038",
+      "decimal": "1.2298998281204697E-8"
+    },
+    {
+      "width": "double",
+      "bits": "3e977e2f1ec0f181",
+      "decimal": "3.500715866110982E-7"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432a",
+      "decimal": "9.999999999999996E-5"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432b",
+      "decimal": "9.999999999999998E-5"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432c",
+      "decimal": "9.999999999999999E-5"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432d",
+      "decimal": "1.0E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432e",
+      "decimal": "1.0000000000000002E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c432f",
+      "decimal": "1.0000000000000003E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f1a36e2eb1c4330",
+      "decimal": "1.0000000000000005E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9f9",
+      "decimal": "9.999999999999994E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9fa",
+      "decimal": "9.999999999999996E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9fb",
+      "decimal": "9.999999999999998E-4"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9fc",
+      "decimal": "0.001"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9fd",
+      "decimal": "0.0010000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9fe",
+      "decimal": "0.0010000000000000005"
+    },
+    {
+      "width": "double",
+      "bits": "3f50624dd2f1a9ff",
+      "decimal": "0.0010000000000000007"
+    },
+    {
+      "width": "double",
+      "bits": "3f6891785018706f",
+      "decimal": "0.0029990529881285736"
+    },
+    {
+      "width": "double",
+      "bits": "3fb9999999999997",
+      "decimal": "0.09999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "3fb9999999999998",
+      "decimal": "0.09999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "3fb9999999999999",
+      "decimal": "0.09999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "3fb999999999999a",
+      "decimal": "0.1"
+    },
+    {
+      "width": "double",
+      "bits": "3fb999999999999b",
+      "decimal": "0.10000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "3fb999999999999c",
+      "decimal": "0.10000000000000003"
+    },
+    {
+      "width": "double",
+      "bits": "3fb999999999999d",
+      "decimal": "0.10000000000000005"
+    },
+    {
+      "width": "double",
+      "bits": "3fe0000000000000",
+      "decimal": "0.5"
+    },
+    {
+      "width": "double",
+      "bits": "3fe0000000000001",
+      "decimal": "0.5000000000000001"
+    },
+    {
+      "width": "double",
+      "bits": "3fe0000000000002",
+      "decimal": "0.5000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "3feffffffffffffd",
+      "decimal": "0.9999999999999997"
+    },
+    {
+      "width": "double",
+      "bits": "3feffffffffffffe",
+      "decimal": "0.9999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "3fefffffffffffff",
+      "decimal": "0.9999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "3ff0000000000000",
+      "decimal": "1.0"
+    },
+    {
+      "width": "double",
+      "bits": "3ff0000000000001",
+      "decimal": "1.0000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "3ff0000000000002",
+      "decimal": "1.0000000000000004"
+    },
+    {
+      "width": "double",
+      "bits": "3ff0000000000003",
+      "decimal": "1.0000000000000007"
+    },
+    {
+      "width": "double",
+      "bits": "3ffffffffffffffe",
+      "decimal": "1.9999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "3fffffffffffffff",
+      "decimal": "1.9999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "4000000000000000",
+      "decimal": "2.0"
+    },
+    {
+      "width": "double",
+      "bits": "4000000000000001",
+      "decimal": "2.0000000000000004"
+    },
+    {
+      "width": "double",
+      "bits": "4000000000000002",
+      "decimal": "2.000000000000001"
+    },
+    {
+      "width": "double",
+      "bits": "400ffffffffffffe",
+      "decimal": "3.999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "400fffffffffffff",
+      "decimal": "3.9999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "404d61dfd635e5b3",
+      "decimal": "58.76464345580771"
+    },
+    {
+      "width": "double",
+      "bits": "40c285d1525cd55e",
+      "decimal": "9483.635326008018"
+    },
+    {
+      "width": "double",
+      "bits": "41272440000718d8",
+      "decimal": "758304.0000541462"
+    },
+    {
+      "width": "double",
+      "bits": "412e847ffffffffd",
+      "decimal": "999999.9999999997"
+    },
+    {
+      "width": "double",
+      "bits": "412e847ffffffffe",
+      "decimal": "999999.9999999998"
+    },
+    {
+      "width": "double",
+      "bits": "412e847fffffffff",
+      "decimal": "999999.9999999999"
+    },
+    {
+      "width": "double",
+      "bits": "412e848000000000",
+      "decimal": "1000000.0"
+    },
+    {
+      "width": "double",
+      "bits": "412e848000000001",
+      "decimal": "1000000.0000000001"
+    },
+    {
+      "width": "double",
+      "bits": "412e848000000002",
+      "decimal": "1000000.0000000002"
+    },
+    {
+      "width": "double",
+      "bits": "412e848000000003",
+      "decimal": "1000000.0000000003"
+    },
+    {
+      "width": "double",
+      "bits": "416312cffffffffd",
+      "decimal": "9999999.999999994"
+    },
+    {
+      "width": "double",
+      "bits": "416312cffffffffe",
+      "decimal": "9999999.999999996"
+    },
+    {
+      "width": "double",
+      "bits": "416312cfffffffff",
+      "decimal": "9999999.999999998"
+    },
+    {
+      "width": "double",
+      "bits": "416312d000000000",
+      "decimal": "1.0E7"
+    },
+    {
+      "width": "double",
+      "bits": "416312d000000001",
+      "decimal": "1.0000000000000002E7"
+    },
+    {
+      "width": "double",
+      "bits": "416312d000000002",
+      "decimal": "1.0000000000000004E7"
+    },
+    {
+      "width": "double",
+      "bits": "416312d000000003",
+      "decimal": "1.0000000000000006E7"
+    },
+    {
+      "width": "double",
+      "bits": "423ae0b4f796ba8b",
+      "decimal": "1.1543910594272868E11"
+    },
+    {
+      "width": "double",
+      "bits": "4300000000000002",
+      "decimal": "5.629499534213122E14"
+    },
+    {
+      "width": "double",
+      "bits": "4300000000000006",
+      "decimal": "5.629499534213128E14"
+    },
+    {
+      "width": "double",
+      "bits": "439bd825f88f066f",
+      "decimal": "5.0159884586880915E17"
+    },
+    {
+      "width": "double",
+      "bits": "440f1a43646b19a2",
+      "decimal": "7.171769162057202E19"
+    },
+    {
+      "width": "double",
+      "bits": "44499a3b87d7275f",
+      "decimal": "9.445644554127078E20"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af3",
+      "decimal": "9.999999999999994E22"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af4",
+      "decimal": "9.999999999999996E22"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af5",
+      "decimal": "9.999999999999997E22"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af6",
+      "decimal": "1.0E23"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af7",
+      "decimal": "1.0000000000000001E23"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af8",
+      "decimal": "1.0000000000000003E23"
+    },
+    {
+      "width": "double",
+      "bits": "44b52d02c7e14af9",
+      "decimal": "1.0000000000000004E23"
+    },
+    {
+      "width": "double",
+      "bits": "467e215905a08ef7",
+      "decimal": "3.8194648027577494E31"
+    },
+    {
+      "width": "double",
+      "bits": "46d6257cf767fb98",
+      "decimal": "1.7967325141212186E33"
+    },
+    {
+      "width": "double",
+      "bits": "4799ef76acc79557",
+      "decimal": "8.61851646428949E36"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1ae",
+      "decimal": "9.999999999999994E37"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1af",
+      "decimal": "9.999999999999996E37"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1b0",
+      "decimal": "9.999999999999998E37"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1b1",
+      "decimal": "1.0E38"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1b2",
+      "decimal": "1.0000000000000002E38"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1b3",
+      "decimal": "1.0000000000000004E38"
+    },
+    {
+      "width": "double",
+      "bits": "47d2ced32a16a1b4",
+      "decimal": "1.0000000000000005E38"
+    },
+    {
+      "width": "double",
+      "bits": "4825a9a41b632ebb",
+      "decimal": "3.685710664397634E39"
+    },
+    {
+      "width": "double",
+      "bits": "487c30de8fe81753",
+      "decimal": "1.5348583722014837E41"
+    },
+    {
+      "width": "double",
+      "bits": "4aee8206418eb1e9",
+      "decimal": "9.131490802782319E52"
+    },
+    {
+      "width": "double",
+      "bits": "4b08281b6a62e7ea",
+      "decimal": "2.8921864449600087E53"
+    },
+    {
+      "width": "double",
+      "bits": "4b260b692465c4d0",
+      "decimal": "1.0557253113832143E54"
+    },
+    {
+      "width": "double",
+      "bits": "4c053c1a70863ac6",
+      "decimal": "1.6661608070994645E58"
+    },
+    {
+      "width": "double",
+      "bits": "4c2b685ef60ca1fa",
+      "decimal": "8.602045745236683E58"
+    },
+    {
+      "width": "double",
+      "bits": "4cfe01775a198cc4",
+      "decimal": "7.714775188937866E62"
+    },
+    {
+      "width": "double",
+      "bits": "4fed3b52d4b705b3",
+      "decimal": "1.0577510610976219E77"
+    },
+    {
+      "width": "double",
+      "bits": "5082a640909c74b7",
+      "decimal": "6.910257969338165E79"
+    },
+    {
+      "width": "double",
+      "bits": "51375e689206c035",
+      "decimal": "1.7733518754819634E83"
+    },
+    {
+      "width": "double",
+      "bits": "514f8f653aff1e41",
+      "decimal": "4.789913993133441E83"
+    },
+    {
+      "width": "double",
+      "bits": "51a57edcdd20e1d8",
+      "decimal": "2.0879375548761636E85"
+    },
+    {
+      "width": "double",
+      "bits": "52085318d59322d7",
+      "decimal": "1.5121484560058123E87"
+    },
+    {
+      "width": "double",
+      "bits": "53a448d5b77029d0",
+      "decimal": "8.462393094777093E94"
+    },
+    {
+      "width": "double",
+      "bits": "56b2a7c1f69fea53",
+      "decimal": "4.381277442069335E109"
+    },
+    {
+      "width": "double",
+      "bits": "57effcf9042b5d8e",
+      "decimal": "3.938744553838143E115"
+    },
+    {
+      "width": "double",
+      "bits": "5883ee93052c1c0b",
+      "decimal": "2.5131458011809733E118"
+    },
+    {
+      "width": "double",
+      "bits": "5a86e673bf76badb",
+      "decimal": "1.2401308733001948E128"
+    },
+    {
+      "width": "double",
+      "bits": "5c01c4bd14fdd283",
+      "decimal": "1.614355157377076E135"
+    },
+    {
+      "width": "double",
+      "bits": "5c821344d9ed87d3",
+      "decimal": "4.204097826024671E137"
+    },
+    {
+      "width": "double",
+      "bits": "5c913212033fc2bb",
+      "decimal": "7.998988015578502E137"
+    },
+    {
+      "width": "double",
+      "bits": "5cdaf29696787933",
+      "decimal": "2.0056644284308784E139"
+    },
+    {
+      "width": "double",
+      "bits": "5d745d405a514c98",
+      "decimal": "1.5520534450656398E142"
+    },
+    {
+      "width": "double",
+      "bits": "5df4e18e1973e805",
+      "decimal": "4.074091506044268E144"
+    },
+    {
+      "width": "double",
+      "bits": "5eff8aaaae347ee9",
+      "decimal": "4.033132660719967E149"
+    },
+    {
+      "width": "double",
+      "bits": "610b620e676d31a7",
+      "decimal": "3.0076636156195228E159"
+    },
+    {
+      "width": "double",
+      "bits": "619e9cd835ef3d3b",
+      "decimal": "1.7215472731958424E162"
+    },
+    {
+      "width": "double",
+      "bits": "62c00a096c646be0",
+      "decimal": "4.72901264543809E167"
+    },
+    {
+      "width": "double",
+      "bits": "63ea1279baca74ea",
+      "decimal": "2.0151375813393638E173"
+    },
+    {
+      "width": "double",
+      "bits": "649fdd46fba60174",
+      "decimal": "5.043856659836494E176"
+    },
+    {
+      "width": "double",
+      "bits": "658f859c51217121",
+      "decimal": "1.635008538733639E181"
+    },
+    {
+      "width": "double",
+      "bits": "65a75f374c0c43e7",
+      "decimal": "4.84911092992077E181"
+    },
+    {
+      "width": "double",
+      "bits": "65a9105b95e7abda",
+      "decimal": "5.200151641508401E181"
+    },
+    {
+      "width": "double",
+      "bits": "663a1c37892fc42e",
+      "decimal": "2.7736262246071964E184"
+    },
+    {
+      "width": "double",
+      "bits": "66652c5bb8601649",
+      "decimal": "1.799348886437107E185"
+    },
+    {
+      "width": "double",
+      "bits": "66743c674614993a",
+      "decimal": "3.439386338514184E185"
+    },
+    {
+      "width": "double",
+      "bits": "6774e7fc56fee7f9",
+      "decimal": "2.328693099383223E190"
+    },
+    {
+      "width": "double",
+      "bits": "678add55dbb4011e",
+      "decimal": "5.984770640448166E190"
+    },
+    {
+      "width": "double",
+      "bits": "6817b56ddc8c5a71",
+      "decimal": "2.704239264062163E193"
+    },
+    {
+      "width": "double",
+      "bits": "684af6e2318f700f",
+      "decimal": "2.4604684666165315E194"
+    },
+    {
+      "width": "double",
+      "bits": "68983dea2e333feb",
+      "decimal": "7.078529401139104E195"
+    },
+    {
+      "width": "double",
+      "bits": "68c3f73ee082b493",
+      "decimal": "4.663950918515588E196"
+    },
+    {
+      "width": "double",
+      "bits": "69c2b4dc27a447c7",
+      "decimal": "2.863777616275849E201"
+    },
+    {
+      "width": "double",
+      "bits": "6a16afc6f63bb8a3",
+      "decimal": "1.111391514501516E203"
+    },
+    {
+      "width": "double",
+      "bits": "6ab1f21dd9ce37b8",
+      "decimal": "9.002416464789005E205"
+    },
+    {
+      "width": "double",
+      "bits": "6da1a89ce2f7c22a",
+      "decimal": "1.2467064215961463E220"
+    },
+    {
+      "width": "double",
+      "bits": "6dbd409b9b34da11",
+      "decimal": "4.1304556763701377E220"
+    },
+    {
+      "width": "double",
+      "bits": "6e64e2e51e7b654c",
+      "decimal": "6.039882442196852E223"
+    },
+    {
+      "width": "double",
+      "bits": "6e9af1d2fdcfc2e5",
+      "decimal": "6.233456570932413E224"
+    },
+    {
+      "width": "double",
+      "bits": "6f877d770a85a0b2",
+      "decimal": "1.7807032044595982E229"
+    },
+    {
+      "width": "double",
+      "bits": "6fc5ee3eaeab98e1",
+      "decimal": "2.659978243564397E230"
+    },
+    {
+      "width": "double",
+      "bits": "721cbab318bd674d",
+      "decimal": "4.7891838923137126E241"
+    },
+    {
+      "width": "double",
+      "bits": "72c7e7cdba5df8db",
+      "decimal": "8.161387779559338E244"
+    },
+    {
+      "width": "double",
+      "bits": "72eb169eb8fa368a",
+      "decimal": "3.699211705073957E245"
+    },
+    {
+      "width": "double",
+      "bits": "7301fdcd9fac65bc",
+      "decimal": "9.827699945743685E245"
+    },
+    {
+      "width": "double",
+      "bits": "73ba9cdf57bf40f4",
+      "decimal": "2.977191146971107E249"
+    },
+    {
+      "width": "double",
+      "bits": "73f4f604d2cb3365",
+      "decimal": "3.7518773931939735E250"
+    },
+    {
+      "width": "double",
+      "bits": "74298d247371ea7e",
+      "decimal": "3.6588114907321967E251"
+    },
+    {
+      "width": "double",
+      "bits": "7469107080bbc286",
+      "decimal": "5.742493541164599E252"
+    },
+    {
+      "width": "double",
+      "bits": "74a88197a6b50de4",
+      "decimal": "8.983440480465366E253"
+    },
+    {
+      "width": "double",
+      "bits": "75323bc4cd1d2a83",
+      "decimal": "3.422202390581652E256"
+    },
+    {
+      "width": "double",
+      "bits": "753eefc576f2f841",
+      "decimal": "5.80642740843765E256"
+    },
+    {
+      "width": "double",
+      "bits": "75597ab7967a40aa",
+      "decimal": "1.9128675272263921E257"
+    },
+    {
+      "width": "double",
+      "bits": "7563ce9e9c8e3bed",
+      "decimal": "2.974043890773904E257"
+    },
+    {
+      "width": "double",
+      "bits": "764273dd8eab6ad6",
+      "decimal": "4.539455926343771E261"
+    },
+    {
+      "width": "double",
+      "bits": "76abba0ce85f62fc",
+      "decimal": "4.365413006155272E263"
+    },
+    {
+      "width": "double",
+      "bits": "78885f846058e2dd",
+      "decimal": "4.120378447863618E272"
+    },
+    {
+      "width": "double",
+      "bits": "79ee4b333d7934ed",
+      "decimal": "2.1480235758670777E279"
+    },
+    {
+      "width": "double",
+      "bits": "7b312c9c78b894ab",
+      "decimal": "2.5538418827211656E285"
+    },
+    {
+      "width": "double",
+      "bits": "7b999aeb49bbe7fd",
+      "decimal": "2.436818881561613E287"
+    },
+    {
+      "width": "double",
+      "bits": "7cab711bbbe289c9",
+      "decimal": "3.4230943347488334E292"
+    },
+    {
+      "width": "double",
+      "bits": "7dcd1223bcfce49f",
+      "decimal": "9.506126212995959E297"
+    },
+    {
+      "width": "double",
+      "bits": "7e1e0efb107618a6",
+      "decimal": "3.145308713354899E299"
+    },
+    {
+      "width": "double",
+      "bits": "7e2d6359fba1b296",
+      "decimal": "6.150311189792257E299"
+    },
+    {
+      "width": "double",
+      "bits": "7e5b5548785dfea2",
+      "decimal": "4.576201815351616E300"
+    },
+    {
+      "width": "double",
+      "bits": "7ec09a3f49b306e7",
+      "decimal": "3.5579503727275545E302"
+    },
+    {
+      "width": "double",
+      "bits": "7ed45f0427fa0e62",
+      "decimal": "8.731148097524548E302"
+    },
+    {
+      "width": "double",
+      "bits": "7fc0000000000000",
+      "decimal": "2.247116418577895E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fc0000000000001",
+      "decimal": "2.2471164185778954E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fc0000000000002",
+      "decimal": "2.247116418577896E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fcffffffffffffe",
+      "decimal": "4.494232837155789E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fcfffffffffffff",
+      "decimal": "4.4942328371557893E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fd0000000000000",
+      "decimal": "4.49423283715579E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fd0000000000001",
+      "decimal": "4.494232837155791E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fd0000000000002",
+      "decimal": "4.494232837155792E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fda034e5404a999",
+      "decimal": "7.306755752164849E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fdffffffffffffe",
+      "decimal": "8.988465674311578E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fdfffffffffffff",
+      "decimal": "8.988465674311579E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fe0000000000000",
+      "decimal": "8.98846567431158E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fe0000000000001",
+      "decimal": "8.988465674311582E307"
+    },
+    {
+      "width": "double",
+      "bits": "7fe0000000000002",
+      "decimal": "8.988465674311584E307"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff0",
+      "decimal": "1.7976931348623127E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff1",
+      "decimal": "1.797693134862313E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff2",
+      "decimal": "1.7976931348623131E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff3",
+      "decimal": "1.7976931348623133E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff4",
+      "decimal": "1.7976931348623135E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff5",
+      "decimal": "1.7976931348623137E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff6",
+      "decimal": "1.797693134862314E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff7",
+      "decimal": "1.7976931348623141E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff8",
+      "decimal": "1.7976931348623143E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffff9",
+      "decimal": "1.7976931348623145E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffffa",
+      "decimal": "1.7976931348623147E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffffb",
+      "decimal": "1.797693134862315E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffffc",
+      "decimal": "1.7976931348623151E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffffd",
+      "decimal": "1.7976931348623153E308"
+    },
+    {
+      "width": "double",
+      "bits": "7feffffffffffffe",
+      "decimal": "1.7976931348623155E308"
+    },
+    {
+      "width": "double",
+      "bits": "7fefffffffffffff",
+      "decimal": "1.7976931348623157E308"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000000",
+      "decimal": "Infinity"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000001",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000002",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000003",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000004",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000005",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000006",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000007",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000008",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000009",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000a",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000b",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000c",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000d",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000e",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff000000000000f",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff0000000000010",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7ff8000000000000",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "7fffffffffffffff",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000000",
+      "decimal": "-0.0"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000001",
+      "decimal": "-4.9E-324"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000002",
+      "decimal": "-9.9E-324"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000003",
+      "decimal": "-1.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000004",
+      "decimal": "-2.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000005",
+      "decimal": "-2.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000006",
+      "decimal": "-3.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000007",
+      "decimal": "-3.5E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000008",
+      "decimal": "-4.0E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000009",
+      "decimal": "-4.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000a",
+      "decimal": "-4.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000b",
+      "decimal": "-5.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000c",
+      "decimal": "-5.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000d",
+      "decimal": "-6.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000e",
+      "decimal": "-6.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000000f",
+      "decimal": "-7.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000010",
+      "decimal": "-7.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000011",
+      "decimal": "-8.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000012",
+      "decimal": "-8.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000013",
+      "decimal": "-9.4E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000014",
+      "decimal": "-9.9E-323"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000015",
+      "decimal": "-1.04E-322"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000016",
+      "decimal": "-1.1E-322"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000017",
+      "decimal": "-1.14E-322"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000018",
+      "decimal": "-1.2E-322"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000019",
+      "decimal": "-1.24E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001a",
+      "decimal": "-1.3E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001b",
+      "decimal": "-1.33E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001c",
+      "decimal": "-1.4E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001d",
+      "decimal": "-1.43E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001e",
+      "decimal": "-1.5E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800000000000001f",
+      "decimal": "-1.53E-322"
+    },
+    {
+      "width": "double",
+      "bits": "8000000000000020",
+      "decimal": "-1.6E-322"
+    },
+    {
+      "width": "double",
+      "bits": "800d70bc0a832fed",
+      "decimal": "-1.8691133957025414E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff0",
+      "decimal": "-2.2250738585071935E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff1",
+      "decimal": "-2.225073858507194E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff2",
+      "decimal": "-2.2250738585071945E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff3",
+      "decimal": "-2.225073858507195E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff4",
+      "decimal": "-2.2250738585071955E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff5",
+      "decimal": "-2.225073858507196E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff6",
+      "decimal": "-2.2250738585071964E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff7",
+      "decimal": "-2.225073858507197E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff8",
+      "decimal": "-2.2250738585071974E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffff9",
+      "decimal": "-2.225073858507198E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffffa",
+      "decimal": "-2.2250738585071984E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffffb",
+      "decimal": "-2.225073858507199E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffffc",
+      "decimal": "-2.2250738585071994E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffffd",
+      "decimal": "-2.2250738585072E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800ffffffffffffe",
+      "decimal": "-2.2250738585072004E-308"
+    },
+    {
+      "width": "double",
+      "bits": "800fffffffffffff",
+      "decimal": "-2.225073858507201E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000000",
+      "decimal": "-2.2250738585072014E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000001",
+      "decimal": "-2.225073858507202E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000002",
+      "decimal": "-2.2250738585072024E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000003",
+      "decimal": "-2.225073858507203E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000004",
+      "decimal": "-2.2250738585072034E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000005",
+      "decimal": "-2.225073858507204E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000006",
+      "decimal": "-2.2250738585072043E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000007",
+      "decimal": "-2.225073858507205E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000008",
+      "decimal": "-2.2250738585072053E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000009",
+      "decimal": "-2.225073858507206E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000a",
+      "decimal": "-2.2250738585072063E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000b",
+      "decimal": "-2.225073858507207E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000c",
+      "decimal": "-2.2250738585072073E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000d",
+      "decimal": "-2.225073858507208E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000e",
+      "decimal": "-2.2250738585072083E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801000000000000f",
+      "decimal": "-2.225073858507209E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8010000000000010",
+      "decimal": "-2.2250738585072093E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801ffffffffffffe",
+      "decimal": "-4.450147717014402E-308"
+    },
+    {
+      "width": "double",
+      "bits": "801fffffffffffff",
+      "decimal": "-4.4501477170144023E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8020000000000000",
+      "decimal": "-4.450147717014403E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8020000000000001",
+      "decimal": "-4.450147717014404E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8020000000000002",
+      "decimal": "-4.450147717014405E-308"
+    },
+    {
+      "width": "double",
+      "bits": "802ffffffffffffe",
+      "decimal": "-8.900295434028804E-308"
+    },
+    {
+      "width": "double",
+      "bits": "802fffffffffffff",
+      "decimal": "-8.900295434028805E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8030000000000000",
+      "decimal": "-8.900295434028806E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8030000000000001",
+      "decimal": "-8.900295434028808E-308"
+    },
+    {
+      "width": "double",
+      "bits": "8030000000000002",
+      "decimal": "-8.90029543402881E-308"
+    },
+    {
+      "width": "double",
+      "bits": "803ffffffffffffe",
+      "decimal": "-1.7800590868057607E-307"
+    },
+    {
+      "width": "double",
+      "bits": "803fffffffffffff",
+      "decimal": "-1.780059086805761E-307"
+    },
+    {
+      "width": "double",
+      "bits": "80a51158706a186e",
+      "decimal": "-1.5000740005944418E-305"
+    },
+    {
+      "width": "double",
+      "bits": "810d91c6f319f757",
+      "decimal": "-1.347465059549347E-303"
+    },
+    {
+      "width": "double",
+      "bits": "8140000000000000",
+      "decimal": "-1.1665795231290236E-302"
+    },
+    {
+      "width": "double",
+      "bits": "8140000000000001",
+      "decimal": "-1.1665795231290239E-302"
+    },
+    {
+      "width": "double",
+      "bits": "8140000000000002",
+      "decimal": "-1.166579523129024E-302"
+    },
+    {
+      "width": "double",
+      "bits": "814ffffffffffffe",
+      "decimal": "-2.3331590462580467E-302"
+    },
+    {
+      "width": "double",
+      "bits": "814fffffffffffff",
+      "decimal": "-2.333159046258047E-302"
+    },
+    {
+      "width": "double",
+      "bits": "815fe4a4cc4221f4",
+      "decimal": "-4.6507354505621715E-302"
+    },
+    {
+      "width": "double",
+      "bits": "816b4cea031161bd",
+      "decimal": "-7.962035242999382E-302"
+    },
+    {
+      "width": "double",
+      "bits": "81ba685877f09743",
+      "decimal": "-2.4645252259571023E-300"
+    },
+    {
+      "width": "double",
+      "bits": "824e6131907d8bcb",
+      "decimal": "-1.4516343702401624E-297"
+    },
+    {
+      "width": "double",
+      "bits": "82bb25a5b99f86e3",
+      "decimal": "-1.6603783797521685E-295"
+    },
+    {
+      "width": "double",
+      "bits": "82e128135a9d8268",
+      "decimal": "-8.394679026748655E-295"
+    },
+    {
+      "width": "double",
+      "bits": "83adfc82542b25d7",
+      "decimal": "-6.0097721277921256E-291"
+    },
+    {
+      "width": "double",
+      "bits": "84fa88eed72e5545",
+      "decimal": "-1.1152737347127025E-284"
+    },
+    {
+      "width": "double",
+      "bits": "851357c1e0ec95df",
+      "decimal": "-3.251947236197621E-284"
+    },
+    {
+      "width": "double",
+      "bits": "864f18829d794134",
+      "decimal": "-2.740911153750875E-278"
+    },
+    {
+      "width": "double",
+      "bits": "86b9cedde33c08c5",
+      "decimal": "-2.911786791165313E-276"
+    },
+    {
+      "width": "double",
+      "bits": "87181ed56332ecaf",
+      "decimal": "-1.741683560494503E-274"
+    },
+    {
+      "width": "double",
+      "bits": "876b8549837cb2e7",
+      "decimal": "-6.359056381124657E-273"
+    },
+    {
+      "width": "double",
+      "bits": "882f405d67db360e",
+      "decimal": "-2.957765357755992E-269"
+    },
+    {
+      "width": "double",
+      "bits": "88a1271add8d256f",
+      "decimal": "-4.155925042102815E-267"
+    },
+    {
+      "width": "double",
+      "bits": "8995666922a24aa6",
+      "decimal": "-1.6990196825535204E-262"
+    },
+    {
+      "width": "double",
+      "bits": "8ab1527016fa1a7f",
+      "decimal": "-3.6051415303376616E-257"
+    },
+    {
+      "width": "double",
+      "bits": "8b7c0777ad66bbc9",
+      "decimal": "-2.389427707345658E-253"
+    },
+    {
+      "width": "double",
+      "bits": "8c20a3ab35408a9c",
+      "decimal": "-2.905022347288412E-250"
+    },
+    {
+      "width": "double",
+      "bits": "8d11ac28328593ff",
+      "decimal": "-1.0110235020234097E-245"
+    },
+    {
+      "width": "double",
+      "bits": "8e58b1cf6a59f6f9",
+      "decimal": "-1.481374787469347E-239"
+    },
+    {
+      "width": "double",
+      "bits": "8f20da53f90e4bf3",
+      "decimal": "-8.281835499847519E-236"
+    },
+    {
+      "width": "double",
+      "bits": "8f82f7691dde74c7",
+      "decimal": "-5.965122621434172E-234"
+    },
+    {
+      "width": "double",
+      "bits": "8f86184d31c5a74e",
+      "decimal": "-6.949058477292203E-234"
+    },
+    {
+      "width": "double",
+      "bits": "91c776b6cf0fbc73",
+      "decimal": "-5.0711939141153866E-223"
+    },
+    {
+      "width": "double",
+      "bits": "91e827369b982a9c",
+      "decimal": "-2.0880816505984373E-222"
+    },
+    {
+      "width": "double",
+      "bits": "922746dce6647dd2",
+      "decimal": "-3.219709010937812E-221"
+    },
+    {
+      "width": "double",
+      "bits": "9283c0b045cd5c60",
+      "decimal": "-1.7486359837652162E-219"
+    },
+    {
+      "width": "double",
+      "bits": "93318b01dc48b7a2",
+      "decimal": "-3.180584326553538E-216"
+    },
+    {
+      "width": "double",
+      "bits": "940238ccf454a16f",
+      "decimal": "-2.706363856558535E-212"
+    },
+    {
+      "width": "double",
+      "bits": "94519e90c0d46cea",
+      "decimal": "-8.374021407882972E-211"
+    },
+    {
+      "width": "double",
+      "bits": "958852bfcdab7309",
+      "decimal": "-6.0608616706200905E-205"
+    },
+    {
+      "width": "double",
+      "bits": "95c4c348b49cdc99",
+      "decimal": "-8.277886235558167E-204"
+    },
+    {
+      "width": "double",
+      "bits": "95e641869be87c2f",
+      "decimal": "-3.5492719094789254E-203"
+    },
+    {
+      "width": "double",
+      "bits": "95f9d551e71ad616",
+      "decimal": "-8.239531130312631E-203"
+    },
+    {
+      "width": "double",
+      "bits": "979b9a2f89702fca",
+      "decimal": "-5.908100837373422E-195"
+    },
+    {
+      "width": "double",
+      "bits": "97f6c651cc59190e",
+      "decimal": "-3.119860556929805E-193"
+    },
+    {
+      "width": "double",
+      "bits": "98fcbea653076de5",
+      "decimal": "-2.580601154916919E-188"
+    },
+    {
+      "width": "double",
+      "bits": "995eb925457345df",
+      "decimal": "-1.765263322891894E-186"
+    },
+    {
+      "width": "double",
+      "bits": "9a0c6f448db39306",
+      "decimal": "-3.3459571921843055E-183"
+    },
+    {
+      "width": "double",
+      "bits": "9a13af88816f774c",
+      "decimal": "-4.632900707183918E-183"
+    },
+    {
+      "width": "double",
+      "bits": "9a7d970489f65108",
+      "decimal": "-4.456832447841945E-181"
+    },
+    {
+      "width": "double",
+      "bits": "9a8b38ee95c249f9",
+      "decimal": "-8.20047246065234E-181"
+    },
+    {
+      "width": "double",
+      "bits": "9aad664fbdeaa7f2",
+      "decimal": "-3.542540541928509E-180"
+    },
+    {
+      "width": "double",
+      "bits": "9bc8b2f81a8f01dd",
+      "decimal": "-7.801778674521904E-175"
+    },
+    {
+      "width": "double",
+      "bits": "9be8214abb1b173e",
+      "decimal": "-3.0488122377303487E-174"
+    },
+    {
+      "width": "double",
+      "bits": "9d8f90cf1191444b",
+      "decimal": "-2.6765001714975024E-166"
+    },
+    {
+      "width": "double",
+      "bits": "9d9b814882974b44",
+      "decimal": "-4.664383511312625E-166"
+    },
+    {
+      "width": "double",
+      "bits": "9f5f64f3adeef59b",
+      "decimal": "-1.4291364075500613E-157"
+    },
+    {
+      "width": "double",
+      "bits": "9fb0b0e5e2d5331d",
+      "decimal": "-4.862782155961428E-156"
+    },
+    {
+      "width": "double",
+      "bits": "9fedd91823bbd787",
+      "decimal": "-6.956773048490412E-155"
+    },
+    {
+      "width": "double",
+      "bits": "9ff9cabc0c850485",
+      "decimal": "-1.2022813513465441E-154"
+    },
+    {
+      "width": "double",
+      "bits": "a04adf47d8d3318e",
+      "decimal": "-4.008438991401049E-153"
+    },
+    {
+      "width": "double",
+      "bits": "a10e5f7d8eef80c9",
+      "decimal": "-1.8557522310346715E-149"
+    },
+    {
+      "width": "double",
+      "bits": "a11d34286a5802be",
+      "decimal": "-3.56862289757911E-149"
+    },
+    {
+      "width": "double",
+      "bits": "a2c452b10387b2bb",
+      "decimal": "-3.333190598959661E-141"
+    },
+    {
+      "width": "double",
+      "bits": "a49682a7725a9960",
+      "decimal": "-1.9820951663784763E-132"
+    },
+    {
+      "width": "double",
+      "bits": "a49f3e987197e290",
+      "decimal": "-2.7511589627560797E-132"
+    },
+    {
+      "width": "double",
+      "bits": "a4be5d410ce49350",
+      "decimal": "-1.0694606441769918E-131"
+    },
+    {
+      "width": "double",
+      "bits": "a4efc4748f4d9416",
+      "decimal": "-8.951042413995967E-131"
+    },
+    {
+      "width": "double",
+      "bits": "a61fa17d7d51adea",
+      "decimal": "-4.6727471133757143E-125"
+    },
+    {
+      "width": "double",
+      "bits": "a6cfadad0804cade",
+      "decimal": "-9.584187419541259E-122"
+    },
+    {
+      "width": "double",
+      "bits": "a75c94a0cf01565e",
+      "decimal": "-4.4272367267411194E-119"
+    },
+    {
+      "width": "double",
+      "bits": "a8b0865cf55cb9b7",
+      "decimal": "-1.073641554657004E-112"
+    },
+    {
+      "width": "double",
+      "bits": "a99543167c2d6404",
+      "decimal": "-2.263325136284236E-108"
+    },
+    {
+      "width": "double",
+      "bits": "a9f2ef449bc141a3",
+      "decimal": "-1.2899670302939105E-106"
+    },
+    {
+      "width": "double",
+      "bits": "aa4f48897b7ac9e4",
+      "decimal": "-6.82000581904804E-105"
+    },
+    {
+      "width": "double",
+      "bits": "aa559e8ed17d3fea",
+      "decimal": "-9.426370080998201E-105"
+    },
+    {
+      "width": "double",
+      "bits": "aa5fca4a1dcb8888",
+      "decimal": "-1.3861003972130471E-104"
+    },
+    {
+      "width": "double",
+      "bits": "ab908decdcf1baf3",
+      "decimal": "-7.568586127758677E-99"
+    },
+    {
+      "width": "double",
+      "bits": "abec5e59760a81e2",
+      "decimal": "-4.1503869304545916E-97"
+    },
+    {
+      "width": "double",
+      "bits": "ac3e89f7c7f11534",
+      "decimal": "-1.4297341966398055E-95"
+    },
+    {
+      "width": "double",
+      "bits": "ad39459835ab7975",
+      "decimal": "-7.753868266965772E-91"
+    },
+    {
+      "width": "double",
+      "bits": "ad6b1d00a3f593a3",
+      "decimal": "-6.655083989121166E-90"
+    },
+    {
+      "width": "double",
+      "bits": "ae19169e75b058ad",
+      "decimal": "-1.2611694752385218E-86"
+    },
+    {
+      "width": "double",
+      "bits": "afa59cc538330263",
+      "decimal": "-3.6454725383119036E-79"
+    },
+    {
+      "width": "double",
+      "bits": "b08c64ae3a62bd8c",
+      "decimal": "-7.84669383102024E-75"
+    },
+    {
+      "width": "double",
+      "bits": "b0bcf0ee28ae1fd6",
+      "decimal": "-6.39847709548237E-74"
+    },
+    {
+      "width": "double",
+      "bits": "b0e6e697c47d0eac",
+      "decimal": "-4.050427196221499E-73"
+    },
+    {
+      "width": "double",
+      "bits": "b0fdd4474b12db2c",
+      "decimal": "-1.0551710106734522E-72"
+    },
+    {
+      "width": "double",
+      "bits": "b13de2351fb47cd8",
+      "decimal": "-1.6913531284800626E-71"
+    },
+    {
+      "width": "double",
+      "bits": "b25fe35d60fc8161",
+      "decimal": "-4.7311879347408097E-66"
+    },
+    {
+      "width": "double",
+      "bits": "b2b63b3930d82247",
+      "decimal": "-2.1109920845981988E-64"
+    },
+    {
+      "width": "double",
+      "bits": "b2e0aafc830d513b",
+      "decimal": "-1.266170568473491E-63"
+    },
+    {
+      "width": "double",
+      "bits": "b3a9aa30c6d50545",
+      "decimal": "-7.985624232646516E-60"
+    },
+    {
+      "width": "double",
+      "bits": "b461d44d45cfa79d",
+      "decimal": "-2.272297609874997E-56"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376ab6",
+      "decimal": "-9.999999999999995E-46"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376ab7",
+      "decimal": "-9.999999999999997E-46"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376ab8",
+      "decimal": "-9.999999999999998E-46"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376ab9",
+      "decimal": "-1.0E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376aba",
+      "decimal": "-1.0000000000000001E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376abb",
+      "decimal": "-1.0000000000000003E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b696d601ad376abc",
+      "decimal": "-1.0000000000000005E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854564",
+      "decimal": "-9.999999999999996E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854565",
+      "decimal": "-9.999999999999997E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854566",
+      "decimal": "-9.999999999999998E-45"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854567",
+      "decimal": "-1.0E-44"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854568",
+      "decimal": "-1.0000000000000001E-44"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b8218854569",
+      "decimal": "-1.0000000000000002E-44"
+    },
+    {
+      "width": "double",
+      "bits": "b6cc8b821885456a",
+      "decimal": "-1.0000000000000003E-44"
+    },
+    {
+      "width": "double",
+      "bits": "b6dc3f371e5a73ae",
+      "decimal": "-1.9791193173375235E-44"
+    },
+    {
+      "width": "double",
+      "bits": "b70ad48a99cf89ec",
+      "decimal": "-1.503886957692925E-43"
+    },
+    {
+      "width": "double",
+      "bits": "b78c6ea959e9611c",
+      "decimal": "-4.079830888718633E-41"
+    },
+    {
+      "width": "double",
+      "bits": "b7fb3c66561a0ff5",
+      "decimal": "-5.0024514888542475E-39"
+    },
+    {
+      "width": "double",
+      "bits": "bacffc48b6c8104e",
+      "decimal": "-2.0670134909540798E-25"
+    },
+    {
+      "width": "double",
+      "bits": "bbd1d4a29ce47cf9",
+      "decimal": "-1.5103110984742223E-20"
+    },
+    {
+      "width": "double",
+      "bits": "bc3cbd05f1477006",
+      "decimal": "-1.5579102637552024E-18"
+    },
+    {
+      "width": "double",
+      "bits": "bcc408ad0eefd239",
+      "decimal": "-5.560521671113694E-16"
+    },
+    {
+      "width": "double",
+      "bits": "bd152a400b60a1cb",
+      "decimal": "-1.879833154974085E-14"
+    },
+    {
+      "width": "double",
+      "bits": "bd3cd1787a1280b4",
+      "decimal": "-1.0238297172109217E-13"
+    },
+    {
+      "width": "double",
+      "bits": "bd6f732fd9bf37a0",
+      "decimal": "-8.938613090042252E-13"
+    },
+    {
+      "width": "double",
+      "bits": "bdd8071cc88b2ae8",
+      "decimal": "-8.741256515140844E-11"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432a",
+      "decimal": "-9.999999999999996E-5"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432b",
+      "decimal": "-9.999999999999998E-5"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432c",
+      "decimal": "-9.999999999999999E-5"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432d",
+      "decimal": "-1.0E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432e",
+      "decimal": "-1.0000000000000002E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c432f",
+      "decimal": "-1.0000000000000003E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf1a36e2eb1c4330",
+      "decimal": "-1.0000000000000005E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9f9",
+      "decimal": "-9.999999999999994E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9fa",
+      "decimal": "-9.999999999999996E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9fb",
+      "decimal": "-9.999999999999998E-4"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9fc",
+      "decimal": "-0.001"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9fd",
+      "decimal": "-0.0010000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9fe",
+      "decimal": "-0.0010000000000000005"
+    },
+    {
+      "width": "double",
+      "bits": "bf50624dd2f1a9ff",
+      "decimal": "-0.0010000000000000007"
+    },
+    {
+      "width": "double",
+      "bits": "bfb9999999999997",
+      "decimal": "-0.09999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "bfb9999999999998",
+      "decimal": "-0.09999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "bfb9999999999999",
+      "decimal": "-0.09999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "bfb999999999999a",
+      "decimal": "-0.1"
+    },
+    {
+      "width": "double",
+      "bits": "bfb999999999999b",
+      "decimal": "-0.10000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "bfb999999999999c",
+      "decimal": "-0.10000000000000003"
+    },
+    {
+      "width": "double",
+      "bits": "bfb999999999999d",
+      "decimal": "-0.10000000000000005"
+    },
+    {
+      "width": "double",
+      "bits": "bfe0000000000000",
+      "decimal": "-0.5"
+    },
+    {
+      "width": "double",
+      "bits": "bfe0000000000001",
+      "decimal": "-0.5000000000000001"
+    },
+    {
+      "width": "double",
+      "bits": "bfe0000000000002",
+      "decimal": "-0.5000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "bfeffffffffffffd",
+      "decimal": "-0.9999999999999997"
+    },
+    {
+      "width": "double",
+      "bits": "bfeffffffffffffe",
+      "decimal": "-0.9999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "bfefffffffffffff",
+      "decimal": "-0.9999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "bff0000000000000",
+      "decimal": "-1.0"
+    },
+    {
+      "width": "double",
+      "bits": "bff0000000000001",
+      "decimal": "-1.0000000000000002"
+    },
+    {
+      "width": "double",
+      "bits": "bff0000000000002",
+      "decimal": "-1.0000000000000004"
+    },
+    {
+      "width": "double",
+      "bits": "bff0000000000003",
+      "decimal": "-1.0000000000000007"
+    },
+    {
+      "width": "double",
+      "bits": "bffffffffffffffe",
+      "decimal": "-1.9999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "bfffffffffffffff",
+      "decimal": "-1.9999999999999998"
+    },
+    {
+      "width": "double",
+      "bits": "c000000000000000",
+      "decimal": "-2.0"
+    },
+    {
+      "width": "double",
+      "bits": "c000000000000001",
+      "decimal": "-2.0000000000000004"
+    },
+    {
+      "width": "double",
+      "bits": "c000000000000002",
+      "decimal": "-2.000000000000001"
+    },
+    {
+      "width": "double",
+      "bits": "c00ffffffffffffe",
+      "decimal": "-3.999999999999999"
+    },
+    {
+      "width": "double",
+      "bits": "c00fffffffffffff",
+      "decimal": "-3.9999999999999996"
+    },
+    {
+      "width": "double",
+      "bits": "c1055212aaff95ec",
+      "decimal": "-174658.3334953034"
+    },
+    {
+      "width": "double",
+      "bits": "c12e847ffffffffd",
+      "decimal": "-999999.9999999997"
+    },
+    {
+      "width": "double",
+      "bits": "c12e847ffffffffe",
+      "decimal": "-999999.9999999998"
+    },
+    {
+      "width": "double",
+      "bits": "c12e847fffffffff",
+      "decimal": "-999999.9999999999"
+    },
+    {
+      "width": "double",
+      "bits": "c12e848000000000",
+      "decimal": "-1000000.0"
+    },
+    {
+      "width": "double",
+      "bits": "c12e848000000001",
+      "decimal": "-1000000.0000000001"
+    },
+    {
+      "width": "double",
+      "bits": "c12e848000000002",
+      "decimal": "-1000000.0000000002"
+    },
+    {
+      "width": "double",
+      "bits": "c12e848000000003",
+      "decimal": "-1000000.0000000003"
+    },
+    {
+      "width": "double",
+      "bits": "c16312cffffffffd",
+      "decimal": "-9999999.999999994"
+    },
+    {
+      "width": "double",
+      "bits": "c16312cffffffffe",
+      "decimal": "-9999999.999999996"
+    },
+    {
+      "width": "double",
+      "bits": "c16312cfffffffff",
+      "decimal": "-9999999.999999998"
+    },
+    {
+      "width": "double",
+      "bits": "c16312d000000000",
+      "decimal": "-1.0E7"
+    },
+    {
+      "width": "double",
+      "bits": "c16312d000000001",
+      "decimal": "-1.0000000000000002E7"
+    },
+    {
+      "width": "double",
+      "bits": "c16312d000000002",
+      "decimal": "-1.0000000000000004E7"
+    },
+    {
+      "width": "double",
+      "bits": "c16312d000000003",
+      "decimal": "-1.0000000000000006E7"
+    },
+    {
+      "width": "double",
+      "bits": "c1bc6e2f2c08edbd",
+      "decimal": "-4.769830840348776E8"
+    },
+    {
+      "width": "double",
+      "bits": "c300000000000002",
+      "decimal": "-5.629499534213122E14"
+    },
+    {
+      "width": "double",
+      "bits": "c300000000000006",
+      "decimal": "-5.629499534213128E14"
+    },
+    {
+      "width": "double",
+      "bits": "c30379521fb1180b",
+      "decimal": "-6.851772729351694E14"
+    },
+    {
+      "width": "double",
+      "bits": "c3182004c27a2619",
+      "decimal": "-1.6976510639497022E15"
+    },
+    {
+      "width": "double",
+      "bits": "c3b501f851e9ebe7",
+      "decimal": "-1.5137639804737882E18"
+    },
+    {
+      "width": "double",
+      "bits": "c412fa610f057437",
+      "decimal": "-8.752077785627347E19"
+    },
+    {
+      "width": "double",
+      "bits": "c461d126aec1daa2",
+      "decimal": "-2.6293245968297943E21"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af3",
+      "decimal": "-9.999999999999994E22"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af4",
+      "decimal": "-9.999999999999996E22"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af5",
+      "decimal": "-9.999999999999997E22"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af6",
+      "decimal": "-1.0E23"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af7",
+      "decimal": "-1.0000000000000001E23"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af8",
+      "decimal": "-1.0000000000000003E23"
+    },
+    {
+      "width": "double",
+      "bits": "c4b52d02c7e14af9",
+      "decimal": "-1.0000000000000004E23"
+    },
+    {
+      "width": "double",
+      "bits": "c4bb06c7465ffc76",
+      "decimal": "-1.2762893477192251E23"
+    },
+    {
+      "width": "double",
+      "bits": "c5d41d51fd6412c2",
+      "decimal": "-2.490058492447251E28"
+    },
+    {
+      "width": "double",
+      "bits": "c62509e9e6c00813",
+      "decimal": "-8.334297736452806E29"
+    },
+    {
+      "width": "double",
+      "bits": "c652a267eca898b5",
+      "decimal": "-5.905476535183132E30"
+    },
+    {
+      "width": "double",
+      "bits": "c692e46deeaa109c",
+      "decimal": "-9.579535407812666E31"
+    },
+    {
+      "width": "double",
+      "bits": "c73ff20df0c431aa",
+      "decimal": "-1.658706502183624E35"
+    },
+    {
+      "width": "double",
+      "bits": "c757a981d175dee6",
+      "decimal": "-4.9144336090858596E35"
+    },
+    {
+      "width": "double",
+      "bits": "c7a5d15572e9aceb",
+      "decimal": "-1.450035553203145E37"
+    },
+    {
+      "width": "double",
+      "bits": "c7c7bc7cc0f45cd5",
+      "decimal": "-6.310185203736448E37"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1ae",
+      "decimal": "-9.999999999999994E37"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1af",
+      "decimal": "-9.999999999999996E37"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1b0",
+      "decimal": "-9.999999999999998E37"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1b1",
+      "decimal": "-1.0E38"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1b2",
+      "decimal": "-1.0000000000000002E38"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1b3",
+      "decimal": "-1.0000000000000004E38"
+    },
+    {
+      "width": "double",
+      "bits": "c7d2ced32a16a1b4",
+      "decimal": "-1.0000000000000005E38"
+    },
+    {
+      "width": "double",
+      "bits": "c7fd5c526a106ced",
+      "decimal": "-6.2443159599366294E38"
+    },
+    {
+      "width": "double",
+      "bits": "c9464203e0d45484",
+      "decimal": "-9.927342498716456E44"
+    },
+    {
+      "width": "double",
+      "bits": "c976e3a3af9de74a",
+      "decimal": "-8.167145323756358E45"
+    },
+    {
+      "width": "double",
+      "bits": "ca7ced0a1d10158e",
+      "decimal": "-6.7640483515411165E50"
+    },
+    {
+      "width": "double",
+      "bits": "cb387460515c505a",
+      "decimal": "-2.342284832565116E54"
+    },
+    {
+      "width": "double",
+      "bits": "cc9a66e78b625385",
+      "decimal": "-1.0606582745401364E61"
+    },
+    {
+      "width": "double",
+      "bits": "ccd57bc0904e6f77",
+      "decimal": "-1.3809001636399574E62"
+    },
+    {
+      "width": "double",
+      "bits": "cd0aeac7511459ec",
+      "decimal": "-1.3841317820316586E63"
+    },
+    {
+      "width": "double",
+      "bits": "cd18e4a2fc0976ae",
+      "decimal": "-2.560108072106968E63"
+    },
+    {
+      "width": "double",
+      "bits": "cd2780b2d21c3162",
+      "decimal": "-4.8342308751281726E63"
+    },
+    {
+      "width": "double",
+      "bits": "cd283f95df9f3906",
+      "decimal": "-4.987602606034362E63"
+    },
+    {
+      "width": "double",
+      "bits": "cd45a59dc2ed2e14",
+      "decimal": "-1.781006797559002E64"
+    },
+    {
+      "width": "double",
+      "bits": "cd754990fbda0268",
+      "decimal": "-1.4011384769920605E65"
+    },
+    {
+      "width": "double",
+      "bits": "cdb5711a6ab976ad",
+      "decimal": "-2.2580860790935134E66"
+    },
+    {
+      "width": "double",
+      "bits": "d0ae0ed14d609a1d",
+      "decimal": "-4.454995023456056E80"
+    },
+    {
+      "width": "double",
+      "bits": "d11d86c1de8c0697",
+      "decimal": "-5.6015635202680506E82"
+    },
+    {
+      "width": "double",
+      "bits": "d1a330731d536f8f",
+      "decimal": "-1.8639185842198992E85"
+    },
+    {
+      "width": "double",
+      "bits": "d2e14bff1aea6cc5",
+      "decimal": "-1.761716441923965E91"
+    },
+    {
+      "width": "double",
+      "bits": "d384878a6da08114",
+      "decimal": "-2.1411451105692348E94"
+    },
+    {
+      "width": "double",
+      "bits": "d3da7bd120d1eb44",
+      "decimal": "-8.83886780966925E95"
+    },
+    {
+      "width": "double",
+      "bits": "d52278dbde738307",
+      "decimal": "-1.2928999969602362E102"
+    },
+    {
+      "width": "double",
+      "bits": "d73ad4503af6fdd9",
+      "decimal": "-1.6130526491105807E112"
+    },
+    {
+      "width": "double",
+      "bits": "d75c6511b6d19679",
+      "decimal": "-6.8286874174258065E112"
+    },
+    {
+      "width": "double",
+      "bits": "d7a88e7467450f6f",
+      "decimal": "-1.8897928396084235E114"
+    },
+    {
+      "width": "double",
+      "bits": "d863c0b8214beaa3",
+      "decimal": "-6.226402610615785E117"
+    },
+    {
+      "width": "double",
+      "bits": "d8864ea0504dbb82",
+      "decimal": "-2.812626623949941E118"
+    },
+    {
+      "width": "double",
+      "bits": "d8c098c1bd682375",
+      "decimal": "-3.348190832349516E119"
+    },
+    {
+      "width": "double",
+      "bits": "da1ffb7144b5b2af",
+      "decimal": "-1.3530894259478445E126"
+    },
+    {
+      "width": "double",
+      "bits": "da9e5468e72029b5",
+      "decimal": "-3.284934033292245E128"
+    },
+    {
+      "width": "double",
+      "bits": "dab838ea91bfed19",
+      "decimal": "-1.0493830971227544E129"
+    },
+    {
+      "width": "double",
+      "bits": "db52f4b96a9d8e82",
+      "decimal": "-8.409375970999983E131"
+    },
+    {
+      "width": "double",
+      "bits": "db94a9cf52aafca8",
+      "decimal": "-1.4666895473070179E133"
+    },
+    {
+      "width": "double",
+      "bits": "dbe2c9682770e579",
+      "decimal": "-4.267166919917965E134"
+    },
+    {
+      "width": "double",
+      "bits": "dc287fcebe10b521",
+      "decimal": "-8.90350122274706E135"
+    },
+    {
+      "width": "double",
+      "bits": "dc3d705a87ef97e8",
+      "decimal": "-2.1397318996688414E136"
+    },
+    {
+      "width": "double",
+      "bits": "dd989289839683e6",
+      "decimal": "-7.491102322696359E142"
+    },
+    {
+      "width": "double",
+      "bits": "de9901fd568815a7",
+      "decimal": "-4.996350439496585E147"
+    },
+    {
+      "width": "double",
+      "bits": "dea5c7eaaac3829c",
+      "decimal": "-8.70330488773605E147"
+    },
+    {
+      "width": "double",
+      "bits": "df48f65fb8ad1025",
+      "decimal": "-1.0213959933323334E151"
+    },
+    {
+      "width": "double",
+      "bits": "df6308bc917305b8",
+      "decimal": "-3.1153066802336406E151"
+    },
+    {
+      "width": "double",
+      "bits": "e00f57f52c260654",
+      "decimal": "-5.253109557877183E154"
+    },
+    {
+      "width": "double",
+      "bits": "e2de0c4017e03816",
+      "decimal": "-1.7718666892853296E168"
+    },
+    {
+      "width": "double",
+      "bits": "e3bb4c06c9c0634e",
+      "decimal": "-2.6372549494979504E172"
+    },
+    {
+      "width": "double",
+      "bits": "e3c15682a8cc9733",
+      "decimal": "-3.3501542854275715E172"
+    },
+    {
+      "width": "double",
+      "bits": "e3fb560e82274b2c",
+      "decimal": "-4.225664469200439E173"
+    },
+    {
+      "width": "double",
+      "bits": "e4e3104f694d9bec",
+      "decimal": "-9.656392649720003E177"
+    },
+    {
+      "width": "double",
+      "bits": "e54f62cc7300583b",
+      "decimal": "-1.01747198507999E180"
+    },
+    {
+      "width": "double",
+      "bits": "e7ce8b4acc7e83a4",
+      "decimal": "-1.0887163164067585E192"
+    },
+    {
+      "width": "double",
+      "bits": "e8625b6045a68bb6",
+      "decimal": "-6.700195070726314E194"
+    },
+    {
+      "width": "double",
+      "bits": "e98af088e6e7388c",
+      "decimal": "-2.5776152879565177E200"
+    },
+    {
+      "width": "double",
+      "bits": "e9cb40178b45bc90",
+      "decimal": "-4.171760317376543E201"
+    },
+    {
+      "width": "double",
+      "bits": "ea93b9aa8b30ea50",
+      "decimal": "-2.4737725404883246E205"
+    },
+    {
+      "width": "double",
+      "bits": "eafd691b725c7817",
+      "decimal": "-2.360589931113985E207"
+    },
+    {
+      "width": "double",
+      "bits": "ecb75deabec89677",
+      "decimal": "-5.034511397288177E215"
+    },
+    {
+      "width": "double",
+      "bits": "ed01bd5cabdf6a3f",
+      "decimal": "-1.2230748818095503E217"
+    },
+    {
+      "width": "double",
+      "bits": "ed0ccaf789e3616c",
+      "decimal": "-1.9851411389963896E217"
+    },
+    {
+      "width": "double",
+      "bits": "ed981bc2efde34ab",
+      "decimal": "-8.510322533411176E219"
+    },
+    {
+      "width": "double",
+      "bits": "edd28e70ceaf60a7",
+      "decimal": "-1.0480711497065735E221"
+    },
+    {
+      "width": "double",
+      "bits": "edf77393112d8f0a",
+      "decimal": "-5.298180667533436E221"
+    },
+    {
+      "width": "double",
+      "bits": "ee4e9beac0833f0d",
+      "decimal": "-2.2128738987308357E223"
+    },
+    {
+      "width": "double",
+      "bits": "f00954694d65a75c",
+      "decimal": "-4.915608358876173E231"
+    },
+    {
+      "width": "double",
+      "bits": "f04fc5d03d5cf8bd",
+      "decimal": "-9.865541030701027E232"
+    },
+    {
+      "width": "double",
+      "bits": "f2a0b397531865ea",
+      "decimal": "-1.4254851620899974E244"
+    },
+    {
+      "width": "double",
+      "bits": "f2bde545caa1767e",
+      "decimal": "-5.1032132309923975E244"
+    },
+    {
+      "width": "double",
+      "bits": "f445c722bdbec734",
+      "decimal": "-1.2473888739659292E252"
+    },
+    {
+      "width": "double",
+      "bits": "f603e6e333662362",
+      "decimal": "-3.059996293592855E260"
+    },
+    {
+      "width": "double",
+      "bits": "f62e6bb80cd0bfc3",
+      "decimal": "-1.8709257933344616E261"
+    },
+    {
+      "width": "double",
+      "bits": "f7da5ec45907f9f5",
+      "decimal": "-2.17675370993549E269"
+    },
+    {
+      "width": "double",
+      "bits": "f7dd643a44056cae",
+      "decimal": "-2.426152522169455E269"
+    },
+    {
+      "width": "double",
+      "bits": "f85868b590907875",
+      "decimal": "-5.158060807235893E271"
+    },
+    {
+      "width": "double",
+      "bits": "f87a2d57c150003a",
+      "decimal": "-2.2126767181580062E272"
+    },
+    {
+      "width": "double",
+      "bits": "fbb3928114ce91c6",
+      "decimal": "-7.450704500698169E287"
+    },
+    {
+      "width": "double",
+      "bits": "fbb6e64f22cc34a4",
+      "decimal": "-8.717352791182875E287"
+    },
+    {
+      "width": "double",
+      "bits": "fd4322b3a3108c27",
+      "decimal": "-2.444256582763831E295"
+    },
+    {
+      "width": "double",
+      "bits": "fdb8a7074bf2ae21",
+      "decimal": "-4.030657625651077E297"
+    },
+    {
+      "width": "double",
+      "bits": "ffc0000000000000",
+      "decimal": "-2.247116418577895E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffc0000000000001",
+      "decimal": "-2.2471164185778954E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffc0000000000002",
+      "decimal": "-2.247116418577896E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffcffffffffffffe",
+      "decimal": "-4.494232837155789E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffcfffffffffffff",
+      "decimal": "-4.4942328371557893E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffd0000000000000",
+      "decimal": "-4.49423283715579E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffd0000000000001",
+      "decimal": "-4.494232837155791E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffd0000000000002",
+      "decimal": "-4.494232837155792E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffdffffffffffffe",
+      "decimal": "-8.988465674311578E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffdfffffffffffff",
+      "decimal": "-8.988465674311579E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffe0000000000000",
+      "decimal": "-8.98846567431158E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffe0000000000001",
+      "decimal": "-8.988465674311582E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffe0000000000002",
+      "decimal": "-8.988465674311584E307"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff0",
+      "decimal": "-1.7976931348623127E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff1",
+      "decimal": "-1.797693134862313E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff2",
+      "decimal": "-1.7976931348623131E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff3",
+      "decimal": "-1.7976931348623133E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff4",
+      "decimal": "-1.7976931348623135E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff5",
+      "decimal": "-1.7976931348623137E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff6",
+      "decimal": "-1.797693134862314E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff7",
+      "decimal": "-1.7976931348623141E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff8",
+      "decimal": "-1.7976931348623143E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffff9",
+      "decimal": "-1.7976931348623145E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffffa",
+      "decimal": "-1.7976931348623147E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffffb",
+      "decimal": "-1.797693134862315E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffffc",
+      "decimal": "-1.7976931348623151E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffffd",
+      "decimal": "-1.7976931348623153E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffeffffffffffffe",
+      "decimal": "-1.7976931348623155E308"
+    },
+    {
+      "width": "double",
+      "bits": "ffefffffffffffff",
+      "decimal": "-1.7976931348623157E308"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000000",
+      "decimal": "-Infinity"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000001",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000002",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000003",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000004",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000005",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000006",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000007",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000008",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000009",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000a",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000b",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000c",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000d",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000e",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff000000000000f",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff0000000000010",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "fff8000000000000",
+      "decimal": "NaN"
+    },
+    {
+      "width": "double",
+      "bits": "ffffffffffffffff",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "00000000",
+      "decimal": "0.0"
+    },
+    {
+      "width": "float",
+      "bits": "00000001",
+      "decimal": "1.4E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000002",
+      "decimal": "2.8E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000003",
+      "decimal": "4.2E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000004",
+      "decimal": "5.6E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000005",
+      "decimal": "7.0E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000006",
+      "decimal": "8.4E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000007",
+      "decimal": "9.8E-45"
+    },
+    {
+      "width": "float",
+      "bits": "00000008",
+      "decimal": "1.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000009",
+      "decimal": "1.3E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000a",
+      "decimal": "1.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000b",
+      "decimal": "1.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000c",
+      "decimal": "1.7E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000d",
+      "decimal": "1.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000e",
+      "decimal": "2.0E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000000f",
+      "decimal": "2.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000010",
+      "decimal": "2.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000011",
+      "decimal": "2.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000012",
+      "decimal": "2.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000013",
+      "decimal": "2.7E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000014",
+      "decimal": "2.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000015",
+      "decimal": "2.9E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000016",
+      "decimal": "3.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000017",
+      "decimal": "3.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000018",
+      "decimal": "3.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000019",
+      "decimal": "3.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001a",
+      "decimal": "3.6E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001b",
+      "decimal": "3.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001c",
+      "decimal": "3.9E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001d",
+      "decimal": "4.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001e",
+      "decimal": "4.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "0000001f",
+      "decimal": "4.3E-44"
+    },
+    {
+      "width": "float",
+      "bits": "00000020",
+      "decimal": "4.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff0",
+      "decimal": "1.1754921E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff1",
+      "decimal": "1.1754922E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff2",
+      "decimal": "1.1754924E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff3",
+      "decimal": "1.1754925E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff4",
+      "decimal": "1.1754927E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff5",
+      "decimal": "1.1754928E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff6",
+      "decimal": "1.175493E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff7",
+      "decimal": "1.1754931E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff8",
+      "decimal": "1.1754932E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffff9",
+      "decimal": "1.1754934E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffffa",
+      "decimal": "1.1754935E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffffb",
+      "decimal": "1.1754937E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffffc",
+      "decimal": "1.1754938E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffffd",
+      "decimal": "1.175494E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007ffffe",
+      "decimal": "1.1754941E-38"
+    },
+    {
+      "width": "float",
+      "bits": "007fffff",
+      "decimal": "1.1754942E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800000",
+      "decimal": "1.1754944E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800001",
+      "decimal": "1.1754945E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800002",
+      "decimal": "1.1754946E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800003",
+      "decimal": "1.1754948E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800004",
+      "decimal": "1.1754949E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800005",
+      "decimal": "1.175495E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800006",
+      "decimal": "1.1754952E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800007",
+      "decimal": "1.1754953E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800008",
+      "decimal": "1.1754955E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800009",
+      "decimal": "1.1754956E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000a",
+      "decimal": "1.1754958E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000b",
+      "decimal": "1.1754959E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000c",
+      "decimal": "1.175496E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000d",
+      "decimal": "1.1754962E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000e",
+      "decimal": "1.1754963E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0080000f",
+      "decimal": "1.1754965E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00800010",
+      "decimal": "1.1754966E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00fffffe",
+      "decimal": "2.3509884E-38"
+    },
+    {
+      "width": "float",
+      "bits": "00ffffff",
+      "decimal": "2.3509886E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01000000",
+      "decimal": "2.3509887E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01000001",
+      "decimal": "2.350989E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01000002",
+      "decimal": "2.3509893E-38"
+    },
+    {
+      "width": "float",
+      "bits": "0108f53a",
+      "decimal": "2.5155196E-38"
+    },
+    {
+      "width": "float",
+      "bits": "017ffffe",
+      "decimal": "4.7019768E-38"
+    },
+    {
+      "width": "float",
+      "bits": "017fffff",
+      "decimal": "4.701977E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01800000",
+      "decimal": "4.7019774E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01800001",
+      "decimal": "4.701978E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01800002",
+      "decimal": "4.7019785E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01fffffe",
+      "decimal": "9.4039537E-38"
+    },
+    {
+      "width": "float",
+      "bits": "01ffffff",
+      "decimal": "9.403954E-38"
+    },
+    {
+      "width": "float",
+      "bits": "020f55fd",
+      "decimal": "1.0530658E-37"
+    },
+    {
+      "width": "float",
+      "bits": "02ea1d17",
+      "decimal": "3.4399907E-37"
+    },
+    {
+      "width": "float",
+      "bits": "04593b12",
+      "decimal": "2.5535351E-36"
+    },
+    {
+      "width": "float",
+      "bits": "04f48546",
+      "decimal": "5.7486517E-36"
+    },
+    {
+      "width": "float",
+      "bits": "05238a5f",
+      "decimal": "7.689638E-36"
+    },
+    {
+      "width": "float",
+      "bits": "053c8b15",
+      "decimal": "8.865263E-36"
+    },
+    {
+      "width": "float",
+      "bits": "0571f148",
+      "decimal": "1.1376082E-35"
+    },
+    {
+      "width": "float",
+      "bits": "05d8d0a2",
+      "decimal": "2.0389182E-35"
+    },
+    {
+      "width": "float",
+      "bits": "06b1d016",
+      "decimal": "6.6885755E-35"
+    },
+    {
+      "width": "float",
+      "bits": "06bfb4e8",
+      "decimal": "7.211203E-35"
+    },
+    {
+      "width": "float",
+      "bits": "06fa553e",
+      "decimal": "9.41648E-35"
+    },
+    {
+      "width": "float",
+      "bits": "07ac77a4",
+      "decimal": "2.5950002E-34"
+    },
+    {
+      "width": "float",
+      "bits": "09d9fd01",
+      "decimal": "5.2478773E-33"
+    },
+    {
+      "width": "float",
+      "bits": "0a000000",
+      "decimal": "6.162976E-33"
+    },
+    {
+      "width": "float",
+      "bits": "0a000001",
+      "decimal": "6.1629766E-33"
+    },
+    {
+      "width": "float",
+      "bits": "0a000002",
+      "decimal": "6.162977E-33"
+    },
+    {
+      "width": "float",
+      "bits": "0a47d20d",
+      "decimal": "9.621008E-33"
+    },
+    {
+      "width": "float",
+      "bits": "0a746955",
+      "decimal": "1.17679834E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0a7ffffe",
+      "decimal": "1.232595E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0a7fffff",
+      "decimal": "1.2325951E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0b550516",
+      "decimal": "4.1026134E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0b8efb74",
+      "decimal": "5.5074755E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0b903326",
+      "decimal": "5.554374E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0b90b197",
+      "decimal": "5.573399E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0bb2645f",
+      "decimal": "6.871413E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0bde28bc",
+      "decimal": "8.557258E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0bfdc81c",
+      "decimal": "9.7753146E-32"
+    },
+    {
+      "width": "float",
+      "bits": "0cff503d",
+      "decimal": "3.9337263E-31"
+    },
+    {
+      "width": "float",
+      "bits": "0d2af044",
+      "decimal": "5.2674504E-31"
+    },
+    {
+      "width": "float",
+      "bits": "0dbd8afa",
+      "decimal": "1.1681482E-30"
+    },
+    {
+      "width": "float",
+      "bits": "0eaf5e0f",
+      "decimal": "4.3231406E-30"
+    },
+    {
+      "width": "float",
+      "bits": "0ecd45c1",
+      "decimal": "5.0603572E-30"
+    },
+    {
+      "width": "float",
+      "bits": "0f29f907",
+      "decimal": "8.380304E-30"
+    },
+    {
+      "width": "float",
+      "bits": "0f943338",
+      "decimal": "1.4613655E-29"
+    },
+    {
+      "width": "float",
+      "bits": "11263f80",
+      "decimal": "1.3114658E-28"
+    },
+    {
+      "width": "float",
+      "bits": "11826b12",
+      "decimal": "2.057637E-28"
+    },
+    {
+      "width": "float",
+      "bits": "11907452",
+      "decimal": "2.2790882E-28"
+    },
+    {
+      "width": "float",
+      "bits": "130f3de6",
+      "decimal": "1.8079656E-27"
+    },
+    {
+      "width": "float",
+      "bits": "13597eb6",
+      "decimal": "2.7451724E-27"
+    },
+    {
+      "width": "float",
+      "bits": "13cacf72",
+      "decimal": "5.1196526E-27"
+    },
+    {
+      "width": "float",
+      "bits": "140c8c4c",
+      "decimal": "7.0958624E-27"
+    },
+    {
+      "width": "float",
+      "bits": "1508f6ca",
+      "decimal": "2.7659664E-26"
+    },
+    {
+      "width": "float",
+      "bits": "15cbb5b6",
+      "decimal": "8.2277736E-26"
+    },
+    {
+      "width": "float",
+      "bits": "16addd3b",
+      "decimal": "2.8089273E-25"
+    },
+    {
+      "width": "float",
+      "bits": "16ea2527",
+      "decimal": "3.7828185E-25"
+    },
+    {
+      "width": "float",
+      "bits": "1780c6f8",
+      "decimal": "8.322033E-25"
+    },
+    {
+      "width": "float",
+      "bits": "183a1e9a",
+      "decimal": "2.4055386E-24"
+    },
+    {
+      "width": "float",
+      "bits": "1911920a",
+      "decimal": "7.525817E-24"
+    },
+    {
+      "width": "float",
+      "bits": "1a9ae3bd",
+      "decimal": "6.406084E-23"
+    },
+    {
+      "width": "float",
+      "bits": "1b2be5c5",
+      "decimal": "1.4219031E-22"
+    },
+    {
+      "width": "float",
+      "bits": "1bb8addf",
+      "decimal": "3.0552608E-22"
+    },
+    {
+      "width": "float",
+      "bits": "1bd0775a",
+      "decimal": "3.4487843E-22"
+    },
+    {
+      "width": "float",
+      "bits": "1ca774f5",
+      "decimal": "1.1081366E-21"
+    },
+    {
+      "width": "float",
+      "bits": "1d1e2572",
+      "decimal": "2.0930485E-21"
+    },
+    {
+      "width": "float",
+      "bits": "1eec0edd",
+      "decimal": "2.499362E-20"
+    },
+    {
+      "width": "float",
+      "bits": "1fd96d74",
+      "decimal": "9.208415E-20"
+    },
+    {
+      "width": "float",
+      "bits": "20ba6ec3",
+      "decimal": "3.1582922E-19"
+    },
+    {
+      "width": "float",
+      "bits": "21743b59",
+      "decimal": "8.274896E-19"
+    },
+    {
+      "width": "float",
+      "bits": "218b8d96",
+      "decimal": "9.456484E-19"
+    },
+    {
+      "width": "float",
+      "bits": "221bfa47",
+      "decimal": "2.1138913E-18"
+    },
+    {
+      "width": "float",
+      "bits": "227daf42",
+      "decimal": "3.4380674E-18"
+    },
+    {
+      "width": "float",
+      "bits": "229815ea",
+      "decimal": "4.1222885E-18"
+    },
+    {
+      "width": "float",
+      "bits": "230820e9",
+      "decimal": "7.379544E-18"
+    },
+    {
+      "width": "float",
+      "bits": "24b5beb3",
+      "decimal": "7.8819294E-17"
+    },
+    {
+      "width": "float",
+      "bits": "261884e5",
+      "decimal": "5.29157E-16"
+    },
+    {
+      "width": "float",
+      "bits": "26fbe5d6",
+      "decimal": "1.7478921E-15"
+    },
+    {
+      "width": "float",
+      "bits": "27048c3e",
+      "decimal": "1.8394705E-15"
+    },
+    {
+      "width": "float",
+      "bits": "2808918b",
+      "decimal": "7.581076E-15"
+    },
+    {
+      "width": "float",
+      "bits": "2848e371",
+      "decimal": "1.1151549E-14"
+    },
+    {
+      "width": "float",
+      "bits": "2966dfcb",
+      "decimal": "5.126437E-14"
+    },
+    {
+      "width": "float",
+      "bits": "2a70e33d",
+      "decimal": "2.1395121E-13"
+    },
+    {
+      "width": "float",
+      "bits": "2cb842a0",
+      "decimal": "5.2369914E-12"
+    },
+    {
+      "width": "float",
+      "bits": "2cd74733",
+      "decimal": "6.1185722E-12"
+    },
+    {
+      "width": "float",
+      "bits": "2d6273bd",
+      "decimal": "1.2872312E-11"
+    },
+    {
+      "width": "float",
+      "bits": "2ddd236c",
+      "decimal": "2.5140522E-11"
+    },
+    {
+      "width": "float",
+      "bits": "2f5a4e04",
+      "decimal": "1.9854701E-10"
+    },
+    {
+      "width": "float",
+      "bits": "3015be7a",
+      "decimal": "5.447657E-10"
+    },
+    {
+      "width": "float",
+      "bits": "305e1f84",
+      "decimal": "8.0807916E-10"
+    },
+    {
+      "width": "float",
+      "bits": "307453ee",
+      "decimal": "8.8885954E-10"
+    },
+    {
+      "width": "float",
+      "bits": "3163b59a",
+      "decimal": "3.3136076E-9"
+    },
+    {
+      "width": "float",
+      "bits": "32afbdc2",
+      "decimal": "2.0458973E-8"
+    },
+    {
+      "width": "float",
+      "bits": "342f8717",
+      "decimal": "1.634729E-7"
+    },
+    {
+      "width": "float",
+      "bits": "34382c6c",
+      "decimal": "1.7152496E-7"
+    },
+    {
+      "width": "float",
+      "bits": "368c34d2",
+      "decimal": "4.1784742E-6"
+    },
+    {
+      "width": "float",
+      "bits": "36ea35c8",
+      "decimal": "6.9800044E-6"
+    },
+    {
+      "width": "float",
+      "bits": "383ce9e6",
+      "decimal": "4.5040528E-5"
+    },
+    {
+      "width": "float",
+      "bits": "387dc89e",
+      "decimal": "6.050674E-5"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b714",
+      "decimal": "9.9999976E-5"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b715",
+      "decimal": "9.999998E-5"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b716",
+      "decimal": "9.999999E-5"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b717",
+      "decimal": "1.0E-4"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b718",
+      "decimal": "1.00000005E-4"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b719",
+      "decimal": "1.0000001E-4"
+    },
+    {
+      "width": "float",
+      "bits": "38d1b71a",
+      "decimal": "1.0000002E-4"
+    },
+    {
+      "width": "float",
+      "bits": "395f8e76",
+      "decimal": "2.1320008E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3996169b",
+      "decimal": "2.8627072E-4"
+    },
+    {
+      "width": "float",
+      "bits": "39d3c7af",
+      "decimal": "4.0393832E-4"
+    },
+    {
+      "width": "float",
+      "bits": "39f92b46",
+      "decimal": "4.7525222E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3a480e5a",
+      "decimal": "7.631533E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3a83126c",
+      "decimal": "9.999997E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3a83126d",
+      "decimal": "9.999998E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3a83126e",
+      "decimal": "9.999999E-4"
+    },
+    {
+      "width": "float",
+      "bits": "3a83126f",
+      "decimal": "0.001"
+    },
+    {
+      "width": "float",
+      "bits": "3a831270",
+      "decimal": "0.0010000002"
+    },
+    {
+      "width": "float",
+      "bits": "3a831271",
+      "decimal": "0.0010000003"
+    },
+    {
+      "width": "float",
+      "bits": "3a831272",
+      "decimal": "0.0010000004"
+    },
+    {
+      "width": "float",
+      "bits": "3abadfba",
+      "decimal": "0.001425735"
+    },
+    {
+      "width": "float",
+      "bits": "3bb53f66",
+      "decimal": "0.0055312393"
+    },
+    {
+      "width": "float",
+      "bits": "3bddaa40",
+      "decimal": "0.00676468"
+    },
+    {
+      "width": "float",
+      "bits": "3cd1284b",
+      "decimal": "0.025531908"
+    },
+    {
+      "width": "float",
+      "bits": "3dccccca",
+      "decimal": "0.09999998"
+    },
+    {
+      "width": "float",
+      "bits": "3dcccccb",
+      "decimal": "0.09999999"
+    },
+    {
+      "width": "float",
+      "bits": "3dcccccc",
+      "decimal": "0.099999994"
+    },
+    {
+      "width": "float",
+      "bits": "3dcccccd",
+      "decimal": "0.1"
+    },
+    {
+      "width": "float",
+      "bits": "3dccccce",
+      "decimal": "0.10000001"
+    },
+    {
+      "width": "float",
+      "bits": "3dcccccf",
+      "decimal": "0.10000002"
+    },
+    {
+      "width": "float",
+      "bits": "3dccccd0",
+      "decimal": "0.100000024"
+    },
+    {
+      "width": "float",
+      "bits": "3e687a9b",
+      "decimal": "0.2270302"
+    },
+    {
+      "width": "float",
+      "bits": "3f000000",
+      "decimal": "0.5"
+    },
+    {
+      "width": "float",
+      "bits": "3f000001",
+      "decimal": "0.50000006"
+    },
+    {
+      "width": "float",
+      "bits": "3f000002",
+      "decimal": "0.5000001"
+    },
+    {
+      "width": "float",
+      "bits": "3f7ffffd",
+      "decimal": "0.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "3f7ffffe",
+      "decimal": "0.9999999"
+    },
+    {
+      "width": "float",
+      "bits": "3f7fffff",
+      "decimal": "0.99999994"
+    },
+    {
+      "width": "float",
+      "bits": "3f800000",
+      "decimal": "1.0"
+    },
+    {
+      "width": "float",
+      "bits": "3f800001",
+      "decimal": "1.0000001"
+    },
+    {
+      "width": "float",
+      "bits": "3f800002",
+      "decimal": "1.0000002"
+    },
+    {
+      "width": "float",
+      "bits": "3f800003",
+      "decimal": "1.0000004"
+    },
+    {
+      "width": "float",
+      "bits": "3f878351",
+      "decimal": "1.058695"
+    },
+    {
+      "width": "float",
+      "bits": "3fc2f483",
+      "decimal": "1.5230869"
+    },
+    {
+      "width": "float",
+      "bits": "3ffffffe",
+      "decimal": "1.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "3fffffff",
+      "decimal": "1.9999999"
+    },
+    {
+      "width": "float",
+      "bits": "40000000",
+      "decimal": "2.0"
+    },
+    {
+      "width": "float",
+      "bits": "40000001",
+      "decimal": "2.0000002"
+    },
+    {
+      "width": "float",
+      "bits": "40000002",
+      "decimal": "2.0000005"
+    },
+    {
+      "width": "float",
+      "bits": "402dded8",
+      "decimal": "2.7167263"
+    },
+    {
+      "width": "float",
+      "bits": "407ffffe",
+      "decimal": "3.9999995"
+    },
+    {
+      "width": "float",
+      "bits": "407fffff",
+      "decimal": "3.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "411dd88b",
+      "decimal": "9.865367"
+    },
+    {
+      "width": "float",
+      "bits": "4164295c",
+      "decimal": "14.2600975"
+    },
+    {
+      "width": "float",
+      "bits": "4358cba4",
+      "decimal": "216.79547"
+    },
+    {
+      "width": "float",
+      "bits": "43e68e7c",
+      "decimal": "461.11316"
+    },
+    {
+      "width": "float",
+      "bits": "444b2df1",
+      "decimal": "812.71783"
+    },
+    {
+      "width": "float",
+      "bits": "453c19ee",
+      "decimal": "3009.6206"
+    },
+    {
+      "width": "float",
+      "bits": "453f18fb",
+      "decimal": "3057.5613"
+    },
+    {
+      "width": "float",
+      "bits": "45f9c476",
+      "decimal": "7992.5576"
+    },
+    {
+      "width": "float",
+      "bits": "460e5152",
+      "decimal": "9108.33"
+    },
+    {
+      "width": "float",
+      "bits": "473aba7e",
+      "decimal": "47802.492"
+    },
+    {
+      "width": "float",
+      "bits": "4816e345",
+      "decimal": "154509.08"
+    },
+    {
+      "width": "float",
+      "bits": "48e0b35c",
+      "decimal": "460186.88"
+    },
+    {
+      "width": "float",
+      "bits": "4969392a",
+      "decimal": "955282.6"
+    },
+    {
+      "width": "float",
+      "bits": "497423fd",
+      "decimal": "999999.8"
+    },
+    {
+      "width": "float",
+      "bits": "497423fe",
+      "decimal": "999999.9"
+    },
+    {
+      "width": "float",
+      "bits": "497423ff",
+      "decimal": "999999.94"
+    },
+    {
+      "width": "float",
+      "bits": "49742400",
+      "decimal": "1000000.0"
+    },
+    {
+      "width": "float",
+      "bits": "49742401",
+      "decimal": "1000000.06"
+    },
+    {
+      "width": "float",
+      "bits": "49742402",
+      "decimal": "1000000.1"
+    },
+    {
+      "width": "float",
+      "bits": "49742403",
+      "decimal": "1000000.2"
+    },
+    {
+      "width": "float",
+      "bits": "49e4a2dd",
+      "decimal": "1872987.6"
+    },
+    {
+      "width": "float",
+      "bits": "49f3fc0b",
+      "decimal": "1998721.4"
+    },
+    {
+      "width": "float",
+      "bits": "4a000001",
+      "decimal": "2097152.2"
+    },
+    {
+      "width": "float",
+      "bits": "4a000003",
+      "decimal": "2097152.8"
+    },
+    {
+      "width": "float",
+      "bits": "4a14712b",
+      "decimal": "2432074.8"
+    },
+    {
+      "width": "float",
+      "bits": "4a2f83f9",
+      "decimal": "2875646.2"
+    },
+    {
+      "width": "float",
+      "bits": "4a5f81a9",
+      "decimal": "3661930.2"
+    },
+    {
+      "width": "float",
+      "bits": "4b18967d",
+      "decimal": "9999997.0"
+    },
+    {
+      "width": "float",
+      "bits": "4b18967e",
+      "decimal": "9999998.0"
+    },
+    {
+      "width": "float",
+      "bits": "4b18967f",
+      "decimal": "9999999.0"
+    },
+    {
+      "width": "float",
+      "bits": "4b189680",
+      "decimal": "1.0E7"
+    },
+    {
+      "width": "float",
+      "bits": "4b189681",
+      "decimal": "1.0000001E7"
+    },
+    {
+      "width": "float",
+      "bits": "4b189682",
+      "decimal": "1.0000002E7"
+    },
+    {
+      "width": "float",
+      "bits": "4b189683",
+      "decimal": "1.0000003E7"
+    },
+    {
+      "width": "float",
+      "bits": "4c61364b",
+      "decimal": "5.9037996E7"
+    },
+    {
+      "width": "float",
+      "bits": "4caba1cf",
+      "decimal": "8.998463E7"
+    },
+    {
+      "width": "float",
+      "bits": "4e06b851",
+      "decimal": "5.650566E8"
+    },
+    {
+      "width": "float",
+      "bits": "4e4e82a9",
+      "decimal": "8.6616736E8"
+    },
+    {
+      "width": "float",
+      "bits": "4eb8ac61",
+      "decimal": "1.5491524E9"
+    },
+    {
+      "width": "float",
+      "bits": "4ec2e350",
+      "decimal": "1.6348385E9"
+    },
+    {
+      "width": "float",
+      "bits": "4f3a08b5",
+      "decimal": "3.1211328E9"
+    },
+    {
+      "width": "float",
+      "bits": "5021816e",
+      "decimal": "1.0838456E10"
+    },
+    {
+      "width": "float",
+      "bits": "50858639",
+      "decimal": "1.792133E10"
+    },
+    {
+      "width": "float",
+      "bits": "50dbe72e",
+      "decimal": "2.9514887E10"
+    },
+    {
+      "width": "float",
+      "bits": "524472f2",
+      "decimal": "2.1093551E11"
+    },
+    {
+      "width": "float",
+      "bits": "5267fe85",
+      "decimal": "2.491019E11"
+    },
+    {
+      "width": "float",
+      "bits": "52bb3494",
+      "decimal": "4.020205E11"
+    },
+    {
+      "width": "float",
+      "bits": "52fba3dd",
+      "decimal": "5.4039298E11"
+    },
+    {
+      "width": "float",
+      "bits": "534d2221",
+      "decimal": "8.810409E11"
+    },
+    {
+      "width": "float",
+      "bits": "53c9ce69",
+      "decimal": "1.7335028E12"
+    },
+    {
+      "width": "float",
+      "bits": "5573e711",
+      "decimal": "1.6760859E13"
+    },
+    {
+      "width": "float",
+      "bits": "5710932a",
+      "decimal": "1.5896174E14"
+    },
+    {
+      "width": "float",
+      "bits": "5763ca90",
+      "decimal": "2.5045914E14"
+    },
+    {
+      "width": "float",
+      "bits": "5832f008",
+      "decimal": "7.86976E14"
+    },
+    {
+      "width": "float",
+      "bits": "5bd84420",
+      "decimal": "1.21747E17"
+    },
+    {
+      "width": "float",
+      "bits": "5c4d7c69",
+      "decimal": "2.3135664E17"
+    },
+    {
+      "width": "float",
+      "bits": "5cb45b37",
+      "decimal": "4.061263E17"
+    },
+    {
+      "width": "float",
+      "bits": "5d2682b8",
+      "decimal": "7.498972E17"
+    },
+    {
+      "width": "float",
+      "bits": "5d52cbe0",
+      "decimal": "9.493425E17"
+    },
+    {
+      "width": "float",
+      "bits": "5d8becc3",
+      "decimal": "1.260331E18"
+    },
+    {
+      "width": "float",
+      "bits": "5e3a133d",
+      "decimal": "3.352032E18"
+    },
+    {
+      "width": "float",
+      "bits": "5e76b2c7",
+      "decimal": "4.4441224E18"
+    },
+    {
+      "width": "float",
+      "bits": "5f91e360",
+      "decimal": "2.1024703E19"
+    },
+    {
+      "width": "float",
+      "bits": "600258b7",
+      "decimal": "3.7569833E19"
+    },
+    {
+      "width": "float",
+      "bits": "606ea501",
+      "decimal": "6.8784607E19"
+    },
+    {
+      "width": "float",
+      "bits": "60a55694",
+      "decimal": "9.531098E19"
+    },
+    {
+      "width": "float",
+      "bits": "61304983",
+      "decimal": "2.0324525E20"
+    },
+    {
+      "width": "float",
+      "bits": "626f8d2f",
+      "decimal": "1.1047363E21"
+    },
+    {
+      "width": "float",
+      "bits": "62e04eba",
+      "decimal": "2.0688718E21"
+    },
+    {
+      "width": "float",
+      "bits": "62e50372",
+      "decimal": "2.1122763E21"
+    },
+    {
+      "width": "float",
+      "bits": "63d49625",
+      "decimal": "7.8430576E21"
+    },
+    {
+      "width": "float",
+      "bits": "6476e3a9",
+      "decimal": "1.8217215E22"
+    },
+    {
+      "width": "float",
+      "bits": "649af179",
+      "decimal": "2.2865588E22"
+    },
+    {
+      "width": "float",
+      "bits": "64ecc577",
+      "decimal": "3.4941284E22"
+    },
+    {
+      "width": "float",
+      "bits": "65a96813",
+      "decimal": "9.999997E22"
+    },
+    {
+      "width": "float",
+      "bits": "65a96814",
+      "decimal": "9.999998E22"
+    },
+    {
+      "width": "float",
+      "bits": "65a96815",
+      "decimal": "9.999999E22"
+    },
+    {
+      "width": "float",
+      "bits": "65a96816",
+      "decimal": "1.0E23"
+    },
+    {
+      "width": "float",
+      "bits": "65a96817",
+      "decimal": "1.0000001E23"
+    },
+    {
+      "width": "float",
+      "bits": "65a96818",
+      "decimal": "1.0000002E23"
+    },
+    {
+      "width": "float",
+      "bits": "65a96819",
+      "decimal": "1.00000025E23"
+    },
+    {
+      "width": "float",
+      "bits": "65fb1299",
+      "decimal": "1.4820713E23"
+    },
+    {
+      "width": "float",
+      "bits": "68586fa1",
+      "decimal": "4.0883614E24"
+    },
+    {
+      "width": "float",
+      "bits": "69660658",
+      "decimal": "1.7380181E25"
+    },
+    {
+      "width": "float",
+      "bits": "6a942f0c",
+      "decimal": "8.95716E25"
+    },
+    {
+      "width": "float",
+      "bits": "6c756615",
+      "decimal": "1.1866756E27"
+    },
+    {
+      "width": "float",
+      "bits": "6cf410e5",
+      "decimal": "2.3604615E27"
+    },
+    {
+      "width": "float",
+      "bits": "6d45346d",
+      "decimal": "3.8144954E27"
+    },
+    {
+      "width": "float",
+      "bits": "6d4c2147",
+      "decimal": "3.9484482E27"
+    },
+    {
+      "width": "float",
+      "bits": "6de73d51",
+      "decimal": "8.9456455E27"
+    },
+    {
+      "width": "float",
+      "bits": "6e643dc9",
+      "decimal": "1.7659319E28"
+    },
+    {
+      "width": "float",
+      "bits": "6ee02cc0",
+      "decimal": "3.468937E28"
+    },
+    {
+      "width": "float",
+      "bits": "711decc9",
+      "decimal": "7.820064E29"
+    },
+    {
+      "width": "float",
+      "bits": "72996778",
+      "decimal": "6.0769654E30"
+    },
+    {
+      "width": "float",
+      "bits": "735f65ec",
+      "decimal": "1.7699424E31"
+    },
+    {
+      "width": "float",
+      "bits": "74434662",
+      "decimal": "6.1885096E31"
+    },
+    {
+      "width": "float",
+      "bits": "75770023",
+      "decimal": "3.1311038E32"
+    },
+    {
+      "width": "float",
+      "bits": "75ba7d15",
+      "decimal": "4.7280478E32"
+    },
+    {
+      "width": "float",
+      "bits": "761dd737",
+      "decimal": "8.0034735E32"
+    },
+    {
+      "width": "float",
+      "bits": "76f6562a",
+      "decimal": "2.4981497E33"
+    },
+    {
+      "width": "float",
+      "bits": "7700c969",
+      "decimal": "2.6121058E33"
+    },
+    {
+      "width": "float",
+      "bits": "77978c93",
+      "decimal": "6.1475626E33"
+    },
+    {
+      "width": "float",
+      "bits": "779adf3a",
+      "decimal": "6.282354E33"
+    },
+    {
+      "width": "float",
+      "bits": "7991ae95",
+      "decimal": "9.4553E34"
+    },
+    {
+      "width": "float",
+      "bits": "7a54d662",
+      "decimal": "2.7627878E35"
+    },
+    {
+      "width": "float",
+      "bits": "7a8e9349",
+      "decimal": "3.7014673E35"
+    },
+    {
+      "width": "float",
+      "bits": "7b492c89",
+      "decimal": "1.04455495E36"
+    },
+    {
+      "width": "float",
+      "bits": "7c928e73",
+      "decimal": "6.0877164E36"
+    },
+    {
+      "width": "float",
+      "bits": "7cdbdb34",
+      "decimal": "9.132472E36"
+    },
+    {
+      "width": "float",
+      "bits": "7cfa5b75",
+      "decimal": "1.03994335E37"
+    },
+    {
+      "width": "float",
+      "bits": "7d8e1242",
+      "decimal": "2.3605647E37"
+    },
+    {
+      "width": "float",
+      "bits": "7ddaf72b",
+      "decimal": "3.6381884E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e000000",
+      "decimal": "4.2535296E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e000001",
+      "decimal": "4.25353E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e000002",
+      "decimal": "4.2535306E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e43bb2b",
+      "decimal": "6.5042823E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e7ffffe",
+      "decimal": "8.507058E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e7fffff",
+      "decimal": "8.5070587E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e800000",
+      "decimal": "8.507059E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e800001",
+      "decimal": "8.50706E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e800002",
+      "decimal": "8.507061E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e967696",
+      "decimal": "9.999997E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e967697",
+      "decimal": "9.999998E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e967698",
+      "decimal": "9.999999E37"
+    },
+    {
+      "width": "float",
+      "bits": "7e967699",
+      "decimal": "1.0E38"
+    },
+    {
+      "width": "float",
+      "bits": "7e96769a",
+      "decimal": "1.0000001E38"
+    },
+    {
+      "width": "float",
+      "bits": "7e96769b",
+      "decimal": "1.0000002E38"
+    },
+    {
+      "width": "float",
+      "bits": "7e96769c",
+      "decimal": "1.0000003E38"
+    },
+    {
+      "width": "float",
+      "bits": "7efffffe",
+      "decimal": "1.7014116E38"
+    },
+    {
+      "width": "float",
+      "bits": "7effffff",
+      "decimal": "1.7014117E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f000000",
+      "decimal": "1.7014118E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f000001",
+      "decimal": "1.701412E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f000002",
+      "decimal": "1.7014122E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f08c773",
+      "decimal": "1.818106E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f139076",
+      "decimal": "1.961466E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff0",
+      "decimal": "3.4028204E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff1",
+      "decimal": "3.4028206E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff2",
+      "decimal": "3.4028208E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff3",
+      "decimal": "3.402821E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff4",
+      "decimal": "3.4028212E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff5",
+      "decimal": "3.4028214E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff6",
+      "decimal": "3.4028216E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff7",
+      "decimal": "3.4028218E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff8",
+      "decimal": "3.402822E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffff9",
+      "decimal": "3.4028222E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffffa",
+      "decimal": "3.4028225E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffffb",
+      "decimal": "3.4028227E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffffc",
+      "decimal": "3.4028229E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffffd",
+      "decimal": "3.402823E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7ffffe",
+      "decimal": "3.4028233E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f7fffff",
+      "decimal": "3.4028235E38"
+    },
+    {
+      "width": "float",
+      "bits": "7f800000",
+      "decimal": "Infinity"
+    },
+    {
+      "width": "float",
+      "bits": "7f800001",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800002",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800003",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800004",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800005",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800006",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800007",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800008",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800009",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000a",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000b",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000c",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000d",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000e",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f80000f",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7f800010",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7fc00000",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7fcb8718",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "7fffffff",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "80000000",
+      "decimal": "-0.0"
+    },
+    {
+      "width": "float",
+      "bits": "80000001",
+      "decimal": "-1.4E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000002",
+      "decimal": "-2.8E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000003",
+      "decimal": "-4.2E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000004",
+      "decimal": "-5.6E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000005",
+      "decimal": "-7.0E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000006",
+      "decimal": "-8.4E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000007",
+      "decimal": "-9.8E-45"
+    },
+    {
+      "width": "float",
+      "bits": "80000008",
+      "decimal": "-1.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000009",
+      "decimal": "-1.3E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000a",
+      "decimal": "-1.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000b",
+      "decimal": "-1.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000c",
+      "decimal": "-1.7E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000d",
+      "decimal": "-1.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000e",
+      "decimal": "-2.0E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000000f",
+      "decimal": "-2.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000010",
+      "decimal": "-2.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000011",
+      "decimal": "-2.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000012",
+      "decimal": "-2.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000013",
+      "decimal": "-2.7E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000014",
+      "decimal": "-2.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000015",
+      "decimal": "-2.9E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000016",
+      "decimal": "-3.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000017",
+      "decimal": "-3.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000018",
+      "decimal": "-3.4E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000019",
+      "decimal": "-3.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001a",
+      "decimal": "-3.6E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001b",
+      "decimal": "-3.8E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001c",
+      "decimal": "-3.9E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001d",
+      "decimal": "-4.1E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001e",
+      "decimal": "-4.2E-44"
+    },
+    {
+      "width": "float",
+      "bits": "8000001f",
+      "decimal": "-4.3E-44"
+    },
+    {
+      "width": "float",
+      "bits": "80000020",
+      "decimal": "-4.5E-44"
+    },
+    {
+      "width": "float",
+      "bits": "800acf3f",
+      "decimal": "-9.92701E-40"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff0",
+      "decimal": "-1.1754921E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff1",
+      "decimal": "-1.1754922E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff2",
+      "decimal": "-1.1754924E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff3",
+      "decimal": "-1.1754925E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff4",
+      "decimal": "-1.1754927E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff5",
+      "decimal": "-1.1754928E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff6",
+      "decimal": "-1.175493E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff7",
+      "decimal": "-1.1754931E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff8",
+      "decimal": "-1.1754932E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffff9",
+      "decimal": "-1.1754934E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffffa",
+      "decimal": "-1.1754935E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffffb",
+      "decimal": "-1.1754937E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffffc",
+      "decimal": "-1.1754938E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffffd",
+      "decimal": "-1.175494E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807ffffe",
+      "decimal": "-1.1754941E-38"
+    },
+    {
+      "width": "float",
+      "bits": "807fffff",
+      "decimal": "-1.1754942E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800000",
+      "decimal": "-1.1754944E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800001",
+      "decimal": "-1.1754945E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800002",
+      "decimal": "-1.1754946E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800003",
+      "decimal": "-1.1754948E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800004",
+      "decimal": "-1.1754949E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800005",
+      "decimal": "-1.175495E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800006",
+      "decimal": "-1.1754952E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800007",
+      "decimal": "-1.1754953E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800008",
+      "decimal": "-1.1754955E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800009",
+      "decimal": "-1.1754956E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000a",
+      "decimal": "-1.1754958E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000b",
+      "decimal": "-1.1754959E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000c",
+      "decimal": "-1.175496E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000d",
+      "decimal": "-1.1754962E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000e",
+      "decimal": "-1.1754963E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8080000f",
+      "decimal": "-1.1754965E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80800010",
+      "decimal": "-1.1754966E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80b99a83",
+      "decimal": "-1.7044995E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80fffffe",
+      "decimal": "-2.3509884E-38"
+    },
+    {
+      "width": "float",
+      "bits": "80ffffff",
+      "decimal": "-2.3509886E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81000000",
+      "decimal": "-2.3509887E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81000001",
+      "decimal": "-2.350989E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81000002",
+      "decimal": "-2.3509893E-38"
+    },
+    {
+      "width": "float",
+      "bits": "817ffffe",
+      "decimal": "-4.7019768E-38"
+    },
+    {
+      "width": "float",
+      "bits": "817fffff",
+      "decimal": "-4.701977E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81800000",
+      "decimal": "-4.7019774E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81800001",
+      "decimal": "-4.701978E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81800002",
+      "decimal": "-4.7019785E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81fffffe",
+      "decimal": "-9.4039537E-38"
+    },
+    {
+      "width": "float",
+      "bits": "81ffffff",
+      "decimal": "-9.403954E-38"
+    },
+    {
+      "width": "float",
+      "bits": "820344e5",
+      "decimal": "-9.644132E-38"
+    },
+    {
+      "width": "float",
+      "bits": "8247beb1",
+      "decimal": "-1.4674937E-37"
+    },
+    {
+      "width": "float",
+      "bits": "828a05cd",
+      "decimal": "-2.0280607E-37"
+    },
+    {
+      "width": "float",
+      "bits": "82a13a1e",
+      "decimal": "-2.3690181E-37"
+    },
+    {
+      "width": "float",
+      "bits": "82eecd81",
+      "decimal": "-3.508891E-37"
+    },
+    {
+      "width": "float",
+      "bits": "841140de",
+      "decimal": "-1.7074454E-36"
+    },
+    {
+      "width": "float",
+      "bits": "84fe931f",
+      "decimal": "-5.9850222E-36"
+    },
+    {
+      "width": "float",
+      "bits": "8517a4fe",
+      "decimal": "-7.13029E-36"
+    },
+    {
+      "width": "float",
+      "bits": "859b7d51",
+      "decimal": "-1.4622164E-35"
+    },
+    {
+      "width": "float",
+      "bits": "87ad8df7",
+      "decimal": "-2.6113586E-34"
+    },
+    {
+      "width": "float",
+      "bits": "87b2f7a6",
+      "decimal": "-2.6928018E-34"
+    },
+    {
+      "width": "float",
+      "bits": "8894bfcc",
+      "decimal": "-8.952517E-34"
+    },
+    {
+      "width": "float",
+      "bits": "8a000000",
+      "decimal": "-6.162976E-33"
+    },
+    {
+      "width": "float",
+      "bits": "8a000001",
+      "decimal": "-6.1629766E-33"
+    },
+    {
+      "width": "float",
+      "bits": "8a000002",
+      "decimal": "-6.162977E-33"
+    },
+    {
+      "width": "float",
+      "bits": "8a7ffffe",
+      "decimal": "-1.232595E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8a7fffff",
+      "decimal": "-1.2325951E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8aff0fc3",
+      "decimal": "-2.4561536E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8b597cae",
+      "decimal": "-4.1886478E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8b63b3ed",
+      "decimal": "-4.385397E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8b8f9761",
+      "decimal": "-5.5309366E-32"
+    },
+    {
+      "width": "float",
+      "bits": "8c098712",
+      "decimal": "-1.0594742E-31"
+    },
+    {
+      "width": "float",
+      "bits": "8cdad26f",
+      "decimal": "-3.3714868E-31"
+    },
+    {
+      "width": "float",
+      "bits": "8ce84324",
+      "decimal": "-3.5785669E-31"
+    },
+    {
+      "width": "float",
+      "bits": "8db1bd65",
+      "decimal": "-1.0954062E-30"
+    },
+    {
+      "width": "float",
+      "bits": "8e1f3431",
+      "decimal": "-1.9623392E-30"
+    },
+    {
+      "width": "float",
+      "bits": "8e22d891",
+      "decimal": "-2.0072315E-30"
+    },
+    {
+      "width": "float",
+      "bits": "8eb53022",
+      "decimal": "-4.4666295E-30"
+    },
+    {
+      "width": "float",
+      "bits": "9007731e",
+      "decimal": "-2.671274E-29"
+    },
+    {
+      "width": "float",
+      "bits": "909f66aa",
+      "decimal": "-6.287262E-29"
+    },
+    {
+      "width": "float",
+      "bits": "90bcce3d",
+      "decimal": "-7.4470685E-29"
+    },
+    {
+      "width": "float",
+      "bits": "91a1e68a",
+      "decimal": "-2.5543402E-28"
+    },
+    {
+      "width": "float",
+      "bits": "9285deab",
+      "decimal": "-8.448372E-28"
+    },
+    {
+      "width": "float",
+      "bits": "92953cb7",
+      "decimal": "-9.418189E-28"
+    },
+    {
+      "width": "float",
+      "bits": "92c8cabe",
+      "decimal": "-1.2671754E-27"
+    },
+    {
+      "width": "float",
+      "bits": "938379a0",
+      "decimal": "-3.318898E-27"
+    },
+    {
+      "width": "float",
+      "bits": "93c944c4",
+      "decimal": "-5.080734E-27"
+    },
+    {
+      "width": "float",
+      "bits": "94d7a63a",
+      "decimal": "-2.1775017E-26"
+    },
+    {
+      "width": "float",
+      "bits": "95981180",
+      "decimal": "-6.141992E-26"
+    },
+    {
+      "width": "float",
+      "bits": "96a40ce0",
+      "decimal": "-2.6503754E-25"
+    },
+    {
+      "width": "float",
+      "bits": "96a68d04",
+      "decimal": "-2.690774E-25"
+    },
+    {
+      "width": "float",
+      "bits": "97f5c354",
+      "decimal": "-1.5882062E-24"
+    },
+    {
+      "width": "float",
+      "bits": "980f44ff",
+      "decimal": "-1.851715E-24"
+    },
+    {
+      "width": "float",
+      "bits": "983e6c51",
+      "decimal": "-2.461161E-24"
+    },
+    {
+      "width": "float",
+      "bits": "985b5dc4",
+      "decimal": "-2.8352426E-24"
+    },
+    {
+      "width": "float",
+      "bits": "997ee21c",
+      "decimal": "-1.3177155E-23"
+    },
+    {
+      "width": "float",
+      "bits": "9aac877a",
+      "decimal": "-7.135641E-23"
+    },
+    {
+      "width": "float",
+      "bits": "9b18ecc0",
+      "decimal": "-1.2649643E-22"
+    },
+    {
+      "width": "float",
+      "bits": "9c58bed1",
+      "decimal": "-7.171503E-22"
+    },
+    {
+      "width": "float",
+      "bits": "9cafd61b",
+      "decimal": "-1.1635874E-21"
+    },
+    {
+      "width": "float",
+      "bits": "9cbe9e0e",
+      "decimal": "-1.2614001E-21"
+    },
+    {
+      "width": "float",
+      "bits": "9cd13715",
+      "decimal": "-1.3844698E-21"
+    },
+    {
+      "width": "float",
+      "bits": "9e1cd483",
+      "decimal": "-8.302518E-21"
+    },
+    {
+      "width": "float",
+      "bits": "9ee69bf7",
+      "decimal": "-2.4416703E-20"
+    },
+    {
+      "width": "float",
+      "bits": "9f31b203",
+      "decimal": "-3.7628456E-20"
+    },
+    {
+      "width": "float",
+      "bits": "a0d864ba",
+      "decimal": "-3.6658479E-19"
+    },
+    {
+      "width": "float",
+      "bits": "a0d96d41",
+      "decimal": "-3.6833528E-19"
+    },
+    {
+      "width": "float",
+      "bits": "a0e6f7ba",
+      "decimal": "-3.9127447E-19"
+    },
+    {
+      "width": "float",
+      "bits": "a2052626",
+      "decimal": "-1.8045057E-18"
+    },
+    {
+      "width": "float",
+      "bits": "a3ebb4cb",
+      "decimal": "-2.555532E-17"
+    },
+    {
+      "width": "float",
+      "bits": "a3f77248",
+      "decimal": "-2.6828194E-17"
+    },
+    {
+      "width": "float",
+      "bits": "a488c6ad",
+      "decimal": "-5.931717E-17"
+    },
+    {
+      "width": "float",
+      "bits": "a4c5551f",
+      "decimal": "-8.557933E-17"
+    },
+    {
+      "width": "float",
+      "bits": "a51b4d88",
+      "decimal": "-1.3470376E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a52cd790",
+      "decimal": "-1.4991657E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a5ac21f0",
+      "decimal": "-2.986024E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a5bed2c7",
+      "decimal": "-3.3102574E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a63a90f7",
+      "decimal": "-6.4728177E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a64626f3",
+      "decimal": "-6.8747836E-16"
+    },
+    {
+      "width": "float",
+      "bits": "a737763d",
+      "decimal": "-2.5460449E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a73b4086",
+      "decimal": "-2.5986441E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a770aff0",
+      "decimal": "-3.3402067E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a77a7f92",
+      "decimal": "-3.4763626E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a78743d5",
+      "decimal": "-3.754357E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a78d612e",
+      "decimal": "-3.9240724E-15"
+    },
+    {
+      "width": "float",
+      "bits": "a9b898a5",
+      "decimal": "-8.197721E-14"
+    },
+    {
+      "width": "float",
+      "bits": "adca4cdb",
+      "decimal": "-2.2998872E-11"
+    },
+    {
+      "width": "float",
+      "bits": "aff1750b",
+      "decimal": "-4.392081E-10"
+    },
+    {
+      "width": "float",
+      "bits": "b0808cf0",
+      "decimal": "-9.353283E-10"
+    },
+    {
+      "width": "float",
+      "bits": "b1855f58",
+      "decimal": "-3.881649E-9"
+    },
+    {
+      "width": "float",
+      "bits": "b1cf0c07",
+      "decimal": "-6.0258603E-9"
+    },
+    {
+      "width": "float",
+      "bits": "b1d8a48c",
+      "decimal": "-6.305134E-9"
+    },
+    {
+      "width": "float",
+      "bits": "b29ea4a6",
+      "decimal": "-1.8468494E-8"
+    },
+    {
+      "width": "float",
+      "bits": "b2db2eb0",
+      "decimal": "-2.5516186E-8"
+    },
+    {
+      "width": "float",
+      "bits": "b4198075",
+      "decimal": "-1.4295968E-7"
+    },
+    {
+      "width": "float",
+      "bits": "b49d74de",
+      "decimal": "-2.932856E-7"
+    },
+    {
+      "width": "float",
+      "bits": "b54670a4",
+      "decimal": "-7.392466E-7"
+    },
+    {
+      "width": "float",
+      "bits": "b67d348c",
+      "decimal": "-3.7730524E-6"
+    },
+    {
+      "width": "float",
+      "bits": "b6bd17de",
+      "decimal": "-5.6354174E-6"
+    },
+    {
+      "width": "float",
+      "bits": "b73463a3",
+      "decimal": "-1.07520345E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b748dc43",
+      "decimal": "-1.1972213E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b77fe3c3",
+      "decimal": "-1.5252214E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b8a61992",
+      "decimal": "-7.92026E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b714",
+      "decimal": "-9.9999976E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b715",
+      "decimal": "-9.999998E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b716",
+      "decimal": "-9.999999E-5"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b717",
+      "decimal": "-1.0E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b718",
+      "decimal": "-1.00000005E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b719",
+      "decimal": "-1.0000001E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b8d1b71a",
+      "decimal": "-1.0000002E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b8f99eff",
+      "decimal": "-1.19028606E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b8fd5b83",
+      "decimal": "-1.20810255E-4"
+    },
+    {
+      "width": "float",
+      "bits": "b97417a3",
+      "decimal": "-2.3278459E-4"
+    },
+    {
+      "width": "float",
+      "bits": "ba83126c",
+      "decimal": "-9.999997E-4"
+    },
+    {
+      "width": "float",
+      "bits": "ba83126d",
+      "decimal": "-9.999998E-4"
+    },
+    {
+      "width": "float",
+      "bits": "ba83126e",
+      "decimal": "-9.999999E-4"
+    },
+    {
+      "width": "float",
+      "bits": "ba83126f",
+      "decimal": "-0.001"
+    },
+    {
+      "width": "float",
+      "bits": "ba831270",
+      "decimal": "-0.0010000002"
+    },
+    {
+      "width": "float",
+      "bits": "ba831271",
+      "decimal": "-0.0010000003"
+    },
+    {
+      "width": "float",
+      "bits": "ba831272",
+      "decimal": "-0.0010000004"
+    },
+    {
+      "width": "float",
+      "bits": "bb0a819e",
+      "decimal": "-0.0021134387"
+    },
+    {
+      "width": "float",
+      "bits": "bbf786bd",
+      "decimal": "-0.007553904"
+    },
+    {
+      "width": "float",
+      "bits": "bcf07cda",
+      "decimal": "-0.029356409"
+    },
+    {
+      "width": "float",
+      "bits": "bd192067",
+      "decimal": "-0.037384417"
+    },
+    {
+      "width": "float",
+      "bits": "bdccccca",
+      "decimal": "-0.09999998"
+    },
+    {
+      "width": "float",
+      "bits": "bdcccccb",
+      "decimal": "-0.09999999"
+    },
+    {
+      "width": "float",
+      "bits": "bdcccccc",
+      "decimal": "-0.099999994"
+    },
+    {
+      "width": "float",
+      "bits": "bdcccccd",
+      "decimal": "-0.1"
+    },
+    {
+      "width": "float",
+      "bits": "bdccccce",
+      "decimal": "-0.10000001"
+    },
+    {
+      "width": "float",
+      "bits": "bdcccccf",
+      "decimal": "-0.10000002"
+    },
+    {
+      "width": "float",
+      "bits": "bdccccd0",
+      "decimal": "-0.100000024"
+    },
+    {
+      "width": "float",
+      "bits": "bdda8ebc",
+      "decimal": "-0.10671756"
+    },
+    {
+      "width": "float",
+      "bits": "be28bd83",
+      "decimal": "-0.16478543"
+    },
+    {
+      "width": "float",
+      "bits": "be8e9473",
+      "decimal": "-0.27847633"
+    },
+    {
+      "width": "float",
+      "bits": "bf000000",
+      "decimal": "-0.5"
+    },
+    {
+      "width": "float",
+      "bits": "bf000001",
+      "decimal": "-0.50000006"
+    },
+    {
+      "width": "float",
+      "bits": "bf000002",
+      "decimal": "-0.5000001"
+    },
+    {
+      "width": "float",
+      "bits": "bf7ffffd",
+      "decimal": "-0.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "bf7ffffe",
+      "decimal": "-0.9999999"
+    },
+    {
+      "width": "float",
+      "bits": "bf7fffff",
+      "decimal": "-0.99999994"
+    },
+    {
+      "width": "float",
+      "bits": "bf800000",
+      "decimal": "-1.0"
+    },
+    {
+      "width": "float",
+      "bits": "bf800001",
+      "decimal": "-1.0000001"
+    },
+    {
+      "width": "float",
+      "bits": "bf800002",
+      "decimal": "-1.0000002"
+    },
+    {
+      "width": "float",
+      "bits": "bf800003",
+      "decimal": "-1.0000004"
+    },
+    {
+      "width": "float",
+      "bits": "bfbfc328",
+      "decimal": "-1.4981432"
+    },
+    {
+      "width": "float",
+      "bits": "bffffffe",
+      "decimal": "-1.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "bfffffff",
+      "decimal": "-1.9999999"
+    },
+    {
+      "width": "float",
+      "bits": "c0000000",
+      "decimal": "-2.0"
+    },
+    {
+      "width": "float",
+      "bits": "c0000001",
+      "decimal": "-2.0000002"
+    },
+    {
+      "width": "float",
+      "bits": "c0000002",
+      "decimal": "-2.0000005"
+    },
+    {
+      "width": "float",
+      "bits": "c018ee9c",
+      "decimal": "-2.3895636"
+    },
+    {
+      "width": "float",
+      "bits": "c07ffffe",
+      "decimal": "-3.9999995"
+    },
+    {
+      "width": "float",
+      "bits": "c07fffff",
+      "decimal": "-3.9999998"
+    },
+    {
+      "width": "float",
+      "bits": "c0e40f00",
+      "decimal": "-7.126831"
+    },
+    {
+      "width": "float",
+      "bits": "c24e7af3",
+      "decimal": "-51.620068"
+    },
+    {
+      "width": "float",
+      "bits": "c2d36204",
+      "decimal": "-105.69144"
+    },
+    {
+      "width": "float",
+      "bits": "c3121e88",
+      "decimal": "-146.11926"
+    },
+    {
+      "width": "float",
+      "bits": "c3d90fd8",
+      "decimal": "-434.12378"
+    },
+    {
+      "width": "float",
+      "bits": "c4270721",
+      "decimal": "-668.1114"
+    },
+    {
+      "width": "float",
+      "bits": "c429a1e8",
+      "decimal": "-678.5298"
+    },
+    {
+      "width": "float",
+      "bits": "c51d716a",
+      "decimal": "-2519.0884"
+    },
+    {
+      "width": "float",
+      "bits": "c58ae5f5",
+      "decimal": "-4444.7446"
+    },
+    {
+      "width": "float",
+      "bits": "c62fa8b5",
+      "decimal": "-11242.177"
+    },
+    {
+      "width": "float",
+      "bits": "c649fe3b",
+      "decimal": "-12927.558"
+    },
+    {
+      "width": "float",
+      "bits": "c6fb32c8",
+      "decimal": "-32153.39"
+    },
+    {
+      "width": "float",
+      "bits": "c7b38e4d",
+      "decimal": "-91932.6"
+    },
+    {
+      "width": "float",
+      "bits": "c7d3d277",
+      "decimal": "-108452.93"
+    },
+    {
+      "width": "float",
+      "bits": "c7e37490",
+      "decimal": "-116457.125"
+    },
+    {
+      "width": "float",
+      "bits": "c804ffaa",
+      "decimal": "-136190.66"
+    },
+    {
+      "width": "float",
+      "bits": "c8565b5a",
+      "decimal": "-219501.4"
+    },
+    {
+      "width": "float",
+      "bits": "c917ce0c",
+      "decimal": "-621792.75"
+    },
+    {
+      "width": "float",
+      "bits": "c97423fd",
+      "decimal": "-999999.8"
+    },
+    {
+      "width": "float",
+      "bits": "c97423fe",
+      "decimal": "-999999.9"
+    },
+    {
+      "width": "float",
+      "bits": "c97423ff",
+      "decimal": "-999999.94"
+    },
+    {
+      "width": "float",
+      "bits": "c9742400",
+      "decimal": "-1000000.0"
+    },
+    {
+      "width": "float",
+      "bits": "c9742401",
+      "decimal": "-1000000.06"
+    },
+    {
+      "width": "float",
+      "bits": "c9742402",
+      "decimal": "-1000000.1"
+    },
+    {
+      "width": "float",
+      "bits": "c9742403",
+      "decimal": "-1000000.2"
+    },
+    {
+      "width": "float",
+      "bits": "ca000001",
+      "decimal": "-2097152.2"
+    },
+    {
+      "width": "float",
+      "bits": "ca000003",
+      "decimal": "-2097152.8"
+    },
+    {
+      "width": "float",
+      "bits": "ca477f15",
+      "decimal": "-3268549.2"
+    },
+    {
+      "width": "float",
+      "bits": "cadcc3e2",
+      "decimal": "-7234033.0"
+    },
+    {
+      "width": "float",
+      "bits": "cb18967d",
+      "decimal": "-9999997.0"
+    },
+    {
+      "width": "float",
+      "bits": "cb18967e",
+      "decimal": "-9999998.0"
+    },
+    {
+      "width": "float",
+      "bits": "cb18967f",
+      "decimal": "-9999999.0"
+    },
+    {
+      "width": "float",
+      "bits": "cb189680",
+      "decimal": "-1.0E7"
+    },
+    {
+      "width": "float",
+      "bits": "cb189681",
+      "decimal": "-1.0000001E7"
+    },
+    {
+      "width": "float",
+      "bits": "cb189682",
+      "decimal": "-1.0000002E7"
+    },
+    {
+      "width": "float",
+      "bits": "cb189683",
+      "decimal": "-1.0000003E7"
+    },
+    {
+      "width": "float",
+      "bits": "cb3afd1b",
+      "decimal": "-1.2254491E7"
+    },
+    {
+      "width": "float",
+      "bits": "cc7ae339",
+      "decimal": "-6.5768676E7"
+    },
+    {
+      "width": "float",
+      "bits": "cce8efa7",
+      "decimal": "-1.22125624E8"
+    },
+    {
+      "width": "float",
+      "bits": "cda0212c",
+      "decimal": "-3.3581606E8"
+    },
+    {
+      "width": "float",
+      "bits": "ce42475d",
+      "decimal": "-8.148642E8"
+    },
+    {
+      "width": "float",
+      "bits": "cf418db3",
+      "decimal": "-3.247289E9"
+    },
+    {
+      "width": "float",
+      "bits": "d01dfaa2",
+      "decimal": "-1.0601794E10"
+    },
+    {
+      "width": "float",
+      "bits": "d10c2a67",
+      "decimal": "-3.7625426E10"
+    },
+    {
+      "width": "float",
+      "bits": "d33e8a90",
+      "decimal": "-8.183685E11"
+    },
+    {
+      "width": "float",
+      "bits": "d50622fe",
+      "decimal": "-9.217803E12"
+    },
+    {
+      "width": "float",
+      "bits": "d5bc17e5",
+      "decimal": "-2.5851352E13"
+    },
+    {
+      "width": "float",
+      "bits": "d5c8e194",
+      "decimal": "-2.7608897E13"
+    },
+    {
+      "width": "float",
+      "bits": "d5d0f2e6",
+      "decimal": "-2.8717707E13"
+    },
+    {
+      "width": "float",
+      "bits": "d5ddedff",
+      "decimal": "-3.0501782E13"
+    },
+    {
+      "width": "float",
+      "bits": "d60d6063",
+      "decimal": "-3.886128E13"
+    },
+    {
+      "width": "float",
+      "bits": "d68e22a5",
+      "decimal": "-7.813972E13"
+    },
+    {
+      "width": "float",
+      "bits": "d76f2e90",
+      "decimal": "-2.6298326E14"
+    },
+    {
+      "width": "float",
+      "bits": "d84449d7",
+      "decimal": "-8.632857E14"
+    },
+    {
+      "width": "float",
+      "bits": "d9ca6559",
+      "decimal": "-7.1211723E15"
+    },
+    {
+      "width": "float",
+      "bits": "db7e60f5",
+      "decimal": "-7.160125E16"
+    },
+    {
+      "width": "float",
+      "bits": "dca945d7",
+      "decimal": "-3.811685E17"
+    },
+    {
+      "width": "float",
+      "bits": "dd966425",
+      "decimal": "-1.3546034E18"
+    },
+    {
+      "width": "float",
+      "bits": "ddabafbd",
+      "decimal": "-1.5464143E18"
+    },
+    {
+      "width": "float",
+      "bits": "ddb642b6",
+      "decimal": "-1.6416574E18"
+    },
+    {
+      "width": "float",
+      "bits": "de37bb4f",
+      "decimal": "-3.3098156E18"
+    },
+    {
+      "width": "float",
+      "bits": "de4767b3",
+      "decimal": "-3.5921625E18"
+    },
+    {
+      "width": "float",
+      "bits": "df1dc202",
+      "decimal": "-1.1367651E19"
+    },
+    {
+      "width": "float",
+      "bits": "df9a95e0",
+      "decimal": "-2.227811E19"
+    },
+    {
+      "width": "float",
+      "bits": "dfcdfb03",
+      "decimal": "-2.968492E19"
+    },
+    {
+      "width": "float",
+      "bits": "e01695f4",
+      "decimal": "-4.340339E19"
+    },
+    {
+      "width": "float",
+      "bits": "e0327bdb",
+      "decimal": "-5.1444456E19"
+    },
+    {
+      "width": "float",
+      "bits": "e039cfd6",
+      "decimal": "-5.355662E19"
+    },
+    {
+      "width": "float",
+      "bits": "e1028c54",
+      "decimal": "-1.5051178E20"
+    },
+    {
+      "width": "float",
+      "bits": "e17c91c7",
+      "decimal": "-2.9119274E20"
+    },
+    {
+      "width": "float",
+      "bits": "e2ca5d2d",
+      "decimal": "-1.8664782E21"
+    },
+    {
+      "width": "float",
+      "bits": "e32ab08e",
+      "decimal": "-3.1486686E21"
+    },
+    {
+      "width": "float",
+      "bits": "e3849ae6",
+      "decimal": "-4.8922637E21"
+    },
+    {
+      "width": "float",
+      "bits": "e389be88",
+      "decimal": "-5.0818663E21"
+    },
+    {
+      "width": "float",
+      "bits": "e57c13e9",
+      "decimal": "-7.4400227E22"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96813",
+      "decimal": "-9.999997E22"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96814",
+      "decimal": "-9.999998E22"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96815",
+      "decimal": "-9.999999E22"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96816",
+      "decimal": "-1.0E23"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96817",
+      "decimal": "-1.0000001E23"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96818",
+      "decimal": "-1.0000002E23"
+    },
+    {
+      "width": "float",
+      "bits": "e5a96819",
+      "decimal": "-1.00000025E23"
+    },
+    {
+      "width": "float",
+      "bits": "e64a5a33",
+      "decimal": "-2.3889548E23"
+    },
+    {
+      "width": "float",
+      "bits": "e7819ca7",
+      "decimal": "-1.22415E24"
+    },
+    {
+      "width": "float",
+      "bits": "e7a1eeba",
+      "decimal": "-1.5294095E24"
+    },
+    {
+      "width": "float",
+      "bits": "e8348375",
+      "decimal": "-3.4098037E24"
+    },
+    {
+      "width": "float",
+      "bits": "e9aad774",
+      "decimal": "-2.5816855E25"
+    },
+    {
+      "width": "float",
+      "bits": "ea01dfb1",
+      "decimal": "-3.9251946E25"
+    },
+    {
+      "width": "float",
+      "bits": "ea02922a",
+      "decimal": "-3.946265E25"
+    },
+    {
+      "width": "float",
+      "bits": "ea4b4458",
+      "decimal": "-6.143367E25"
+    },
+    {
+      "width": "float",
+      "bits": "ea87db54",
+      "decimal": "-8.212037E25"
+    },
+    {
+      "width": "float",
+      "bits": "eab9eada",
+      "decimal": "-1.1238017E26"
+    },
+    {
+      "width": "float",
+      "bits": "ead58fcc",
+      "decimal": "-1.2909013E26"
+    },
+    {
+      "width": "float",
+      "bits": "eb6c1403",
+      "decimal": "-2.85401E26"
+    },
+    {
+      "width": "float",
+      "bits": "eb9e71be",
+      "decimal": "-3.8309482E26"
+    },
+    {
+      "width": "float",
+      "bits": "ebbbeb21",
+      "decimal": "-4.54359E26"
+    },
+    {
+      "width": "float",
+      "bits": "ec6d17e1",
+      "decimal": "-1.1465127E27"
+    },
+    {
+      "width": "float",
+      "bits": "ed03da96",
+      "decimal": "-2.5504244E27"
+    },
+    {
+      "width": "float",
+      "bits": "ed6b4717",
+      "decimal": "-4.5509325E27"
+    },
+    {
+      "width": "float",
+      "bits": "eeafbbbc",
+      "decimal": "-2.7193417E28"
+    },
+    {
+      "width": "float",
+      "bits": "f0507669",
+      "decimal": "-2.5806412E29"
+    },
+    {
+      "width": "float",
+      "bits": "f1313d99",
+      "decimal": "-8.77653E29"
+    },
+    {
+      "width": "float",
+      "bits": "f16cf5a0",
+      "decimal": "-1.1733665E30"
+    },
+    {
+      "width": "float",
+      "bits": "f248e65c",
+      "decimal": "-3.9792313E30"
+    },
+    {
+      "width": "float",
+      "bits": "f5055026",
+      "decimal": "-1.689944E32"
+    },
+    {
+      "width": "float",
+      "bits": "f6b3ff2e",
+      "decimal": "-1.8253844E33"
+    },
+    {
+      "width": "float",
+      "bits": "f727c801",
+      "decimal": "-3.4030083E33"
+    },
+    {
+      "width": "float",
+      "bits": "f76273fe",
+      "decimal": "-4.5930144E33"
+    },
+    {
+      "width": "float",
+      "bits": "f92686f4",
+      "decimal": "-5.4041153E34"
+    },
+    {
+      "width": "float",
+      "bits": "f93b213f",
+      "decimal": "-6.0727114E34"
+    },
+    {
+      "width": "float",
+      "bits": "f99e7415",
+      "decimal": "-1.0284217E35"
+    },
+    {
+      "width": "float",
+      "bits": "fa172299",
+      "decimal": "-1.9618464E35"
+    },
+    {
+      "width": "float",
+      "bits": "fa62b4cb",
+      "decimal": "-2.942815E35"
+    },
+    {
+      "width": "float",
+      "bits": "fae3f8af",
+      "decimal": "-5.9184764E35"
+    },
+    {
+      "width": "float",
+      "bits": "fe000000",
+      "decimal": "-4.2535296E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe000001",
+      "decimal": "-4.25353E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe000002",
+      "decimal": "-4.2535306E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe11ce44",
+      "decimal": "-4.8452263E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe7ffffe",
+      "decimal": "-8.507058E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe7fffff",
+      "decimal": "-8.5070587E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe800000",
+      "decimal": "-8.507059E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe800001",
+      "decimal": "-8.50706E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe800002",
+      "decimal": "-8.507061E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe967696",
+      "decimal": "-9.999997E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe967697",
+      "decimal": "-9.999998E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe967698",
+      "decimal": "-9.999999E37"
+    },
+    {
+      "width": "float",
+      "bits": "fe967699",
+      "decimal": "-1.0E38"
+    },
+    {
+      "width": "float",
+      "bits": "fe96769a",
+      "decimal": "-1.0000001E38"
+    },
+    {
+      "width": "float",
+      "bits": "fe96769b",
+      "decimal": "-1.0000002E38"
+    },
+    {
+      "width": "float",
+      "bits": "fe96769c",
+      "decimal": "-1.0000003E38"
+    },
+    {
+      "width": "float",
+      "bits": "fefffffe",
+      "decimal": "-1.7014116E38"
+    },
+    {
+      "width": "float",
+      "bits": "feffffff",
+      "decimal": "-1.7014117E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff000000",
+      "decimal": "-1.7014118E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff000001",
+      "decimal": "-1.701412E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff000002",
+      "decimal": "-1.7014122E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff1a8244",
+      "decimal": "-2.0537749E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff0",
+      "decimal": "-3.4028204E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff1",
+      "decimal": "-3.4028206E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff2",
+      "decimal": "-3.4028208E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff3",
+      "decimal": "-3.402821E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff4",
+      "decimal": "-3.4028212E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff5",
+      "decimal": "-3.4028214E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff6",
+      "decimal": "-3.4028216E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff7",
+      "decimal": "-3.4028218E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff8",
+      "decimal": "-3.402822E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffff9",
+      "decimal": "-3.4028222E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffffa",
+      "decimal": "-3.4028225E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffffb",
+      "decimal": "-3.4028227E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffffc",
+      "decimal": "-3.4028229E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffffd",
+      "decimal": "-3.402823E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7ffffe",
+      "decimal": "-3.4028233E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff7fffff",
+      "decimal": "-3.4028235E38"
+    },
+    {
+      "width": "float",
+      "bits": "ff800000",
+      "decimal": "-Infinity"
+    },
+    {
+      "width": "float",
+      "bits": "ff800001",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800002",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800003",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800004",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800005",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800006",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800007",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800008",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800009",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000a",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000b",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000c",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000d",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000e",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff80000f",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ff800010",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ffc00000",
+      "decimal": "NaN"
+    },
+    {
+      "width": "float",
+      "bits": "ffffffff",
+      "decimal": "NaN"
+    }
+  ]
+}

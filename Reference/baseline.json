@@ -1,0 +1,272 @@
+{
+  "formatVersion": 1,
+  "baselineId": "java-3.1.0-cldr-48.2-iana-2026-09-17",
+  "purpose": "Development-only immutable reference data; no Swift runtime behavior is implemented or certified by this archive.",
+  "sourceRepositories": {
+    "lokalized-spec": {
+      "commit": "2d9547700d88ad8b7bc73e4d2c0fe18bdffb68a4",
+      "role": "shared artifacts",
+      "uncommittedArtifact": "API-NAMING.md"
+    },
+    "lokalized-java": {
+      "commit": "491346ba50df65e1e51791f21246ff8bc47e44e9",
+      "version": "3.1.1",
+      "role": "reviewed feature reference",
+      "sourceSha256": "dab6dc8028a27605eff9ef131841bbe517ed30977bcb3514083eaf62c1790a5e"
+    },
+    "lokalized-js": {
+      "commit": "617670da887b0c684e2589882447b6b93297f2f7",
+      "version": "1.0.0-rc.2",
+      "role": "reviewed API and transport reference; commit includes unreleased changes"
+    }
+  },
+  "javaCorpusReference": {
+    "commit": "63b63e47c982f7a87873c52ac2289cc0392f3329",
+    "version": "3.1.0",
+    "sourceSha256": "db1f440a5641e419cf1f1a2d8fd89b2f6d7b63d65b9ee0316a0a7f83a76fa1e0"
+  },
+  "corpus": {
+    "path": "behavioral-vectors.json",
+    "schemaPath": "behavioral-vectors.schema.json",
+    "sha256": "1eb74caf8524c0a3b33dca99addb268c86b64eb8321fac03257474ddaa3c9753",
+    "formatVersion": 1,
+    "behavioralVectorsVersion": "1.1.0",
+    "cases": 2381,
+    "fixtures": 586,
+    "informationalIds": 226,
+    "requiredImplementationIds": 0,
+    "requiredPortableIds": 2155,
+    "operations": {
+      "acceptLanguage": 31,
+      "cardinalityForNumber": 58,
+      "cardinalityForOperands": 16,
+      "cardinalityForRange": 12,
+      "construct": 32,
+      "define": 22,
+      "get": 87,
+      "getResult": 1333,
+      "languageForms": 1,
+      "load": 150,
+      "loadClasspath": 90,
+      "loadClasspathResources": 69,
+      "matchFor": 312,
+      "ordinalityForNumber": 13,
+      "ordinalityForOperands": 2,
+      "parse": 149,
+      "supportedCardinalitiesForLocale": 2,
+      "supportedOrdinalitiesForLocale": 2
+    }
+  },
+  "data": {
+    "cldrVersion": "48.2",
+    "dataFingerprint": "9b4f24165b6dd1ee6dbb5f0822abc7bcde49c5b94d35903045826b45e1f30e68",
+    "ianaRegistryDate": "2026-09-17",
+    "ianaDataFingerprint": "87b3a43b03f490206cead05d865357bd7cfc3953a52ec4d8405243f699385815",
+    "identifierUnicodeVersion": "15.0",
+    "identifierUnicodeStatus": "planned oracle policy; generated Swift identifier tables are not included in this M0 archive"
+  },
+  "artifacts": [
+    {
+      "path": "behavioral-vectors.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/behavioral-vectors.json",
+      "bytes": 4270021,
+      "sha256": "1eb74caf8524c0a3b33dca99addb268c86b64eb8321fac03257474ddaa3c9753"
+    },
+    {
+      "path": "behavioral-vectors.schema.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "schema/behavioral-vectors.schema.json",
+      "bytes": 55283,
+      "sha256": "766502c1dfa84186e698852105b01501dade62c3e4aa83c9e154d74b7c897996"
+    },
+    {
+      "path": "cldr-locale-data.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "vendor/lokalized-java/src/build/resources/cldr/cldr-locale-data.json",
+      "bytes": 360048,
+      "sha256": "6241d8889b507a6edc0d6dae7e7812c372b62208ba8649701a819de877eade93"
+    },
+    {
+      "path": "cldr-plural-data.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "vendor/lokalized-java/src/build/resources/cldr/cldr-plural-data.json",
+      "bytes": 79598,
+      "sha256": "7ade4692762aac80144f915b62de19f29eb039ec3cf28c3f9f2c34b810cdc0e7"
+    },
+    {
+      "path": "cldr-conformance-vectors.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "vendor/lokalized-java/src/build/resources/cldr/cldr-conformance-vectors.json",
+      "bytes": 48325,
+      "sha256": "404e2fb3fbff0ee9564226527c0645c723a16afaf76dff2db7942e5015a54926"
+    },
+    {
+      "path": "cldr-data-lock.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/cldr-data-lock.json",
+      "bytes": 2525,
+      "sha256": "607ee6493964c02f9b350c31669524a167eba912206c969c9dcc3c74eb212e4b"
+    },
+    {
+      "path": "iana-language-equivalences.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/iana-language-equivalences.json",
+      "bytes": 7378,
+      "sha256": "2398b866e6739ae81d9484da929567e68e8255fe31aefe5bf2ef25846c611462"
+    },
+    {
+      "path": "iana-data-lock.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/iana-data-lock.json",
+      "bytes": 1885,
+      "sha256": "18f59f6e490ff1e1d9b719178be6d27f5404d6e26785f741ec712bad7f226229"
+    },
+    {
+      "path": "iana-jdk-compatibility.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "tools/iana-oracle/jdk-compatibility.json",
+      "bytes": 855,
+      "sha256": "4ce249f3d5b47890ed367dc0f6ae61925c47eddbd18af26f9b612606ccb82c54"
+    },
+    {
+      "path": "iana-language-equivalences.schema.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "schema/iana-language-equivalences.schema.json",
+      "bytes": 7789,
+      "sha256": "3f969e00ce0e6d9e2e0978d229d0cf1a03aca30ac6feac5e8057f15d3e7afaa7"
+    },
+    {
+      "path": "cldr-locale-data.schema.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "schema/cldr-locale-data.schema.json",
+      "bytes": 4560,
+      "sha256": "03097cf61a52b4e21b35a2f1d986373b706010ebaba61e89c72921905cf41784"
+    },
+    {
+      "path": "cldr-conformance-vectors.schema.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "schema/cldr-conformance-vectors.schema.json",
+      "bytes": 4233,
+      "sha256": "3de4d4757ed93cb72988dd96666e90d8087ea7fc5c010006a8c728b5090b0f39"
+    },
+    {
+      "path": "cldr-export-snapshot.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "vendor/lokalized-java/snapshot.json",
+      "bytes": 1192,
+      "sha256": "05995c1b3a2dec0fa9a2649722840ce22314fb1187d25e51cc5a6fd7918fe229"
+    },
+    {
+      "path": "data-archive-lock.json",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/data-archive-lock.json",
+      "bytes": 433,
+      "sha256": "8f364f91988e2e1711b013d1fd034ec0913d42d56401a6fb3f7d905c6eac591f"
+    },
+    {
+      "path": "API-NAMING.md",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "API-NAMING.md",
+      "bytes": 4036,
+      "sha256": "307c914c99c95a088b2f6f41bc02f24a208a6eb3b7f59b68727487df17415c38"
+    },
+    {
+      "path": "IANA-PROVENANCE.md",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "generated/IANA-PROVENANCE.md",
+      "bytes": 12948,
+      "sha256": "975bde61f1263c9c69bb147a78a43dbe75e1b5f5db409eab33ab0c1aafb00f0c"
+    },
+    {
+      "path": "THIRD-PARTY-NOTICES.spec.md",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "THIRD-PARTY-NOTICES.md",
+      "bytes": 4105,
+      "sha256": "c2bc90441602897b9e4190534e1dfafad7d4af2bfcbd46d021b335a41e51d707"
+    },
+    {
+      "path": "LICENSE.spec",
+      "sourceRepository": "lokalized-spec",
+      "sourcePath": "LICENSE",
+      "bytes": 11596,
+      "sha256": "c251818bcacf032ffd5592441c6aba99bee187d80d12155843d0c001b9f4d469"
+    },
+    {
+      "path": "reference-runtime-lock.json",
+      "sourceRepository": "lokalized-js",
+      "sourcePath": "measurements/reference-runtime-lock.json",
+      "bytes": 951,
+      "sha256": "4544c2b9e1f74d85294ae83fdfe9a2cc9667a781a771ee90af01a4b812140756"
+    },
+    {
+      "path": "THIRD-PARTY-NOTICES.java.md",
+      "sourceRepository": "lokalized-java",
+      "sourcePath": "THIRD-PARTY-NOTICES.md",
+      "bytes": 4255,
+      "sha256": "4318f4573023233f8b8c51f5794f0508283e8a56152220c039c7807178e3ea81"
+    },
+    {
+      "path": "LICENSE.java",
+      "sourceRepository": "lokalized-java",
+      "sourcePath": "LICENSE",
+      "bytes": 12856,
+      "sha256": "6791ccd02d13840e56d6bfe227f93ba6056aed52452143cf22557f99ca0575fb"
+    }
+  ],
+  "knownJava311Regression": {
+    "status": "observed regression; retain recorded Java 3.1.0 expectations",
+    "requiredIds": [
+      "lvariant.exhausting-walk.en-us-posix.duplicate-attempted-language-tag",
+      "lvariant.exhausting-walk.ja-jp.ill-formed-attempted-locale",
+      "lvariant.exhausting-walk.th-th.ill-formed-attempted-locale"
+    ],
+    "description": "Java 3.1.1 validates successful results outside the candidate catch; handler/callback traces differ. PrecedingFailure validation can also shorten walks when an observer is installed. Observation must not change the walk; any shared rebaseline requires a deliberate corrected contract."
+  },
+  "nativeRepresentationMappings": {
+    "status": "candidates-awaiting-compiler-evidence",
+    "countsAsRuntimePassed": false,
+    "groups": [
+      {
+        "reason": "A nonoptional Swift policy/handler return type cannot express Java's invalid null return. Negative compilation evidence must establish the mapping; Java runtime timing/traces are not replayed.",
+        "requiredIds": [
+          "null-callbacks.handler.null-response-is-rejected-after-the-walk",
+          "null-callbacks.policy.null-decision-carries-the-resolution-failure-cause",
+          "null-callbacks.policy.null-decision-is-rejected-at-the-consultation",
+          "null-callbacks.policy.null-decision-propagates-out-of-get",
+          "null-callbacks.precedence.the-null-policy-is-rejected-before-the-null-handler"
+        ]
+      },
+      {
+        "reason": "A nonoptional Swift phonetic resolver return type cannot express Java's invalid null return. These five cases need their own mapping/evidence; Java's contextualized runtime failure is not reproduced by inventing a runner error.",
+        "requiredIds": [
+          "callback-interaction.null-resolver.first-of-two-identical-type-causes-is-retained",
+          "callback-interaction.null-resolver.retained-null-failure-rethrown-verbatim",
+          "callback-smoke.resolver.null-return-is-rejected",
+          "phonetic-resolver.constants.unmapped-term-returns-null",
+          "phonetic-resolver.expression.null-return-diagnostic"
+        ]
+      }
+    ]
+  },
+  "corpusGaps": {
+    "observer": "No observer fixture/operation/output exists in this corpus; qualify observer behavior separately until shared tooling is extended.",
+    "implementationSpecific": "No requiredImplementationIds exist. Apple-only cases need a Swift-local qualification registry until shared schema/oracle tooling supports native expectations.",
+    "decomposedText": [
+      "phonetic-resolver.by-term.non-ascii-decomposed-misses",
+      "phonetic-resolver.first-letter.decomposed-accent"
+    ],
+    "decomposedTextNote": "These IDs contain precomposed inputs despite their notes. Retain recorded meanings and add genuinely decomposed cases with new IDs.",
+    "formalGovernance": "Shared requirement/evidence closure and independently ratified language-neutral release profiles remain incomplete; this archive makes no certification claim."
+  },
+  "licensing": {
+    "specLicense": "LICENSE.spec",
+    "javaLicense": "LICENSE.java",
+    "notices": [
+      "THIRD-PARTY-NOTICES.spec.md",
+      "THIRD-PARTY-NOTICES.java.md",
+      "IANA-PROVENANCE.md"
+    ],
+    "note": "Original notices retain original upstream paths. This manifest maps those paths to local copies. Unicode-derived CLDR data carries Unicode-3.0 notices; no Java/JS library code is vendored here."
+  }
+}

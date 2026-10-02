@@ -1,0 +1,10 @@
+{
+  "formatVersion": 1,
+  "note": "Digest of the reproducible data-only archive. dist/ is gitignored, so this is the only committed record of what tools/data-archive.mjs must produce. Regenerate with --write.",
+  "archive": "dist/lokalized-data-48.2.tar",
+  "prefix": "lokalized-data-48.2",
+  "cldrVersion": "48.2",
+  "members": 10,
+  "bytes": 538624,
+  "sha256": "43a85330c6e4ecbdadb7a82a98e23d19b890ad307d6039b8e96d108f74c16807"
+}

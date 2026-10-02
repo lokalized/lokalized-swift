@@ -1,0 +1,17 @@
+{
+  "welcome": "Hello, {{name}}!",
+  "items": {
+    "translation": "{{count}} {{itemWord}}",
+    "placeholders": {
+      "itemWord": {
+        "value": "count",
+        "translations": {
+          "CARDINALITY_ONE": "item",
+          "CARDINALITY_OTHER": "items"
+        }
+      }
+    }
+  },
+  "é": "Composed key",
+  "e\u0301": "Decomposed key"
+}

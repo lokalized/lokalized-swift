@@ -1,0 +1,92 @@
+name: Swift M7A qualification
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: ${{ matrix.track }} compiler / ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Listed in actions/runner-images macos-15-Readme.md on 2026-10-01.
+          - track: minimum
+            runner: macos-15
+            developer: /Applications/Xcode_26.0.1.app/Contents/Developer
+          # Use the current hosted image's real default, not an invented Xcode path.
+          - track: current
+            runner: macos-26
+            developer: /Applications/Xcode.app/Contents/Developer
+    runs-on: ${{ matrix.runner }}
+    env:
+      DEVELOPER_DIR: ${{ matrix.developer }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check selected compiler, declared floors and zero dependencies
+        run: |
+          xcodebuild -version
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}'
+          python3 Tools/reference_baseline.py --check
+          python3 Tools/api_inventory.py --check
+          python3 Tools/manifest_contract.py --check
+          mkdir -p .build/reports
+          python3 Tools/verify_manifest_urls.py --check > .build/reports/manifest-url-probe.json
+          python3 Tools/generate_identifier_tables.py --check
+          python3 Tools/materialize_fixtures.py --check
+          python3 Tools/generate_warning_forms.py --check
+          python3 Tools/generate_plural_data.py --check
+          python3 Tools/generate_locale_data.py --check
+          python3 Tools/generate_language_range_data.py --check
+          python3 Tools/verify_floating_point.py --check --report .build/reports/floating-point.json
+          python3 Tools/verify_locales.py --check --report .build/reports/locales.json
+          python3 Tools/verify_language_ranges.py --check --report .build/reports/language-ranges.json
+      - name: Build and test catalogs, numbers, locales, local delivery, manifests and the translation runtime
+        run: |
+          swift build
+          swift test
+          swift run --skip-build LokalizedConformance --self-test
+          python3 Tools/verify_callback_types.py --check --report .build/reports/callback-types.json
+          mkdir -p .build/reports
+          swift run --skip-build LokalizedConformance --inventory --reference Reference --report .build/reports/inventory.json
+          swift run --skip-build LokalizedConformance --plural-data --reference Reference --report .build/reports/plural-data.json
+          swift run --skip-build LokalizedConformance --locale-data --reference Reference --report .build/reports/locale-data.json
+          swift run --skip-build LokalizedConformance --resolution-components --reference Reference --report .build/reports/resolution-components.json
+          swift run --skip-build LokalizedConformance --runtime-adapter --reference Reference --report .build/reports/runtime-adapter.json
+          swift run --skip-build LokalizedConformance --loader --reference Reference --report .build/reports/loader.json
+          swift run --skip-build LokalizedConformance --manifest-urls --reference Reference --report .build/reports/manifest-urls.json
+          swift run --skip-build LokalizedConformance --manifest-contract --reference Reference --report .build/reports/manifest-contract.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --manifest-contract-report .build/reports/manifest-contract.json --manifest-urls-report .build/reports/manifest-urls.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --inventory-report .build/reports/inventory.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --resolution-components-report .build/reports/resolution-components.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --runtime-adapter-report .build/reports/runtime-adapter.json
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --loader-report .build/reports/loader.json
+      - name: Preserve a fail-closed, explicitly incomplete audit
+        run: |
+          mkdir -p .build/reports
+          audit_status=0
+          swift run --skip-build LokalizedConformance --audit --reference Reference --report .build/reports/audit.json > .build/reports/audit-stdout.json || audit_status=$?
+          test "$audit_status" -eq 1
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --audit-report .build/reports/audit.json --binary "$(swift build --show-bin-path)/LokalizedConformance"
+      - name: Build a fresh package without reference artifacts or resolver inputs
+        run: python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --offline-build
+      - name: Compile and inspect iOS and macOS deployment targets
+        run: python3 Tools/verify_deployment.py --compiler-track '${{ matrix.track }}' --output-directory .build/deployment --report .build/reports/deployment.json
+      - name: Build packaged SwiftPM and Apple application resource consumers
+        run: python3 Tools/verify_local_delivery.py --compiler-track '${{ matrix.track }}' --report .build/reports/local-delivery.json
+      - name: Retain audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m7a-audit-${{ matrix.track }}
+          path: .build/reports/
+          if-no-files-found: error
+
+# This verifies the minimum compiler and a current hosted compiler. It does not
+# claim iOS 15/macOS 12 runtime testing or Intel execution; those need actual hosts.
+# Hosted image reference: https://github.com/actions/runner-images/tree/main/images/macos
