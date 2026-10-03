@@ -6,6 +6,19 @@ public extension DefaultLocaleMatcher {
                       effectiveWeight: nil, matchType: .noMatch, fallbackLocale: fallbackTag, consideredLocales: supportedTags)
         }
         if languageRanges.isEmpty { return try noMatch() }
+        // With one positive finite preference, an exact loaded tag owns the
+        // highest-specificity anchor and the serving walk selects it first.
+        // Undetermined non-private ranges have no exact preference semantics.
+        // Keep the caller's range and configured tag identity in a fresh,
+        // normally validated result; other inputs use the complete election.
+        if languageRanges.count == 1, let preference = languageRanges.first,
+           preference.weight.isFinite, preference.weight > 0,
+           let index = supportedLocales.firstIndex(where: { MatchingLocale.equal($0, preference.range) }),
+           !localeStatics[index].undetermined || CldrLocaleData.isPrivateUseLanguageTag(preference.range) {
+            return try .init(requestedLanguageRanges: languageRanges, locale: supportedTags[index], languageRange: preference,
+                             effectiveWeight: preference.weight, matchType: .exact,
+                             fallbackLocale: fallbackTag, consideredLocales: supportedTags)
+        }
         // Stable descending Java Double.compare order; request order survives
         // equal weights, while NaN and +/-0 retain the pinned JDK ordering.
         let sortedRanges = languageRanges.enumerated().sorted { first, second in

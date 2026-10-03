@@ -25,6 +25,40 @@ TARGETS = (
     ("ios-device-arm64", "iphoneos", "arm64-apple-ios15.0", "arm64", "IOS", "15.0"),
     ("ios-simulator-arm64", "iphonesimulator", "arm64-apple-ios15.0-simulator", "arm64", "IOSSIMULATOR", "15.0"),
 )
+HOST_PROBE = r'''import Foundation
+import Darwin
+
+func integer(_ name: String, absentIsZero: Bool = false) throws -> Int32 {
+    var value: Int32 = 0
+    var size = MemoryLayout<Int32>.size
+    let result = sysctlbyname(name, &value, &size, nil, 0)
+    if result != 0 {
+        if absentIsZero && errno == ENOENT { return 0 }
+        throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno))
+    }
+    guard size == MemoryLayout<Int32>.size else {
+        throw NSError(domain: "LokalizedHostProbe", code: 1)
+    }
+    return value
+}
+#if arch(arm64)
+let architecture = "arm64"
+#elseif arch(x86_64)
+let architecture = "x86_64"
+#else
+#error("Unsupported macOS qualification architecture")
+#endif
+let version = ProcessInfo.processInfo.operatingSystemVersion
+let observation: [String: Any] = [
+    "architecture": architecture,
+    "hardwareCPUType": try integer("hw.cputype"),
+    "hardwareArm64": try integer("hw.optional.arm64", absentIsZero: true),
+    "processTranslated": try integer("sysctl.proc_translated", absentIsZero: true),
+    "macOS": "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
+]
+let bytes = try JSONSerialization.data(withJSONObject: observation, options: [.sortedKeys])
+print(String(decoding: bytes, as: UTF8.self))
+'''
 CONSUMER = '''import Foundation
 import Lokalized
 
@@ -234,6 +268,61 @@ def normalized_version(version):
     return values + (0,) * (3 - len(values))
 
 
+def validate_host(observation, expected_architecture=None, python_architecture=None, host_os=None):
+    """Require native hardware execution, not only a process/runner label."""
+    fields = {"architecture", "hardwareCPUType", "hardwareArm64", "processTranslated", "macOS"}
+    if not isinstance(observation, dict) or set(observation) != fields:
+        raise VerificationError("Native host probe fields differ")
+    architecture = observation["architecture"]
+    if architecture not in ("arm64", "x86_64"):
+        raise VerificationError("Unsupported native host architecture")
+    for name in ("hardwareCPUType", "hardwareArm64", "processTranslated"):
+        if type(observation[name]) is not int:
+            raise VerificationError("Native host probe requires integer kernel observations")
+    if observation["processTranslated"] != 0:
+        raise VerificationError("Translated execution cannot qualify native Intel or arm64 hardware")
+    # hw.cputype uses Mach CPU types; the ABI64 bit may be present on the host.
+    cpu_family = observation["hardwareCPUType"] & ~0x01000000
+    expected_family, expected_arm64 = (12, 1) if architecture == "arm64" else (7, 0)
+    if cpu_family != expected_family or observation["hardwareArm64"] != expected_arm64:
+        raise VerificationError("Compiled host architecture differs from native hardware")
+    if expected_architecture and architecture != expected_architecture:
+        raise VerificationError(f"Expected native {expected_architecture} execution, observed {architecture}")
+    if python_architecture and architecture != python_architecture:
+        raise VerificationError("Compiler probe and qualification process architectures differ")
+    version = observation["macOS"]
+    if not isinstance(version, str) or not re.fullmatch(r"\d+\.\d+\.\d+", version):
+        raise VerificationError("Native host OS observation differs")
+    if normalized_version(version) < (12, 0, 0):
+        raise VerificationError("Native host is below the macOS 12 package floor")
+    if host_os and normalized_version(version) != normalized_version(host_os):
+        raise VerificationError("Compiled host and qualification process OS versions differ")
+    return observation
+
+
+def probe_host(report, swiftc, sdk, output, expected_architecture):
+    directory = output / "host-probe"
+    directory.mkdir(parents=True, exist_ok=True)
+    source = directory / "HostProbe.swift"
+    source.write_text(HOST_PROBE, encoding="utf-8")
+    binary = directory / "HostProbe"
+    architecture = platform.machine()
+    if architecture not in ("arm64", "x86_64"):
+        raise VerificationError(f"Unsupported qualification process architecture: {architecture}")
+    command = [swiftc, "-swift-version", "6", "-target", f"{architecture}-apple-macosx12.0",
+               "-sdk", str(sdk), "-module-cache-path", str(directory / "ModuleCache"),
+               "-o", str(binary), str(source)]
+    invoke(report, command, "Compile native hardware and translation probe")
+    observation = json.loads(invoke(report, [str(binary)], "Execute native hardware and translation probe"))
+    validate_host(observation, expected_architecture, architecture, platform.mac_ver()[0])
+    target = next(t for t in TARGETS if t[0] == "macos-" + architecture)
+    inspected = inspect_binary(report, binary, target)
+    report["host"] = {"architecture": architecture, "macOS": observation["macOS"],
+                      "nativeExecution": {"status": "passed", "observation": observation,
+                                          "probeSourceSHA256": hashlib.sha256(HOST_PROBE.encode()).hexdigest(),
+                                          "binary": inspected}}
+
+
 def dependency_kind(name):
     if name in ("@rpath/libLokalized.dylib", "@rpath/libLokalizedConformanceSupport.dylib"):
         return "local-source-module"
@@ -328,6 +417,11 @@ def verify(report, args, output):
         version = invoke(report, ["xcrun", "--sdk", sdk_name, "--show-sdk-version"], f"Identify SDK: {sdk_name}").strip()
         sdks[sdk_name] = {"path": path, "version": version}
     report["sdks"] = sdks
+    probe_host(report, swiftc, sdks["macosx"]["path"], output, args.host_architecture)
+    if args.host_only:
+        report["status"] = "passed"
+        report["coverage"] = "Native compiler and macOS hardware probe only; no library qualification"
+        return
     modules = {name: source_files(name) for name in ("Lokalized", "LokalizedConformanceSupport", "LokalizedConformance")}
     hashes = source_hashes(modules)
     report["sourceSha256"] = hashes
@@ -351,6 +445,14 @@ def verify(report, args, output):
               ROOT / "Tools/verify_idna_compatibility_normalization_tables.py", ROOT / "Tools/oracle_runtime.py",
               ROOT / "Tools/sync_url_oracle.py", reference / "manifest-idna-lock.json"]
     inputs += sorted((ROOT / "Tools/URLOracle").glob("*.py"))
+    from sync_manifest_contracts import read_pinned as manifest_snapshot
+    inputs += [ROOT / relative for relative in manifest_snapshot(ROOT)]
+    from sync_diagnostic_text import read_pinned as diagnostic_snapshot
+    inputs += [ROOT / relative for relative in diagnostic_snapshot(ROOT)]
+    inputs += [ROOT / "Tools/verify_diagnostic_text.py", ROOT / "Tools/sync_diagnostic_text.py"]
+    from sync_manifest_normalization import read_pinned as normalization_snapshot
+    inputs += [ROOT / relative for relative in normalization_snapshot(ROOT)]
+    inputs += [ROOT / "Tools/verify_manifest_normalization.py", ROOT / "Tools/sync_manifest_normalization.py"]
     input_hashes = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}
     report["inputSha256"] = input_hashes
     report["consumerSourceSha256"] = hashlib.sha256(CONSUMER.encode("utf-8")).hexdigest()
@@ -358,21 +460,21 @@ def verify(report, args, output):
     for target in TARGETS:
         compiled = compile_target(report, swiftc, sdks[target[1]]["path"], target, modules, output)
         report["targets"].append(compiled)
-        if target[0] == "macos-arm64" and platform.machine() == "arm64":
+        if target[0] == ("macos-arm64" if platform.machine() == "arm64" else "macos-x86_64"):
             directory = output / target[0]
-            consumer = invoke(report, [str(directory / "LokalizedDeploymentConsumer")], "Run arm64 macOS consumer on host")
+            consumer = invoke(report, [str(directory / "LokalizedDeploymentConsumer")], "Run native macOS consumer on host")
             if consumer.strip() != "Lokalized deployment consumer passed":
                 raise VerificationError("Deployment consumer returned an unexpected observation")
-            self_test = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--self-test"], "Run arm64 macOS conformance self-tests on host"))
+            self_test = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--self-test"], "Run native macOS conformance self-tests on host"))
             if self_test.get("status") != "passed" or self_test.get("checks", 0) <= 0:
                 raise VerificationError(f"Conformance self-tests did not pass: {self_test}")
-            inventory = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--inventory", "--reference", str(reference)], "Run arm64 macOS frozen-corpus inventory on host"))
+            inventory = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--inventory", "--reference", str(reference)], "Run native macOS frozen-corpus inventory on host"))
             if inventory.get("status") != "inventory" or inventory.get("totalCases", 0) <= 0:
                 raise VerificationError(f"Conformance inventory was invalid: {inventory}")
             data_audits = {}
             for command, name in (("--plural-data", "pluralData"), ("--locale-data", "localeData")):
                 audit = json.loads(invoke(report, [str(directory / "LokalizedConformance"), command, "--reference", str(reference)],
-                                          f"Run arm64 macOS {name} qualification on host"))
+                                          f"Run native macOS {name} qualification on host"))
                 if audit.get("status") != "passed" or audit.get("checks", 0) <= 0 or audit.get("failedChecks") != 0:
                     raise VerificationError(f"{name} qualification failed: {audit}")
                 data_audits[name] = audit
@@ -380,7 +482,7 @@ def verify(report, args, output):
                                              "inventory": inventory, "dataAudits": data_audits}
             components = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--resolution-components",
                                                     "--reference", str(reference)],
-                                          "Run arm64 macOS single-catalog component projections on host"))
+                                          "Run native macOS single-catalog component projections on host"))
             if (components.get("status") != "passed" or components.get("scope") != "single-catalog-component-projection"
                     or components.get("eligibleIDsSHA256") != "fe8cbe90b8c000e88f094edb980b034ba86205ceeae65d6b460c2b825e24b467"
                     or len(components.get("eligibleComponentIDs", [])) != 578
@@ -390,7 +492,7 @@ def verify(report, args, output):
             compiled["runtimeExecution"]["resolutionComponents"] = components
             runtime_audit = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--audit",
                                                        "--reference", str(reference)],
-                                             "Run arm64 macOS whole-runtime corpus audit on host", allowed_exit_codes=(1,)))
+                                             "Run native macOS whole-runtime corpus audit on host", allowed_exit_codes=(1,)))
             passed = runtime_audit.get("runtimePassed", [])
             pending = runtime_audit.get("unimplemented", [])
             passed_digest = hashlib.sha256("".join(value + "\n" for value in sorted(passed)).encode()).hexdigest()
@@ -405,7 +507,7 @@ def verify(report, args, output):
                 raise VerificationError("Whole-runtime audit differs from the retained exact-ID main-corpus ratchet")
             compiled["runtimeExecution"]["wholeRuntimeAudit"] = runtime_audit
             loader = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--loader",
-                                                "--reference", str(reference)], "Run arm64 macOS native-filesystem observations"))
+                                                "--reference", str(reference)], "Run native macOS native-filesystem observations"))
             if (loader.get("status") != "passed" or loader.get("scope") != "native-filesystem-full-observation"
                     or loader.get("eligibleIDsSHA256") != "6c6043d0326a9a524690c485292cc2cd748161504fbaa5c0c7fcb97d91e16991"
                     or len(loader.get("eligibleIDs", [])) != 145 or loader.get("runtimePassed") != loader.get("eligibleIDs")
@@ -416,33 +518,47 @@ def verify(report, args, output):
             manifest_path = directory / "manifest-contract-report.json"
             manifest = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--manifest-contract",
                 "--reference", str(reference), "--report", str(manifest_path)],
-                "Run arm64 macOS manifest contract qualification on host"))
+                "Run native macOS manifest contract qualification on host"))
             from verify_manifest_contract_report import report_check
             report_check(manifest_path, reference)
             compiled["runtimeExecution"]["manifestContract"] = manifest
+            amendment_path = directory / "manifest-normalization-report.json"
+            amendment = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--manifest-normalization",
+                "--reference", str(reference), "--report", str(amendment_path)],
+                "Run native macOS manifest normalization amendment on host"))
+            from verify_manifest_normalization import report_check as amendment_check
+            amendment_check(amendment_path, reference)
+            compiled["runtimeExecution"]["manifestNormalization"] = amendment
+            diagnostic_path = directory / "diagnostic-text-report.json"
+            diagnostic = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--diagnostic-text",
+                "--reference", str(reference), "--report", str(diagnostic_path)],
+                "Run shared diagnostic text qualification through native public parsers on host"))
+            from verify_diagnostic_text import report_check as diagnostic_report_check
+            diagnostic_report_check(diagnostic_path, reference)
+            compiled["runtimeExecution"]["diagnosticText"] = diagnostic
             urls_path = directory / "manifest-url-report.json"
             urls = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--manifest-urls",
                 "--reference", str(reference), "--report", str(urls_path)],
-                "Run arm64 macOS frozen manifest URL qualification on host"))
+                "Run native macOS frozen manifest URL qualification on host"))
             from verify_manifest_urls import report_check as url_report_check
             url_report_check(urls_path, reference)
             compiled["runtimeExecution"]["manifestURLs"] = urls
             normalization_path = directory / "idna-normalization-report.json"
             normalization = json.loads(invoke(report, [str(directory / "LokalizedConformance"), "--idna-normalization",
                 "--reference", str(reference), "--report", str(normalization_path)],
-                "Run arm64 macOS pinned Unicode 17 NFC qualification on host"))
+                "Run native macOS pinned Unicode 17 NFC qualification on host"))
             from verify_idna_normalization import report_check as normalization_report_check
             normalization_report_check(normalization_path, reference)
             compiled["runtimeExecution"]["idnaNormalization"] = normalization
             if platform.mac_ver()[0].split(".")[0] == "12":
-                report["minimumOSRuntimeExecution"]["macOS12"] = "verified by arm64 consumer and development harness"
+                report["minimumOSRuntimeExecution"]["macOS12"] = "verified by native macOS consumer and development harness"
     final_modules = {name: source_files(name) for name in modules}
     if hashes != source_hashes(final_modules):
         raise VerificationError("Swift sources changed during verification; rerun against a stable source snapshot")
     if input_hashes != {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}:
         raise VerificationError("Verification inputs changed during execution; rerun against a stable input snapshot")
     report["status"] = "passed"
-    report["coverage"] = "Apple SDK compilation, module import, linking, Mach-O inspection; host arm64 execution when available"
+    report["coverage"] = "Apple SDK compilation, module import, linking, Mach-O inspection; native macOS host execution when available"
     report["runtimeDependencies"] = "local source modules and Apple system/Swift runtime only"
 
 
@@ -451,6 +567,10 @@ def main():
     parser.add_argument("--output-directory", type=Path, help="Retain generated binaries here; default is a fresh /private/tmp directory")
     parser.add_argument("--report", type=Path, help="Write evidence here; default is OUTPUT/deployment-report.json")
     parser.add_argument("--compiler-track", choices=("minimum", "current"), default="current")
+    parser.add_argument("--host-architecture", choices=("arm64", "x86_64"),
+                        help="Require actual native hardware of this architecture; translated execution is refused")
+    parser.add_argument("--host-only", action="store_true",
+                        help="Compile and execute the native host probe only; does not qualify the library")
     parser.add_argument("--reference", type=Path, default=ROOT / "Reference")
     args = parser.parse_args()
     output = args.output_directory.resolve() if args.output_directory else Path(tempfile.mkdtemp(prefix="lokalized-deployment-", dir="/private/tmp"))

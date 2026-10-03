@@ -22,7 +22,7 @@ public enum LoaderBoundaryQualification {
             do { try action() } catch { return error }
             throw ConformanceError("Loader boundary expected a refusal")
         }
-        let root = URL(fileURLWithPath: "/private/tmp", isDirectory: true)
+        let root = try qualificationTemporaryDirectory()
             .appendingPathComponent("lokalized-carriers-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: root) }

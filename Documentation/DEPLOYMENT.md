@@ -40,9 +40,12 @@ source modules and Apple system frameworks, libraries, and Swift runtime
 libraries. The dylibs are temporary verification artifacts; package consumers
 continue to build the source targets through SwiftPM.
 
-On an arm64 Mac, the script executes the macOS arm64 consumer, conformance
-self-tests, frozen-corpus inventory, complete plural/locale data audits and single-catalog component projections, the whole-runtime audit and native filesystem observations on the host OS. The x86_64 executable and
-iOS outputs are compiled and inspected without execution. The iOS CLI is a link
+On a native arm64 or Intel Mac, the script executes the matching macOS consumer,
+conformance self-tests, frozen-corpus inventory, complete plural/locale data audits,
+single-catalog component projections, whole-runtime audit, native filesystem,
+manifest, diagnostic, URL/IDNA and NFC observations on the host OS. The other
+macOS architecture and iOS outputs are compiled and inspected without execution.
+The iOS CLI is a link
 check for the development harness, with no application bundle, signing, or device
 installation. Inventory checks count the corpus; they do not assert completed
 translation parity.
@@ -65,8 +68,47 @@ python3 Tools/verify_deployment.py \
 Use `current` and distinct output/report paths in the newer compiler job. The
 compiler and SDKs follow the selected Xcode installation. Module caches stay
 inside the writable output directory, and the script does not invoke SwiftPM or
-download dependencies. Runtime checks execute on arm64 macOS hosts; another host
-architecture retains an explicit `not executed` runtime observation.
+download dependencies. Runtime checks execute the native matching macOS target;
+the other architecture retains an explicit `not executed` runtime observation.
+
+## Native host and CI tracks
+
+Before compiling the library, the tool compiles and runs a small Swift probe with
+the selected compiler. It checks the program's compiled architecture against the
+kernel's `hw.cputype` and `hw.optional.arm64`, requires zero
+`sysctl.proc_translated`, and compares the program's OS version and architecture
+with the Python process. An absent optional kernel key means zero; another kernel
+error fails the probe. Intel execution under Rosetta cannot qualify native Intel
+hardware. The report retains the probe source digest, actual output, inspected
+Mach-O binary and complete command evidence.
+
+Use an explicit architecture requirement when qualifying a known host:
+
+```sh
+python3 Tools/verify_deployment.py --host-architecture x86_64 --compiler-track minimum
+```
+
+`--host-only` performs just the compiler/kernel/Mach-O preflight. It reports zero
+compiled library targets and explicitly excludes library qualification. A failed
+architecture or minimum-compiler check exits 1 and retains a failed report.
+
+CI now has three distinct tracks: minimum Swift 6.2 on `macos-15` arm64,
+minimum Swift 6.2 on `macos-15-intel`, and the current compiler on `macos-26`
+arm64. Both minimum tracks select `/Applications/Xcode_26.0.1.app`; the current
+track selects the image's default Xcode. The runner labels and installed paths
+were checked against the official [runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners),
+[arm64 image](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md)
+and [Intel image](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md)
+on October 3, 2026. Every job requires its actual native architecture before the
+full workflow runs, repeats that requirement during SDK qualification, and
+retains a distinct artifact. Intel uses the same tests, complete runtime audits,
+native coverage, packaged consumers and optimized measurements. Unmeasured
+compiler/SDK/architecture profiles retain the existing explicit unmeasured binary
+budget; source caps remain enforced. No size cap is invented for Intel.
+
+This configuration has not been executed by GitHub. Swift 6.2, native Intel and
+hosted CI remain open until actual successful runs are retained. Neither modern
+runner establishes macOS 12 or iOS 15 runtime behavior.
 
 ## Local evidence
 
@@ -167,3 +209,134 @@ check passes all 1,592 archived goldens. Minimum compiler and other-platform/
 minimum-OS runtime remain unverified locally. Packaged SwiftUI applications are
 not rerun in this slice. Scoped evidence is
 `.build/reports/m8f-qualification-summary.json`.
+
+
+## M8G qualification
+
+`.build/reports/m8g-deployment.json` refreshes all four target triples and sixteen
+compiled/imported/linked/inspected binaries after the single-exact-preference
+matcher shortcut. Its 127 Swift source hashes and qualification-input hashes
+are stable through execution. macOS 12/iOS 15 SDK floors and Apple/system-only
+dependencies are unchanged. The current arm64 macOS consumer and qualification
+executable pass 1,057 standalone checks, both full data audits, the exact
+2,197/184 corpus sets, component/filesystem/manifest checks, all 59,992 URL
+observations and 1,195,148 NFC checks.
+
+The separate full native suite passes 273 methods with one existing invalid-UTF8
+filesystem-fixture skip. The public API graph remains identical (1,155 symbols),
+all 747 reference dispositions are qualified again, and eighteen altered reports
+are refused. Three fresh optimized source-only public consumers also compile and
+execute all twelve measured workloads per build, retaining zero external package
+dependencies and the exact privacy resource. See [performance](PERFORMANCE.md).
+
+Actual Swift 6.2, minimum-OS/iOS/Intel runtime and hosted CI execution remain
+unverified here. Packaged SwiftUI applications are not rerun in this slice.
+Scoped evidence is `.build/reports/m8g-qualification-summary.json`.
+
+
+## M8H source-bound native coverage
+
+`.build/reports/m8h-deployment.json` refreshes all four target triples and sixteen
+compiled/imported/linked/inspected binaries from the same 127 Swift sources as
+M8G. Production APIs and dependencies are unchanged. The current arm64 host
+executes the public consumer, 1,057 standalone checks, both data audits, exact
+main-corpus sets and all component/filesystem/manifest/URL/NFC qualification.
+
+The native coverage gate now requires this receipt's source/input identities and
+actual matching-host main audit before qualifying shared adaptations. Stale or
+unexecuted runtime evidence is refused. The deployment tool also selects its
+matching macOS architecture for host execution, enabling x86_64 qualification
+on an appropriate host; this local run executes only arm64. Minimum Swift 6.2,
+minimum-OS/iOS/Intel runtime and hosted CI remain unverified. This tools-only
+slice does not rerun the full M8G XCTest suite or packaged SwiftUI applications.
+See [native contract coverage](NATIVE-CONTRACTS.md); scoped evidence is
+`.build/reports/m8h-qualification-summary.json`.
+
+
+## M8I source-bound manifest coverage
+
+`.build/reports/m8i-deployment.json` refreshes the same four target triples and
+sixteen binaries from 127 unchanged Swift source files. The host arm64 consumer,
+1,057 standalone checks and all core/data/component/filesystem/manifest/URL/NFC
+checks pass. Qualification inputs now include the complete shared manifest
+snapshot and comparison code; the native gate requires the actual host manifest
+receipt and its execution log before qualifying adaptations.
+
+The new external compiler consumer run separately validates thirty source
+refusals, one accepted identity default and sixteen adjacent runtime controls.
+All 23 new and fifteen existing raw-manifest corruption controls are refused,
+and 33 selected manifest/identity XCTest methods pass. A copied checkout verifies
+saved evidence offline without siblings or invoking a compiler. The raw manifest
+report and all runtime sources are identical to the prior evidence. No production
+code, API or dependency changes; the prior full-suite and packaged-app evidence
+remains historical unchanged-source evidence. Actual Swift 6.2, minimum-OS, iOS,
+Intel and hosted-CI execution remain unverified. See
+[manifest native qualification](MANIFEST-NATIVE-CONTRACTS.md); scoped summary is
+`.build/reports/m8i-qualification-summary.json`.
+
+
+## M8L packaged iOS runtime consumer
+
+The separate [iOS runtime qualifier](IOS-RUNTIME.md) now executes the freshly
+packaged SwiftUI catalog app on an arm64 iOS 26.5 simulator, including real
+Bundle.main resource loading, English/French translations, exact Unicode keys
+and French plural lookup. It records the installed/booted runtime, current input
+and app hashes, actual app output and successful temporary-device cleanup.
+Fresh SwiftPM Swift 6/Swift 5 caller consumers and the packaged macOS app execute;
+all three Apple app products retain verified floors, settings and resource bytes.
+Nine offline checker tests and ten corrupted-receipt controls pass. The local
+receipt is `.build/reports/m8l-ios-runtime.json`.
+
+This extends packaged-consumer execution coverage only. The standalone iOS
+conformance binaries above remain compile-only; iOS 15, physical device, full iOS
+corpus, minimum Swift, macOS 12, Intel and hosted CI evidence remains open.
+Production sources and the M8K four-target SDK/host corpus receipts are unchanged.
+
+## M8M standalone iOS runtime qualification
+
+The [standalone iOS suite](IOS-CONFORMANCE.md) executes all fourteen CLI
+qualification commands through a real SwiftUI app on arm64 iOS 26.5 (23F77).
+Complete observations match the freshly rebuilt macOS baseline, including the
+exact 2,197 passing / 184 pending corpus IDs, 1,057 standalone checks, native
+filesystem/runtime/Bundle controls, both manifest amendments, CLDR data, all URL/
+IDNA observations and Unicode 17 NFC equations/identity checks. The three app
+Mach-O files have verified iOS 15 floors and Apple/system or local dependencies.
+
+Four development-support files now share POSIX-canonical application temporary
+paths. Production library sources are unchanged. Fresh SDK qualification builds
+all four targets/sixteen binaries from the current 129 sources; source-bound
+native coverage and packaged-delivery receipts are refreshed for this checkout.
+Earlier source-bound reports remain historical. The macOS XCTest suite passes
+278 methods plus the existing skip. Fifteen offline checker tests and twenty
+corrupted iOS receipt controls pass. CI can run the full suite when an installed
+runtime is explicitly requested; no hosted run is claimed.
+
+Actual minimum Swift 6.2, iOS 15/macOS 12, physical-device, Intel and hosted-CI
+execution remain open. The corpus retains its incomplete status and native
+carrier dispositions; current-simulator execution does not certify release parity.
+
+## M8N native host and CI qualification
+
+The current-source `.build/reports/m8n-deployment.json` retains a compiled,
+executed and inspected native arm64 kernel probe alongside all four targets and
+sixteen library/support/consumer/CLI binaries. All 129 Swift source hashes match
+M8M. Native macOS execution retains the same complete observations and exact
+2,197 passing / 184 pending main-corpus sets. Fresh core and manifest coverage
+receipts accept this SDK evidence; their corruption checks pass.
+
+Actual `--host-architecture x86_64` and `--compiler-track minimum` preflights fail
+with retained failed receipts on this arm64 Swift 6.4 machine. Eleven offline
+probe tests reject translated/contradictory hardware, wrong process or requested
+architecture, malformed OS observations and noninteger kernel values. These
+offline controls do not count as executing Rosetta or Intel hardware.
+
+`.build/reports/m8n-ios-conformance.json` refreshes all fourteen standalone
+commands on an owned iOS 26.5 simulator using the new SDK binaries; complete
+observations match the fresh macOS baseline, and shutdown/deletion pass. The
+twenty corrupted-receipt controls pass. Existing M8M packaged catalog evidence
+remains current for unchanged source/packaging inputs and is checked again.
+
+CI now includes native Intel, but has not run. Actual Swift 6.2, Intel, minimum
+OS, physical-device and hosted-CI execution remain open. No production source,
+public API, corpus/profile, runtime dependency or HTTP-loading change is made.
+Scoped summary: `.build/reports/m8n-qualification-summary.json`.

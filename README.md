@@ -94,6 +94,8 @@ python3 Tools/verify_locales.py --check
 python3 Tools/verify_language_ranges.py --check
 python3 Tools/verify_callback_types.py --check
 python3 Tools/verify_package.py --offline-build
+python3 Tools/test_source_package.py
+python3 Tools/source_package.py --check
 python3 Tools/verify_local_delivery.py
 python3 Tools/verify_loader_dispositions.py --qualify --report .build/reports/loader-dispositions.json
 python3 Tools/verify_loader_dispositions.py --report-check .build/reports/loader-dispositions.json --negative-controls
@@ -109,6 +111,13 @@ The main behavioral audit exits **1** with status `incomplete`: **2,197 cases pa
 
 Consumer builds need only the sources and Apple's system SDKs. The frozen [reference archive](Documentation/REFERENCE-BASELINE.md), Python tools, Java, and Node are development inputs. There are no build plugins, external packages, or reference-data downloads during a consumer build. The runtime uses the same localization file syntax and selection semantics as the Java and JavaScript ports.
 
+[Source distribution](Documentation/SOURCE-DISTRIBUTION.md) creates and qualifies
+a deterministic archive of the current source tree. It includes the Apache
+[license](LICENSE), [attribution](NOTICE), [third-party notices](THIRD-PARTY-NOTICES.md)
+and complete data licenses. A fresh extracted consumer compiles after the
+development reference/tool directories are removed and verifies the packaged
+privacy declaration. This is a local release rehearsal; no release is published.
+
 Each direct parsing call owns its budgets; one directory/Bundle/map load shares aggregate file, byte, node, warning and discovery accounting. Byte budgets apply to byte inputs; UTF-16 character budgets apply to `String`. Catalog warnings, plurals and matching share the pinned [locale kernel](Documentation/LOCALE-DATA.md). Pass parsed models to `DefaultStrings` for translation. Each immutable runtime compiles catalogs once and keeps lookup state separate under concurrent or reentrant calls.
 
 [Apple local delivery](Documentation/APPLE-LOCAL-DELIVERY.md) shows `.copy("Lokalized")` and caller `Bundle.module` integration, Xcode folder resources and `Bundle.main`, explicit language contexts, and the packaged SDK privacy declaration. [Preferred-language helpers](Documentation/PREFERRED-LANGUAGES.md) apply pinned direct matching to ordered application or Apple preferences. [Examples](Examples/README.md) include real SwiftPM and shared iOS/macOS SwiftUI consumers.
@@ -121,4 +130,25 @@ Declared and compiled deployment targets are separate from runtime qualification
 
 [Package size and performance](Documentation/PERFORMANCE.md) records reproducible optimized consumer builds, cold initialization, catalog construction, repeated lookups and memory observations. CI enforces source size caps and binary caps for measured compiler/SDK/architecture profiles; timings remain observations tied to each host.
 
+[Apple deployment verification](Documentation/DEPLOYMENT.md) checks all four SDK
+targets and executes the matching native macOS target. CI is configured for
+Swift 6.2 on arm64 and Intel, plus a current arm64 compiler; a compiled kernel
+probe refuses translated or mismatched hosts. Hosted execution and minimum-OS
+runtime qualification remain unverified.
+
+[Concurrency qualification](Documentation/CONCURRENCY.md) exercises shared
+instances across locales, independent resolvers, callback reentry and concurrent
+local loads. The selected macOS tests pass under Thread Sanitizer, with a detected
+intentional race and inspected instrumentation confirming the detector is active.
+
 Manifest APIs perform synchronous validation and planning without reading catalog bodies. `StringsManifestV1` is an immutable claim; each planning door checks its data identity and recomputed fingerprint again. See [validation](Documentation/MANIFEST-VALIDATION.md), [catalog identity](Documentation/MANIFEST-IDENTITY.md), [planning](Documentation/MANIFEST-PLANNING.md), [Unicode domain processing](Documentation/MANIFEST-URLS.md) and [frozen JS contract evidence](Documentation/MANIFEST-CONTRACT.md). Unicode and Punycode domains use pinned Unicode 17 mapping, a separately recorded URL compatibility profile and original Swift algorithms with zero external runtime dependencies. These pure helpers perform no catalog I/O. The Swift port does not provide HTTP loading; applications acquire remote content themselves and supply `Data`, `String`, a synchronous stream or a local file to the existing parsers. See [local loading](Documentation/LOCAL-LOADING.md) for ownership and limits. Release qualification is the remaining work.
+
+The shared [diagnostic text profile](Documentation/DIAGNOSTIC-TEXT.md) qualifies bounded catalog/manifest duplicate-member messages across Java, JS and Swift. The [manifest normalization profile](Documentation/MANIFEST-NORMALIZATION.md) makes private-use spelling stable and documents fingerprint migration. Remaining platform execution gates are tracked in the implementation status.
+
+[Packaged iOS runtime evidence](Documentation/IOS-RUNTIME.md) records actual iOS
+26.5 simulator catalog execution, source-bound receipts and the remaining
+minimum-version/device/full-corpus qualification limits.
+
+[Standalone iOS conformance](Documentation/IOS-CONFORMANCE.md) executes all fourteen
+qualification commands in a real simulator app, preserving the exact corpus
+passing/pending sets and complete native, manifest, data and Unicode observations.

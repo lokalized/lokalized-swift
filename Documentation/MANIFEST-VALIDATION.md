@@ -1,6 +1,6 @@
 # Manifest parsing and validation
 
-M7A exposes synchronous, I/O-free `LocalizedStringLoader.parseStringsManifest` overloads for `Data` and `String`, and `validateStringsManifest` overloads for `StringsManifestValue` and `StringsManifestV1`. The contract is pinned to JS commit `617670da887b0c684e2589882447b6b93297f2f7`; Java has no manifest counterpart. A `StringsManifestV1` initializer creates an immutable claim, not a verified load. Every validation and planning door checks that claim again.
+M7A exposes synchronous, I/O-free `LocalizedStringLoader.parseStringsManifest` overloads for `Data` and `String`, and `validateStringsManifest` overloads for `StringsManifestValue` and `StringsManifestV1`. The base contract is pinned to JS commit `617670da887b0c684e2589882447b6b93297f2f7`, with the shared [diagnostic](DIAGNOSTIC-TEXT.md) and [normalization](MANIFEST-NORMALIZATION.md) profile 1.1.0 amendments; Java has no manifest counterpart. A `StringsManifestV1` initializer creates an immutable claim, not a verified load. Every validation and planning door checks that claim again.
 
 The wire shape remains format version 1 with `catalogVersion`, `catalogFingerprint`, seven build-identity fields, `fallbackLocale`, `baseUrl`, `files`, and `tiebreakerLocalesByLanguageCode`. Each file carries a nonempty `url`, lowercase 64-digit `sha256`, and optional `decodedBytes`. Unknown manifest and file members are tolerated and omitted from the returned value. Reviewed predecessor JS source used `tiebreakers`; that spelling is not a synonym in this pinned shape.
 
@@ -10,7 +10,7 @@ Validation proceeds in these phases, preserving the first refusal:
 
 1. Require an object, numeric format version 1, nonempty catalog version and correctly shaped catalog fingerprint.
 2. Validate CLDR version and data fingerprint shapes, then their compatibility with this build. Require `localeDataMode: "pinned"`, `cardinalityMode: "exact"`, version-shaped behavioral vectors, a nonempty IANA identity string and full lowercase IANA fingerprint, then check all three against this build. No missing wire identity field receives a default.
-3. Validate the fallback tag against the pinned locale data and JDK syntax/rebuildability rules. Preserve JDK projection without collapsing distinct CLDR aliases.
+3. Validate the fallback tag against the pinned locale data and JDK syntax/rebuildability rules. Apply strict JDK projection plus the stable private-use manifest spelling without collapsing distinct CLDR aliases.
 4. Require an absolute base URL and one of `http:`, `https:` or `file:`. Require a files object and enforce the file-count limit before entry work.
 5. In decoded member order, validate and normalize each file key, reject an equal normalized key, require its entry object and nonempty URL, validate the resolved URL and scheme, require its digest, then validate optional decoded size.
 6. Validate tiebreaker keys and each ordered candidate, then validate complete orders against the **full declared manifest**. Every multi-catalog primary language needs an explicit exact permutation. Extra language groups, repeats, missing siblings and unrelated entries fail. Undetermined and private-use catalogs have no broad-language group. Singleton orders are not synthesized into identity. Normalized tiebreaker-key collisions retain the later declaration, matching this JS snapshot.
@@ -33,4 +33,12 @@ Schema, compatibility and fingerprint failures use native `ConfigurationError` w
 
 Manifest helpers perform no catalog I/O and return no `LoadedStrings` or verified-load record. HTTP transport, partial-network-load policies, cancellation scheduling and verified-network runtime records are outside Swift scope. Applications acquire remote content and supply it to the existing data/text/stream/file parsers; manifest validation alone does not verify that content. Manifest digests establish consistency with the supplied manifest; they do not authenticate that manifest. The implementation adds no external package dependencies; hashing uses Apple's system CryptoKit framework.
 
-A measured diagnostic-output boundary remains outside the 499-case archive: truncating a valid supplementary character at the 4,096-unit path cap can leave a lone high surrogate in JS's error message. Swift's `String(decoding:as: UTF16.self)` replaces that truncated unit with U+FFFD. For an object key of 4,092 ASCII `a` characters followed by `😀x` and a nested duplicate, both paths have 4,096 units; their final units differ (`D83D,2026` versus `FFFD,2026`). Input text is valid and retained; this concerns the bounded error-message carrier only. Local evidence is `.build/reports/m7a-diagnostic-unicode-gap.json`. It is an explicit release representation qualification gap, not an added frozen-corpus pass or a ratified mapping.
+The historical surrogate-truncation diagnostic difference is closed by
+[diagnostic text profile 1.1.0](DIAGNOSTIC-TEXT.md): split pairs use U+FFFD before
+the ellipsis. Nested member displays share the catalog's 256-unit cap; paths
+retain 4,096 units. [Manifest normalization profile 1.1.0](MANIFEST-NORMALIZATION.md)
+closes private-use spelling instability and requires affected fingerprints to be
+regenerated. Both amendments retain historical archives and add independent cases.
+M8I's [native carrier evidence](MANIFEST-NATIVE-CONTRACTS.md) composes with the
+current behavior profile; actual minimum compiler/OS and other-platform execution
+remain separate release gates.

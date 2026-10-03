@@ -103,6 +103,69 @@ final class LocaleMatcherTests: XCTestCase {
         XCTAssertTrue(try matcher.validateSuppliedMatch(reordered) === reordered)
     }
 
+    func testSingleExactPreferencePreservesQualityAndConfiguredTagIdentity() throws {
+        let tags = [try LocaleTag("en-US"), try LocaleTag("mo"), try LocaleTag("qaa"),
+                    try LocaleTag("x-a"), try LocaleTag("en-US-u-nu-latn"),
+                    LocaleTag.forLanguageTag("no-NO-x-lvariant-NY")]
+        for mode in [LanguageRangeEquivalents.ianaRegistry, .jdk] {
+            for tag in tags {
+                let matcher = try DefaultLocaleMatcher(supportedLocales: [tag], fallbackLocale: tag,
+                                                      languageRangeEquivalents: mode)
+                for weight in [1.0, 0.2, Double.leastNonzeroMagnitude] {
+                    let preference = try LanguageRange(tag.tag.uppercased(), weight: weight)
+                    let result = try matcher.matchFor([preference])
+                    XCTAssertEqual(result.localeTag, tag)
+                    XCTAssertEqual(result.matchType, .exact)
+                    XCTAssertEqual(result.languageRange, preference)
+                    XCTAssertEqual(result.requestedLanguageRanges, [preference])
+                    XCTAssertEqual(result.effectiveWeight?.bitPattern, weight.bitPattern)
+                    XCTAssertEqual(result.fallbackLocaleTag, tag)
+                    XCTAssertEqual(result.consideredLocaleTags, [tag])
+                    let repeated = try matcher.matchFor([preference])
+                    XCTAssertEqual(repeated, result)
+                    XCTAssertFalse(repeated === result)
+                }
+            }
+        }
+    }
+
+    func testSingleLoadedPreferenceKeepsExclusionsAndUndeterminedSemantics() throws {
+        let matcher = try DefaultLocaleMatcher(supportedLocales: ["en"], fallbackLocale: "en")
+        for weight in [0.0, -0.0] {
+            let preference = try LanguageRange("en", weight: weight)
+            let result = try matcher.matchFor([preference])
+            XCTAssertEqual(result.matchType, .noMatch)
+            XCTAssertNil(result.locale)
+            XCTAssertEqual(result.requestedLanguageRanges[0].weight.bitPattern, weight.bitPattern)
+        }
+        XCTAssertThrowsError(try matcher.matchFor([LanguageRange("en", weight: .nan)])) { error in
+            XCTAssertEqual((error as? LocaleMatcherError)?.message,
+                           "A matched locale result requires a finite effective weight greater than 0 and at most 1")
+        }
+        for (tag, selected) in [("und", "und"), ("und-Latn", "und-Latn"), ("und-x-foo", "x-foo")] {
+            let undetermined = try DefaultLocaleMatcher(supportedLocales: [tag], fallbackLocale: tag)
+            XCTAssertEqual(try undetermined.matchFor([LanguageRange(tag)]).matchType, .noMatch)
+            XCTAssertEqual(try undetermined.matchFor([LanguageRange("*")]).locale, selected)
+        }
+    }
+
+    func testExactPreferenceCompetesWithOtherLoadedLocalesAndCallerRanges() throws {
+        let matcher = try DefaultLocaleMatcher(supportedLocales: ["fr", "en-US", "en-GB"], fallbackLocale: "fr",
+                                              tiebreakerLocalesByLanguageCode: ["en": ["en-GB", "en-US"]])
+        let exact = try LanguageRange("EN-us", weight: 0.2)
+        let single = try matcher.matchFor([exact])
+        XCTAssertEqual(single.locale, "en-US")
+        XCTAssertEqual(single.matchType, .exact)
+        XCTAssertEqual(single.consideredLocales, ["en-GB", "en-US", "fr"])
+        XCTAssertEqual(single.fallbackLocale, "fr")
+        let competing = [exact, try LanguageRange("fr", weight: 0.5)]
+        XCTAssertEqual(try matcher.matchFor(competing).locale, "fr")
+        let excluded = [exact, try LanguageRange("en-us", weight: 0)]
+        XCTAssertEqual(try matcher.matchFor(excluded).locale, "en-US")
+        let narrower = [try LanguageRange("en"), try LanguageRange("en-us", weight: 0)]
+        XCTAssertEqual(try matcher.matchFor(narrower).locale, "en-GB")
+    }
+
     func testTiebreakerConfigurationRejectsDuplicatesAndMissingAmbiguity() throws {
         XCTAssertThrowsError(try DefaultLocaleMatcher(supportedLocales: ["en-US", "en-GB"], fallbackLocale: "en-US")) { error in
             XCTAssertEqual((error as? LocaleMatcherError)?.message, "You must specify tiebreaker locales via 'tiebreakerLocalesByLanguageCode' to resolve ambiguity for language code 'en' because localized strings exist for the following locale[s]: [en-GB, en-US]")

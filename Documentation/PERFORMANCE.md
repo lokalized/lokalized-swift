@@ -287,3 +287,86 @@ goldens. Scoped evidence is `.build/reports/m8f-qualification-summary.json`.
 Single-range match preparation remains an available profiling candidate.
 Minimum compiler, old-OS/iOS/Intel runtime and hosted CI execution remain
 separate release gates; these measurements do not ratify pending native mappings.
+
+
+## M8G: single exact preference
+
+A fresh native sample again attributed substantial ordinary-lookup work to
+`MatcherMember.init` and language-range identity/canonical/CLDR preparation.
+The [matcher shortcut](LOCALE-MATCHING.md) skips that preparation and the
+candidate election for one finite, positive preference exactly matching a
+configured tag. Undetermined non-private preferences are excluded. All other
+requests use the existing election, and every returned result still passes the
+normal validated initializer. No stored member metadata, growing request cache,
+public API or dependency is added; configured tag identity and per-call supplier,
+callback and result identity behavior are preserved.
+
+The current source and an exact pre-change production/tool snapshot each pass
+three fresh optimized builds and all 36 checked workload runs. Both versions
+also refuse all nine corrupted measurement reports. Compiler/SDK/architecture,
+consumer source, inputs, iteration counts and methodology are identical. Runs
+are sequential same-host observations, not randomized trials or platform-wide
+performance guarantees.
+
+| Checked warm operation | Repeated pre-change baseline | M8G | Observed time reduction |
+| --- | ---: | ---: | ---: |
+| Plain placeholder translation | 53.04 µs | 7.50 µs | 86% |
+| French miss with English fallback | 58.14 µs | 12.50 µs | 78% |
+| Cardinal integer `1` | 58.80 µs | 12.69 µs | 78% |
+| Cardinal exact decimal `1.00` | 59.59 µs | 12.88 µs | 78% |
+| Cardinal Double `0.1` | 65.93 µs | 19.57 µs | 70% |
+| Cardinal Double π | 122.66 µs | 78.16 µs | 36% |
+| Cardinal largest finite Double | 167.07 µs | 120.18 µs | 28% |
+| Generate 32,768 output characters | 491.44 µs | 428.96 µs | 13% |
+
+These are complete checked public lookups. Their requested locales exactly
+match loaded tags, including the per-key fallback workload; nonexact/multiple
+preferences are qualified for behavior but not separately benchmarked here.
+Pure Unicode-domain planning is a control outside the changed path: 187.58
+versus 189.74 µs (about 1% variation), with no improvement claim. Remaining hard
+Double costs still include the unchanged exact converter.
+
+For the cold single-catalog, exact-first-lookup process, first lookup changes
+from 1.337 ms to 0.058 ms; total locale creation/parse/construct/lookup changes
+from 6.697 to 5.784 ms. Its live malloc delta changes from 1,279,296 to 998,912
+bytes. Full-election metadata can remain lazy in an exact-only process; this is
+not a general application startup/memory guarantee. A later nonexact request
+still prepares that data. Large-catalog parse/construct observations vary and
+are not attributed to the shortcut. Warm live heap deltas do not count transient
+allocations or establish an allocation-free path.
+
+The stripped benchmark consumer remains 2,267,992 bytes. Runtime Swift source
+adds 1,053 bytes to reach 1,294,841 bytes; generated data and privacy resources
+are unchanged. Existing source and measured-profile binary caps pass without
+increases. Local evidence is `.build/reports/m8g-package-performance.json`, with
+source/tool manifest SHA256
+`1bc6f3c968930c4a2bbb4096da85e0d98e1fb1aed744d144797ad05d5a47018d`.
+The exact repeated baseline is `.build/reports/m8g-baseline-repeat.json`, retaining
+manifest `6add0d0401660d08a0345c3c88881737f0f90bf5a2564daa705482064c0ce64e`.
+Sampling traces are in `.build/profiles/m8g-before/` and `m8g-after/`.
+
+
+The after-change plain sampling trace has no `MatcherMember` frames; matching
+samples now cover result construction/validation. Inlining and sampler overhead
+limit attribution, so the unsampled benchmark supplies the timing comparison.
+
+
+Three new native regression methods pass against both the original and changed
+matcher. They cover both pinned equivalence modes, aliases/unknown/private-use/
+extension tags, legacy typed identity, fractional/subnormal quality, fresh result
+identity, multiple preferences/exclusions and undetermined/NaN/signed-zero
+behavior. The full current XCTest suite passes 273 methods with one existing
+invalid-UTF8 filesystem-fixture skip. All 747 API disposition records are
+qualified again, eighteen corrupted receipts are refused, and the 1,155-symbol
+public graph is identical to the pre-change graph.
+
+
+All 1,057 standalone checks pass, including 27 added checks. The exact main
+2,197 passing / 184 pending ID sets remain unchanged, with no failures or
+ratified mappings. Fresh four-target Apple SDK qualification compiles, imports,
+links and inspects sixteen binaries. Host arm64 consumer/data/component/
+filesystem/manifest checks pass, including all 59,992 URL observations and
+1,195,148 NFC checks. Only current arm64 macOS executes locally. Minimum Swift
+6.2, minimum-OS/iOS/Intel runtime and hosted CI remain open release gates, as do
+shared native-representation/filename mapping decisions. The scoped summary is
+`.build/reports/m8g-qualification-summary.json`.

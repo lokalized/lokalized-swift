@@ -100,7 +100,7 @@ private enum ManifestRawParser {
             var seen: Set<ExactString> = []
             for member in members {
                 if !isRoot && !seen.insert(member.name).inserted {
-                    throw StringsParseError(message: "\(source): duplicate JSON object member '\(member.name)' encountered at \(path)",
+                    throw StringsParseError(message: "\(source): duplicate JSON object member '\(boundedValue(member.name.string))' encountered at \(path)",
                         source: source)
                 }
                 try firstNestedDuplicate(member.value, path: boundedPath(path, ".", member.name.string, ""), isRoot: false, source: source)
@@ -111,6 +111,10 @@ private enum ManifestRawParser {
             }
         default: break
         }
+    }
+    private static func boundedValue(_ value: String) -> String {
+        let units = Array(value.utf16.prefix(257))
+        return units.count <= 256 ? value : String(decoding: units.prefix(255), as: UTF16.self) + "…"
     }
     private static func boundedPath(_ parts: String...) -> String {
         var result = "", remaining = 4_096

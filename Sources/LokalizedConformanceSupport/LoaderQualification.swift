@@ -80,7 +80,7 @@ public enum LoaderQualification {
         func require(_ value: Bool, _ message: String) throws {
             guard value else { throw ConformanceError("Native loader qualification: " + message) }; checks += 1
         }
-        let directory = URL(fileURLWithPath: "/private/tmp", isDirectory: true)
+        let directory = try qualificationTemporaryDirectory()
             .appendingPathComponent("lokalized-native-loader-" + UUID().uuidString, isDirectory: true)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: directory) }

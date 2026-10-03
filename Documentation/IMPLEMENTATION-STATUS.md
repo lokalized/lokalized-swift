@@ -1,6 +1,6 @@
 # Implementation status
 
-October 2, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
+October 3, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
 
 ## Implemented behavior
 
@@ -29,11 +29,11 @@ October 2, 2026. M0–M6 are implemented: package/reference/conformance foundati
 - Explicit Bundle directory/resource-path maps, bounded native directory/file/caller-owned stream APIs, aggregate budgets, canonical source provenance and a packaged SDK privacy manifest. Real SwiftPM and iOS/macOS app consumers preserve ordinary catalog paths and both English/French catalogs together.
 - `PreferredLanguageChooser` accepts injectable ordered preferences or explicitly acquires Apple preferences. It limits raw entries to 32, skips malformed native tags, preserves direct match identity and returns honest empty-range fallback diagnostics. Independent contexts need no process-wide language mutation.
 - Frozen behavioral/data/naming artifacts, a mechanical API census and declaration-preserving input bytes from pinned authored fixtures. The original corpus remains unchanged. The harness compares every observed field, projects only documented native error/set representations, and leaves unfinished operations explicit.
-- CI for the actual minimum Swift 6.2 and a current hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. GitHub has not executed this workflow yet.
+- CI for minimum Swift 6.2 on native arm64 and Intel and a current arm64 hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. A compiled kernel probe requires the actual native architecture. GitHub has not executed this workflow yet.
 
 ## Local verification
 
-Swift 6.4 / Xcode 27 on arm64 macOS 27.0.1 passes **266 XCTest methods** (265 passed, one filesystem-specific fixture explicitly skipped). The standalone runner passes **1,030 checks** without XCTest linkage. Coverage includes exact Unicode keys/text/origins, malformed bytes/surrogates/duplicates, delimiter offsets, budget and compiler hard-ceiling boundaries, eager validation/error order, warning callback error identity/reentry, shard conflicts, and 120-level shared model graphs. Numeric checks cover precision beyond Foundation Decimal, exact remainder/comparison, scale and trailing zeros, signed source/compact expansion, rounding refusals, materialization ceilings, revalidation and Float width/subnormal rendering. Six expression tests check all 31 recorded parse-expression diagnostic suffixes, all 61 constants and every generated identifier range boundary/gap. Locale checks cover grammar/rebuildability, distinct field/tag identity, aliases and parents, matching solver witnesses, exclusions, custom matcher propagation, supplied-result refusal order and immutable concurrent use. M4 adds 15 expression methods, 14 fragment methods and two component-qualification wrappers. Its standalone additions are 211 expression checks, 53 fragment checks and 16 independent discriminators, covering callback identity/timing, source versus expanded numbers, all axes, missing/null precedence, exact Unicode delimiters, terminal selections, authored eager priority, 120-level shared graphs and 40 concurrent attempts.
+Swift 6.4 / Xcode 27 on arm64 macOS 27.0.1 passes **274 XCTest methods** in M8G (273 passed, one filesystem-specific fixture explicitly skipped). The current M8I standalone runner passes **1,057 checks** without XCTest linkage. Coverage includes exact Unicode keys/text/origins, malformed bytes/surrogates/duplicates, delimiter offsets, budget and compiler hard-ceiling boundaries, eager validation/error order, warning callback error identity/reentry, shard conflicts, and 120-level shared model graphs. Numeric checks cover precision beyond Foundation Decimal, exact remainder/comparison, scale and trailing zeros, signed source/compact expansion, rounding refusals, materialization ceilings, revalidation and Float width/subnormal rendering. Six expression tests check all 31 recorded parse-expression diagnostic suffixes, all 61 constants and every generated identifier range boundary/gap. Locale checks cover grammar/rebuildability, distinct field/tag identity, aliases and parents, matching solver witnesses, exclusions, custom matcher propagation, supplied-result refusal order and immutable concurrent use. M4 adds 15 expression methods, 14 fragment methods and two component-qualification wrappers. Its standalone additions are 211 expression checks, 53 fragment checks and 16 independent discriminators, covering callback identity/timing, source versus expanded numbers, all axes, missing/null precedence, exact Unicode delimiters, terminal selections, authored eager priority, 120-level shared graphs and 40 concurrent attempts.
 
 At its completed milestone, M7A added 30 XCTest methods and 178 standalone checks: 19 identity, 118 manifest validation and 41 planning checks. Frozen URL/manifest audits execute separately from the reference-free standalone checks. Final evidence is `.build/reports/m7a-qualification-summary.json`; the four deployment targets inspect 16 Mach-O outputs from 116 pinned Swift sources. Fresh package consumers and real resource consumers pass with zero external dependencies. The final deployment report is `/private/tmp/lokalized-swift-deployment-m7a-report.json`, and real SwiftPM/unsigned Xcode packaging evidence is `/private/tmp/lokalized-swift-local-delivery-m7a.json`.
 
@@ -54,7 +54,7 @@ The shared audit enumerates all 2,381 IDs exactly once:
 | Failed | 0 |
 | Unimplemented | 184 |
 
-The passes include **all 149 `parse` cases, all 22 `define` constructor cases, one `languageForms` case, all 105 numeric/plural cases, all 312 `matchFor` cases and all 31 `acceptLanguage` cases**, plus **1,322 `getResult`, 85 `get` and 25 `construct` cases**, plus **145 actual native filesystem `load` cases**. The audit compares real public APIs against every recorded observation field; matcher support comes from actual parsed fixture inputs. Programmatic catalog admission, merge, callback identity, fallback election, candidate walks and supplied-match context have additional native checks. The required portable partition contains 2,155 cases; 226 are informational. The audit exits 1 with `incomplete`, preserving unfinished delivery and representation qualification.
+The passes include **all 149 `parse` cases, all 22 `define` constructor cases, one `languageForms` case, all 105 numeric/plural cases, all 312 `matchFor` cases and all 31 `acceptLanguage` cases**, plus **1,322 `getResult`, 85 `get` and 25 `construct` cases**, plus **145 actual native filesystem `load` cases**. The audit compares real public APIs against every recorded observation field; matcher support comes from actual parsed fixture inputs. Programmatic catalog admission, merge, callback identity, fallback election, candidate walks and supplied-match context have additional native checks. The required portable partition contains 2,155 cases; 226 are informational. The raw runtime audit exits 1 with `incomplete`, retaining its original 184 unreplayed/different inputs. The separate [native contract coverage](NATIVE-CONTRACTS.md) accounts for those inputs without adding runtime passes.
 
 The separate `--resolution-components` audit passes **578 input-selected single-catalog projections** against the same frozen corpus, comparing outcome, exact translation, error category/message/immediate cause and resolver traces. Eligibility follows only fixture/input guards; expected observations never configure execution. The ordered ID SHA-256 is `fe8cbe90b8c000e88f094edb980b034ba86205ceeae65d6b460c2b825e24b467`. CI rejects changed eligibility, hidden omitted channels or partial passes; five altered report variants were refused locally. The projection retains its limited scope. M5 now separately qualifies full match/result envelopes, fallback policies/handlers, retained identity and bidi in the main audit, with native successful-fallback observation evidence. See [expressions](EXPRESSIONS.md) and [fragments](FRAGMENTS.md).
 
@@ -84,7 +84,7 @@ The separate frozen JS manifest archive contains 499 cases. Its native report qu
 
 M7B1 qualification passes all **59,992 frozen URL observations**: the unchanged 3,479-row archive and a separate 56,513-row Node archive, with zero pending capabilities or failures. The new archive contains 6,389 official scalar-compatible inputs, 32,203 property discriminators, 17,062 normalization discriminators and 859 authored boundaries. An independent 50,030-input review also matches. Canonical Unicode 17 NFC passes 1,195,148 checks; the separate compatibility normalization table decoder passes 4,483,039 lookups and 13 corrupted-report controls. Unicode and auxiliary-property decoders cover every codepoint independently. All fifteen URL report controls and the existing fifteen manifest controls reject altered receipts. The original 2,381-case 2,197/184 ratchet, 499-case 468/31 manifest inventory, native observation ledger and seven runtime data identities remain unchanged. Final evidence is `.build/reports/m7b1-qualification-summary.json`. Four Apple build targets inspect 16 binaries from 124 stable source files, and fresh/package resource consumers pass with zero external dependencies. The deployment and packaging receipts are `/private/tmp/lokalized-swift-deployment-m7b1-report.json` and `/private/tmp/lokalized-swift-local-delivery-m7b1.json`; their runtime/toolchain limits remain explicit in [DEPLOYMENT.md](DEPLOYMENT.md).
 
-The frozen JS locale normalizer's non-idempotent `UND-x-foo` behavior is preserved and covered by paired vectors; a coordinated shared-version correction remains a governance question. A separately measured truncated diagnostic-path output can contain a lone surrogate in JS but U+FFFD in Swift; this native error-message representation remains an explicit release qualification gap outside the frozen 499-case inventory.
+The frozen JS locale normalizer's non-idempotent `UND-x-foo` behavior is preserved and covered by paired vectors; the maintainer approved a coordinated shared-version correction on October 2, with implementation pending. A separately measured truncated diagnostic-path output can contain a lone surrogate in JS but U+FFFD in Swift; this native error-message representation remains an explicit release qualification gap outside the frozen 499-case inventory.
 
 **October 2 scope decision:** Swift follows Java's synchronous local-loading model. HTTP fetching exists in JS for browser delivery and is not a Swift requirement. Applications own downloads and supply catalog bytes, text, streams or local resources to the implemented loaders. The proposed M7B2 HTTP transport, partial-network-load policies, cancellation machinery, `LoadedStrings`/verified-network records and publishing workflow are removed from the Swift release scope. The unfinished draft was never integrated and has been discarded; no HTTP implementation ships. Existing M7A/M7B1 pure manifest helpers and frozen evidence remain, and URL metadata never triggers catalog I/O.
 
@@ -102,9 +102,194 @@ The frozen JS locale normalizer's non-idempotent `UND-x-foo` behavior is preserv
 
 M8F also refreshes the unchanged 1,155-symbol public graph, all 747 reference dispositions, eighteen report-corruption refusals, and sixteen compiled/linked/inspected binaries across the four Apple target triples. Host arm64 qualification executes; other architectures/platforms have compilation evidence only. The previous full M8E native suite remains historical evidence alongside the targeted M8F suite.
 
-Remaining M8 work includes shared representation/filename mapping decisions and actual minimum-compiler/old-OS/iOS/Intel/hosted-CI execution gates. Minimum-track performance and application-specific sizing remain unmeasured locally. Single-range match preparation remains a profiling candidate. Existing pending corpus cases remain explicit; the HTTP scope decision does not turn them into passes.
+M8J/M8K below close the coordinated diagnostic and manifest normalization amendments. Remaining M8 work includes actual minimum-compiler/old-OS/iOS/Intel/hosted-CI execution gates and shared release-evidence cleanup. M8I below qualifies the archived manifest carriers. The core-corpus native decisions are specified and qualified by M8H below. Minimum-track performance and application-specific sizing remain unmeasured locally. Existing pending corpus cases remain explicit; the HTTP scope decision does not turn them into passes.
 
 The implementation plan remains outside source control at the parent workspace's `SWIFT_IMPLEMENTATION_PLAN.md`.
 
 
 **October 2: shared IDNA fixture ownership and compression** moves the canonical 56,513-case oracle archive, language-neutral input recipe, required Unicode/Ada data/licenses and engine provenance to `lokalized-spec`. Swift consumes a verified twenty-artifact offline snapshot and retains its native emitter/probe adapters. The 731,845-byte gzip reproduces the original 19,308,094 JSON bytes exactly, preserving every expectation, case ID and decoded digest. Both readers enforce separate stored/decoded byte limits and complete single-member/CRC/trailing-data checks. Production library sources and external dependency counts are unchanged. All 59,992 original/new URL observations and fifteen report-corruption controls pass; fourteen selected XCTest methods, six Swift-development Python tests and nine shared tests pass. A standalone snapshot passes without siblings or a port compiler, and corrupted canonical/local data is refused, including refusal before sync writes. Four Apple SDK targets compile/link/inspect sixteen binaries with the current unchanged Swift source hashes; actual minimum-compiler/other-platform/old-OS runtime limits remain as previously documented. See [shared snapshot ownership](../Reference/URL-ORACLE.md) and [URL evidence](MANIFEST-URLS.md). Scoped local evidence is `.build/reports/idna-shared-qualification-summary.json`.
+
+
+**M8G: single exact preference** skips language-range member preparation and election when one finite, positive preference exactly matches a configured locale. Undetermined non-private preferences, NaN/zero, nonexact/wildcard and multiple-range inputs retain the full election. Results retain actual requested ranges/configured typed identity and use the normal validated initializer; suppliers, callbacks and fresh result identity are preserved. No request cache, stored member metadata, public API or dependency is added. Three optimized builds and 36 checked workload executions per version, with nine corrupted-report refusals each, compare an exact pre-change source/tool snapshot against current source. On this host, warm plain lookup falls from 53.04 to 7.50 µs (86% less time) and fallback from 58.14 to 12.50 µs (78%). The stripped consumer remains 2,267,992 bytes and existing size caps pass. All 273 native methods pass with one existing filesystem skip; all 1,057 standalone checks and exact 2,197/184 shared sets pass unchanged, with no ratified mappings. Fresh API qualification retains 1,155 public symbols and all 747 dispositions with eighteen corrupted reports refused. Four Apple SDK targets compile/link/inspect sixteen binaries and current arm64 qualification passes all data/component/filesystem/manifest/URL/NFC checks. Actual minimum compiler and other-platform/minimum-OS/hosted-CI execution remain open. See [matcher semantics](LOCALE-MATCHING.md) and [measurements/limits](PERFORMANCE.md); scoped evidence is `.build/reports/m8g-qualification-summary.json`. Next available release work is the shared native-representation/filename mapping decisions and remaining platform validation.
+
+
+**M8H: shared native conformance contracts** adds `lokalized-spec`'s versioned `swift-native-local-v1` policy, schema, input-derived checker and seven offline shared tests. Swift consumes four byte-pinned artifacts and qualifies them only after current compiler/runtime/native evidence and a source-bound SDK/host audit pass. All 2,155 required portable obligations are accounted for as 2,135 exact runtime matches and twenty qualified nonoptional source boundaries. Informational accounting is 62 exact matches, five complete filename adaptations and 159 platform-specific JVM carriers. All five exact ID sets are disjoint and exhaustive over 2,381 cases; strict runtime agreement remains 2,197. Original observations, partitions and raw 2,197/184 audit remain unchanged. The new receipt is `covered-under-native-contracts-not-certified` with release parity false; it preserves every unreplayed channel. Seventeen negative compiler consumers, the positive consumer, 23 adjacent runtime controls and twenty Bundle/loader controls pass; all 23/25 existing native/loader and 27 new contract corruptions are refused. Five Swift-development Python tests, seven shared tests, schema/partition checks and a standalone saved-evidence check without siblings or a compiler pass. Fresh four-target SDK qualification inspects sixteen binaries from unchanged production sources and passes current arm64 host/data/component/filesystem/manifest/URL/NFC qualification with 1,057 standalone checks. The deployment tool now executes the macOS target matching its host architecture; actual Intel execution remains unverified here. CI checks native coverage after deployment qualification under both configured compiler tracks. No production API, dependency or HTTP loading changes. See [contract evidence and limits](NATIVE-CONTRACTS.md); scoped summary is `.build/reports/m8h-qualification-summary.json`. The separate 31 JS manifest carriers/surrogate diagnostic and actual minimum compiler/other-platform/minimum-OS/hosted-CI gates remain open.
+
+
+**M8I: shared manifest native contracts** promotes the original 499-case archive, lock, schema, input recipe, JS oracle, declaration/notice provenance and raw comparison checker to `lokalized-spec`; Swift consumes fourteen pinned offline artifacts. The archive, lock, complete native observation ledger and raw report bytes stay unchanged. A versioned input-derived profile accounts for 468 runtime comparisons (165 exact observations, 303 narrow native error projections) and 31 native adaptations. Thirty external consumers fail for their intended type/argument/Unicode reason; one compiles because Swift defaults omitted identity formatVersion to 1. Sixteen adjacent runtime controls qualify this default, explicit null/limit/digest/lookup refusals, Unicode repair/raw escape rejection and successful planning. All 23 new native-coverage and fifteen existing raw-report corruptions are refused; seven shared tests, five Swift-development Python tests and 33 selected manifest/identity XCTest methods pass. A standalone saved-evidence check works without siblings or compiler execution. Fresh SDK qualification inspects sixteen binaries across four targets from the unchanged 127 Swift sources and executes current arm64 host/data/component/filesystem/manifest/URL/NFC qualification with 1,057 standalone checks. Core native coverage also revalidates against the new source-bound audit with its exact original sets. CI runs the manifest profile under both tracks. No production API, source, HTTP loading or external dependency changes. See [manifest native contracts](MANIFEST-NATIVE-CONTRACTS.md); scoped evidence is `.build/reports/m8i-qualification-summary.json`. The maintainer approved the current wire naming and coordinated versioned corrections; actual migration/normalization/diagnostic amendments and minimum compiler/other-platform/minimum-OS/hosted-CI evidence remain separate work.
+
+
+**M8J: coordinated diagnostic text correction** defines shared `diagnostic-text-v1.1` version 1.1.0, its scalar-based independent recipe/schema and 36 raw catalog/manifest cases. Java and JS repair pairs split by UTF-16 diagnostic truncation to match Swift’s existing replacement behavior. JS/Swift nested manifest member displays now share the catalog’s 256-unit cap; paths retain their 4,096-unit cap and terminal behavior. Swift consumes five byte-pinned artifacts, executes all 36 cases through actual public parsers, compares exact UTF-16 text and rejects altered input bytes. Fifteen saved-report corruptions are refused; six shared checker tests and 26 selected Swift XCTest methods pass. A fresh four-target SDK qualification inspects sixteen binaries from 128 current Swift sources, passes the diagnostic command and replays the unchanged core, manifest, data, filesystem and URL/NFC ledgers with 1,057 standalone checks. Java passes 110 loader/profile test methods (18 shared vectors); JS passes all 2,332 regression tests, including the 36 shared vectors, and its type check. JS source-size records are remeasured with recorded reasons and frozen history checkpoints, and its CI mirrors the new dependency-free shared gates. See [diagnostic profile](DIAGNOSTIC-TEXT.md); scoped summary: `.build/reports/m8j-qualification-summary.json`. No public API, wire-format, locale normalization, HTTP loading or external dependency changes. Remaining work is the coordinated manifest normalization amendment and actual minimum compiler/OS, iOS/Intel and hosted-CI execution.
+
+
+**M8K: coordinated manifest normalization correction** defines shared
+`manifest-normalization-v1.1` version 1.1.0, its independent recipe/schema, 35 new
+cases and exactly four explicit historical amendments. JS and Swift manifest
+helpers now stabilize private-use-only JDK projections as `x-…`; core locale
+behavior, arbitrary raw identity keys, wire format 1 and the current tiebreaker
+name retain their contracts. Affected manifest fingerprints must be regenerated.
+JS loaded-core and SSR coverage use the same stable manifest spelling while
+retaining the actual core context. The original 499-case archive and lock stay
+unchanged. Current reports retain all historical references, four separately
+amended references, 464 unchanged historical agreements and four amended
+comparisons, partitioned as 162 exact / 306 projected observations. Thirty-one
+native adaptations compose with the existing carrier profile and never become
+runtime passes. All 278 native test methods pass plus one existing filesystem
+skip; all 2,372 JS tests, its type check and declaration probes pass. Six shared
+and five Swift-development Python tests, 18 active-archive/13 profile corruption
+refusals, 23 native receipt refusals and four isolated offline checks pass.
+Fresh four-target SDK qualification inspects sixteen binaries from 129 current
+Swift sources and executes the new profile alongside all existing core/data/
+filesystem/diagnostic/URL/NFC checks and 1,057 standalone checks. A fresh offline
+package and external consumer build/execute with zero external dependencies.
+Current core native coverage is also requalified against the fresh source-bound
+SDK and compiler/loader controls. See [normalization and migration](MANIFEST-NORMALIZATION.md);
+scoped summary is `.build/reports/m8k-qualification-summary.json`.
+
+The umbrella `lokalized-spec` check currently stops at its unchanged Java-surface
+inventory gate: `TranslationFallbackEvent`, `TranslationFallbackObserver` and
+`TranslationFallbackEvent.PrecedingFailure` lack shared surface dispositions.
+All manifest normalization, historical/native manifest, schema and partition gates
+pass individually. This pre-existing documentation drift remains a separate
+release-evidence cleanup task. Minimum Swift 6.2, minimum OS, iOS/Intel runtime
+and hosted CI execution remain open. No HTTP loader or external runtime dependency
+is added, and the native coverage receipts retain `releaseParity: false`.
+
+
+**M8L: observer inventory and packaged iOS execution** records A35's three
+existing Java 3.1.1 observer types with explicit JS/Swift counterparts, including
+the standalone native `PrecedingFailure` representation. The current surface
+audit now has no drift; 47 JS observer/divergence/CI tests and 23 selected Swift
+runtime/contract methods pass. No observer case is inserted into the frozen
+corpus. A new stdlib-only qualifier executes the fresh packaged SwiftUI app on
+arm64 iOS 26.5 (23F77), checking actual Bundle catalogs, English/French rendering,
+exact NFC/NFD keys and French plural lookup. The app's MainActor/concurrency
+settings, iOS 15 floor and resource/privacy bytes are verified during fresh
+packaging. Both SwiftPM caller modes and the macOS app also execute; all three
+Apple app products build. The owned simulator is shut down and deleted. Nine
+offline tests and ten corrupted-receipt controls pass. CI includes the tests and
+an explicitly requested installed-runtime execution step; hosted execution has
+not occurred locally. See [iOS scope and reproduction](IOS-RUNTIME.md).
+
+The spec's default umbrella check now passes the observer surface but correctly
+refuses historical IANA source provenance against today's Java checkout. A
+separate source-only archive of the exact Java 3.1.0 commit is freshly compiled
+on Corretto 21.0.11; its 62-file source aggregate matches the frozen receipts.
+IANA replay passes 116,658 probes and behavioral replay reproduces all 2,381
+cases/five seeds without writing any artifacts. All 21 shared gates pass in the
+explicit matrix, using current sources for API inventory and that historical
+build only for oracle replay. See [oracle input selection](../../lokalized-spec/ORACLE-REPLAY.md).
+Scoped summary: `.build/reports/m8l-qualification-summary.json`.
+
+The iOS result is packaged-consumer evidence, not full iOS corpus or device parity.
+Minimum Swift 6.2, iOS 15/macOS 12, full iOS runtime, physical device, Intel and
+hosted CI remain separate execution gates. Observer vectors remain deferred by
+the shared naming policy. Production Swift sources/APIs, original corpus bytes,
+external dependency count and no-HTTP scope stay unchanged. Work remains
+uncommitted and unstaged.
+
+**M8M: standalone conformance on iOS** runs all fourteen development qualification
+commands inside a real arm64 iOS 26.5 simulator app. Full observations match the
+fresh macOS build: 1,057 self-tests, exact 2,197 passing / 184 pending corpus IDs,
+runtime/component/filesystem/Bundle controls, CLDR plural/locale data, manifest
+profiles, URL/56,513 IDNA observations and all 1,195,148 Unicode 17 NFC checks.
+The corpus remains incomplete, and native carriers/representation dispositions
+retain their existing scope. A development-only SwiftUI shell packages frozen
+reference bytes and current local source modules; its three Mach-O files retain
+iOS 15 floors and Apple/system/local dependencies. Large reports use bounded
+base64 frames over the simulator console. The owned simulator is deleted.
+
+Four development-support files now share the POSIX-canonical application
+temporary-directory helper; production sources/APIs are unchanged. Fresh
+four-target SDK qualification inspects sixteen binaries from all 129 current
+sources. Native coverage and packaged resource consumers are refreshed against
+those bytes. All 278 macOS XCTest methods pass with the existing skip; fifteen
+offline iOS receipt tests and twenty corruption controls pass. CI adds offline
+tests and explicitly requested full simulator qualification. See
+[iOS scope and reproduction](IOS-CONFORMANCE.md); summary:
+`.build/reports/m8m-qualification-summary.json`.
+
+The current standalone iOS execution gap is closed. Remaining execution gates
+are minimum Swift 6.2, iOS 15/macOS 12, physical device, Intel and hosted CI;
+shared observer vectors remain deferred. No dependency, HTTP loading, commit
+or staging changes.
+
+**M8N: native Intel CI and compiler/host guards** adds the minimum Swift 6.2
+`macos-15-intel` track beside minimum/current arm64. Each job compiles and runs
+a native kernel probe, requires its declared architecture, rejects Rosetta or
+contradictory CPU observations, and repeats that requirement during four-target
+SDK qualification. Distinct compiler/architecture artifact names prevent the
+two minimum jobs from colliding. Intel runs the same workflow, including tests,
+complete audits, native contracts, packaged consumers and measurements; existing
+unmeasured-profile binary-budget reporting is retained. Official runner labels
+and both minimum Xcode inventories were checked. See [deployment and CI scope](DEPLOYMENT.md).
+
+Eleven offline host-probe tests pass, and actual local requests for Intel or
+Swift 6.2 both exit 1 with failed receipts on this Swift 6.4 arm64 Mac. Fresh SDK
+qualification inspects sixteen target binaries plus the host probe and executes
+the unchanged macOS audits. The refreshed iOS 26.5 app executes all fourteen
+commands with full observation equality and deletes its owned simulator.
+Native coverage checks and all 27 core / 23 manifest / 25 loader / 20 iOS
+corruptions pass; all 24 existing iOS checker tests also pass. Current packaged
+catalog evidence remains valid and its ten controls are rechecked.
+
+All 129 Swift source hashes match M8M; public APIs, corpus/profile bytes, runtime
+dependencies and HTTP scope are unchanged. The previous full XCTest and
+packaged-build runs remain evidence for those unchanged sources; they are not
+rerun here. Earlier SDK/native/iOS receipts whose tooling pins changed are
+historical. Fresh scoped summary: `.build/reports/m8n-qualification-summary.json`.
+Minimum Swift 6.2, native Intel, hosted CI, iOS 15/macOS 12 and physical-device
+execution still require actual environments. This slice prepares the hosted
+gates and does not claim their completion. Work remains uncommitted and unstaged.
+
+**M8O: concurrency stress and Thread Sanitizer** adds four public-API tests with
+992 parallel worker iterations covering a shared four-locale runtime, exact
+Unicode keys, bidi/number/plural results, independent resolver caches, callback
+reentry/error identity and concurrent local loading budgets/warnings/streams.
+All four pass normally. A separate sanitized build executes all 37 selected
+runtime/preference/loading methods: 36 pass, one existing filesystem fixture
+skips, and no races are reported on this Swift 6.4 arm64 macOS host.
+
+The intentionally racy development control is detected with source attribution
+and exit 66. Actual runtime-object instrumentation and the test binary's
+sanitizer link are inspected; normal uninstrumented artifacts are refused.
+Eleven detector/log/instrumentation refusal controls pass. The checker requires
+complete declared test IDs and records pre-build source pins, exact observations
+and artifact/log identities. CI adds this recipe on all three configured tracks;
+no hosted execution is claimed. See [concurrency scope and reproduction](CONCURRENCY.md);
+summary: `.build/reports/m8o-qualification-summary.json`.
+
+All 129 runtime/development Swift source hashes and existing M8N SDK/native/iOS
+input identities remain current. No production source/API, corpus/profile,
+dependency or HTTP-loading change is made. The full XCTest and packaged-build
+runs remain earlier unchanged-source evidence; this slice runs the new tests
+and selected sanitized suites. Actual minimum compiler, minimum OS, Intel,
+physical-device and hosted-CI execution remain open. Finite sanitizer coverage
+does not certify race freedom or release parity. Work is uncommitted and unstaged.
+
+**M8P: source distribution and notices** adds root Apache attribution, a complete
+third-party inventory and separately pinned CLDR, Unicode 15/17 and Ada MIT
+license documents. A standard-library Python tool creates a deterministic
+archive of the current source tree, including the original manifest, examples
+and development snapshots. Git/build/cache/user files are excluded, symlinks
+are refused and the IDNA goldens remain compressed. Nineteen offline controls
+qualify preserved bytes/modes, notices, exclusions and corrupted/unsafe archives.
+
+The fresh-package check now consumes that archive, inspects the extracted
+manifest and verifies the notices, then deletes Reference/Tools before building
+the package and running a separate public-API consumer. It checks the consumer's
+actual macOS deployment floor/system links, exact packaged privacy bytes and
+absence of resolver files, and revalidates the source inventory after execution.
+CI applies the same source-distribution gate on all three configured tracks and
+retains the archive plus complete source/build receipt. See
+[source distribution](SOURCE-DISTRIBUTION.md); scoped local receipt:
+`.build/reports/m8p-source-distribution.json`.
+
+All 129 Swift source files, the production API, shared corpus/profiles, external
+dependency count and no-HTTP scope are unchanged. Existing SDK, packaged Apple
+consumer and sanitizer source evidence remains valid. The earlier iOS conformance
+receipt is historical for its complete Tools-directory pin because packaging
+tools changed; the actual iOS source/reference bytes are unchanged. No iOS run
+is added by this packaging slice. Minimum compiler/OS, native Intel, physical
+device, hosted CI and deferred observer-vector gates still require their own
+environments or shared release decisions. Work remains uncommitted and unstaged.

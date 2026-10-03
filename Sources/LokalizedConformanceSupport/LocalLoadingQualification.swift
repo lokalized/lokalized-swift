@@ -2,6 +2,17 @@ import Foundation
 import Darwin
 import Lokalized
 
+// Owned qualification fixtures must be writable in an application sandbox and
+// use the same POSIX-canonical origin spelling as the public local-file loader.
+// Foundation's resolvingSymlinksInPath does not resolve every /var alias.
+func qualificationTemporaryDirectory() throws -> URL {
+    guard let path = FileManager.default.temporaryDirectory.path.withCString({ realpath($0, nil) }) else {
+        throw ConformanceError("Unable to resolve the caller's temporary directory")
+    }
+    defer { free(path) }
+    return URL(fileURLWithPath: String(cString: path), isDirectory: true)
+}
+
 /// Real local-file and caller-stream checks, independent of frozen corpus
 /// expectations and XCTest. Resources are created in one owned temporary tree.
 enum LocalLoadingQualification {
@@ -16,11 +27,7 @@ enum LocalLoadingQualification {
             catch { return error }
             throw ConformanceError("Expected local loading refusal")
         }
-        guard let temporaryPath = FileManager.default.temporaryDirectory.path.withCString({ realpath($0, nil) }) else {
-            throw ConformanceError("Unable to resolve the caller's temporary directory")
-        }
-        let temporaryDirectory = URL(fileURLWithPath: String(cString: temporaryPath), isDirectory: true)
-        free(temporaryPath)
+        let temporaryDirectory = try qualificationTemporaryDirectory()
         let root = temporaryDirectory.appendingPathComponent("lokalized-qualification-" + UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(at: root) }

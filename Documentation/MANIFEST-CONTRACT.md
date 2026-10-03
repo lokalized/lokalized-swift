@@ -2,7 +2,7 @@
 
 M7A covers manifest validation, catalog identity, and load planning. These pure manifest APIs perform no catalog loading or body verification and make no authentication claim. Swift catalog loading is local, as in Java; HTTP acquisition, JS `LoadedStrings`/verified-network records, cancellation scheduling and publishing are outside Swift runtime scope. The original 2,381-case behavioral corpus and M0 reference baseline are unchanged. That corpus's `manifest-loads` cases concern Java directory loading and subsequent translation; it contains no JSON-manifest, JCS-identity, or fetch-plan operation.
 
-`Reference/manifest-contract-vectors.json` is a separate development-only archive of 499 observations from JavaScript commit `617670da887b0c684e2589882447b6b93297f2f7`. Its package.json still says `1.0.0-rc.2`, but the commit includes unreleased API and wire changes. `Reference/manifest-contract-lock.json` pins the exact production source bytes, reviewed tests and declarations, generator, schema, Node version, case inventory, and archived output. Refresh reads immutable git objects, rather than mutable checkout contents, before importing and executing the real JavaScript functions. No expected Swift output participates in generating these observations.
+`Reference/manifest-contract-vectors.json` is a byte-pinned development snapshot of the canonical `lokalized-spec/generated/manifest-contract` archive, containing 499 observations from JavaScript commit `617670da887b0c684e2589882447b6b93297f2f7`. Its package.json still says `1.0.0-rc.2`, but the commit includes unreleased API and wire changes. `Reference/manifest-contract-lock.json` pins the exact production source bytes, reviewed tests and declarations, generator, schema, Node version, case inventory, and archived output. Refresh reads immutable git objects, rather than mutable checkout contents, before importing and executing the real JavaScript functions. No expected Swift output participates in generating these observations.
 
 The archive has 152 object validations, 183 raw parses, 41 standalone identity calls, 16 identity projections from manifest claims, 12 locale-configuration calls, 35 candidate chains, 47 fetch sets, and 13 whole-manifest plans. The last operation records an exported internal JS helper, separately from the public JS package entry points. There are 167 returned observations and 332 thrown observations. These are reference outcomes, not a claim that every input can be expressed by the native API or that Swift has passed them.
 
@@ -14,10 +14,10 @@ Normal checking needs Python's standard library only, without Node, Java, git, s
 python3 Tools/manifest_contract.py --check
 ```
 
-An explicit development refresh requires the pinned git objects and the recorded Node `v26.5.0` oracle environment:
+Canonical oracle refresh belongs to `lokalized-spec` and requires the pinned git objects and recorded Node `v26.5.0` oracle environment. Run there:
 
 ```sh
-python3 Tools/manifest_contract.py --refresh --source-root /path/to/lokalized-js --node /path/to/node
+python3 tools/check-manifest-contract.py --refresh --source-root /path/to/lokalized-js --node /path/to/node
 ```
 
 Node is an oracle tool, not a consumer or build dependency. The version records the environment actually executed; it does not change Lokalized Swift's runtime or OS floor, or assert qualification of every JS-supported Node version. A refresh reports new archive digests; changing those pins is a deliberate source change. The inputs can be inspected independently with `--inputs`.
@@ -34,11 +34,11 @@ Inputs distinguish validation priority, declaration order, required fields and a
 
 Native qualification must select eligibility from these inputs and the actual public API. The decoded native semantic-value door can express malformed JSON field shapes; the typed identity input cannot express null or incorrectly typed required strings or array members. Neither `String` nor public `ExactString` can preserve lone UTF-16 surrogates. Such cases must remain explicit carrier-pending rather than manufacture JS runtime errors from native type safety. Unknown input/observation fields must fail closed. Native error taxonomy or additional structured diagnostics need explicit comparison rules and retained observations; fields may not disappear merely because a reference expectation lacks them.
 
-## Native qualification and report integrity
+## Historical native qualification and report integrity
 
-The actual M7A public-door run matches 468 of the 499 observations, with no failures. Of these, 165 have identical native/reference observations and 303 match through explicitly registered representation projections. The remaining 31 are pending native carriers. This scoped result does not promote any of the original 2,381 behavioral cases or ratify cross-platform API mappings.
+The unchanged raw M7A public-door report matches 468 of the 499 observations, with no failures. Of these, 165 have identical native/reference observations and 303 match through explicitly registered representation projections. The remaining 31 are pending native carriers. This historical raw report does not promote any original behavioral case or ratify a mapping. M8I separately qualifies all 31 native adaptations under the versioned shared profile; see [native manifest contracts](MANIFEST-NATIVE-CONTRACTS.md). Runtime comparisons remain 468, with 165 exact observations and 303 narrow error projections.
 
-The 31 pending inputs comprise nine missing or incorrectly typed required identity fields, five unknown dynamic option members, four incorrectly typed tiebreaker arrays/elements, four lone-surrogate keys/values, three nonobject identity roots, two unknown budget names, two null lookup strings, one nonstring digest value, and one extra dynamic identity member. Eligibility derives from input types and actual native argument labels, before the expected outcome is inspected. Missing/null optional identity maps are successfully exercised as empty maps; they are not excluded merely because another identity input needs a typed-carrier decision.
+The 31 pending inputs comprise nine missing or incorrectly typed required identity fields, five unknown dynamic option members, four incorrectly typed tiebreaker arrays/elements, four lone-surrogate keys/values, three nonobject identity roots, two unknown budget names, two null lookup strings, one nonstring digest value, and one extra dynamic identity member. Eligibility derives from the raw harness input carrier, before the expected outcome is inspected. The versioned native profile distinguishes thirty refused source consumers from one accepted Swift default: omission of identity formatVersion selects 1, while JS requires the member. Missing/null optional identity maps are successfully exercised as empty maps; they are not excluded merely because another identity input needs a typed-carrier decision.
 
 The error projections preserve complete native and reference observations in the report. `ConfigurationError.kind` and its nil cause project to JS's configuration `code`, or to the independently selected identity TypeError/RangeError class. Native loading-option validation and malformed planning lookup errors have separately named taxonomy projections. Native `StringsParseError` source/line/column/path/cause remain in its receipt; JS's `STRINGS_PARSE` code and raw-reader cause envelope are represented in the comparison receipt. Unlocated raw source failures project to the JS generic Error envelope, while retaining the native structured source and any strict-UTF-8 cause. The same message, source positions and semantic refusal must still match. A projection never absorbs an unexpected difference.
 
@@ -64,7 +64,7 @@ The stdlib-only report checker verifies whole-file source/vector locks, derives 
 
 The native observation ledger pin is `54aa67d6962a9bf1b3f123ebbd6205004c3ce0d272f36270608656fd3957f548`, computed from each ID plus the independently normalized full native observation, in sorted ID order. The archive's vector pin is `6356098bbde353a66886e9552c45efe7ec6353697cf26be2141d3e9f4811d50a`; its lock pin is `faaa51bdacd19f1fbd407848ac545221aad4da5d6d02a1095f1d927a2a96bf03`.
 
-The paired `UND-x-foo`/`und-x-foo` inputs deliberately preserve the pinned JS helper's non-idempotent normalization and repeated projection. M7A has not repaired that shared contract while porting it. A future shared amendment should resolve the behavior and regenerate all affected contract evidence together.
+The paired `UND-x-foo`/`und-x-foo` inputs preserve historical non-idempotent behavior. M8K now qualifies [manifest normalization profile 1.1.0](MANIFEST-NORMALIZATION.md) with exactly four amended expectations while retaining every original observation and archive byte. Current runtime accounting is 464 unchanged historical agreements plus four amended comparisons, partitioned as 162 exact / 306 projected; 31 native carriers remain separate. Historical report scope and checker retain the original 165/303 partition and ledger pin.
 
 ## Wire-name migration evidence
 
@@ -76,3 +76,13 @@ The current identity projection contains the member `tiebreakerLocalesByLanguage
 Only the projection's member spelling changes in that example. HEAD's README says old names are not aliases and requires regenerating manifests and SSR stamps because the rename changes catalog fingerprints. The paired example is explicitly **predecessor source evidence**, not attestation of the contents of a downloaded npm tarball. The implementation plan separately records the published rc.2 wire shape. Swift M7A targets this reviewed HEAD contract; compatibility with both version-1 wire artifacts requires a shared migration/version decision before a broader compatibility claim.
 
 No Java/JS production implementation is vendored in this development archive. Corresponding JS license, notice and third-party notice files are copied verbatim beside the references and checksum-pinned. Their upstream paths remain meaningful in the original repository; they do not introduce runtime dependencies.
+
+
+M8J supplements this archive with the shared [diagnostic text profile](DIAGNOSTIC-TEXT.md), closing the valid-Unicode truncation boundary and bounding nested manifest duplicate-member displays. Its new cases live outside the unchanged historical archive. The normalization amendment remains pending.
+
+The current `--manifest-contract` command emits the amended versioned report
+scope. The report wrapper selects the unchanged historical checker only for an
+explicitly historical scope. Active qualification checks the independent amendment,
+complete active native ledger and 18 corrupted reports; the separate 35-case
+profile rejects 13 corruptions. See [normalization evidence](MANIFEST-NORMALIZATION.md)
+for exact pins, migration and execution commands.

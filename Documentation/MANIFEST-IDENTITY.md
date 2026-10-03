@@ -16,7 +16,13 @@ The implementation uses Apple's system CryptoKit SHA-256. Independent native qua
 
 `catalogIdentityInputFor` copies file digest keys and tiebreaker arrays and resolves the configured fallback using the pinned manifest locale helpers. It does not validate the claim; malformed tag/election input leaves the authored fallback for subsequent semantic validation. As in pinned JS, it sets projection format version 1. Standalone identity map names are arbitrary exact strings; manifest validation separately enforces data-known locale tags and complete tiebreaker orders.
 
-The pinned JS normalizer is not idempotent for some undetermined/private-use spellings. For example, `UND-x-foo` first becomes `und-x-foo`, then becomes `x-foo`. The identity helper re-normalizes the elected fallback, and planning doors repeat validation/normalization as the reference does. Paired frozen vectors preserve this behavior and its possible later fingerprint refusal. This is reference compatibility evidence, not a proposed rule for a future shared standard; correcting it requires coordinated contract versioning across ports.
+[Manifest normalization profile 1.1.0](MANIFEST-NORMALIZATION.md) makes private-use
+spelling stable: `UND-x-foo` becomes `x-foo` immediately. Core `LocaleTag` remains
+Java-compatible. The frozen non-idempotent observations remain historical evidence,
+with four explicit amended expectations. Publishers must recompute fingerprints
+from normalized manifest claims. Raw identity property names and raw authored
+file digest keys remain exact; use a validated manifest when projecting normalized
+claims. See the shared contract for the affected historical fingerprint example.
 
 Swift's typed identity door uses `ConfigurationError(.invalidArgument)` where JS uses `TypeError` or `RangeError`. The differential adapter records native observations and explicitly reports semantic error projections separately. Typed dictionary inputs use deterministic UTF-16 validation order; the ordered decoded manifest door preserves JS declaration order. Dynamic JS identity shapes that the typed Swift input cannot carry are inventoried without fabricated execution.
 

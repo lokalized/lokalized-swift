@@ -143,7 +143,7 @@ final class FixtureMaterializer {
     private var known: [String: Data] = [:]
 
     init() throws {
-        ownedRoot = URL(fileURLWithPath: "/private/tmp", isDirectory: true)
+        ownedRoot = try qualificationTemporaryDirectory()
             .appendingPathComponent("lokalized-swift-fixtures-" + UUID().uuidString, isDirectory: true)
         fixturesRoot = ownedRoot.appendingPathComponent("fixtures", isDirectory: true)
         try FileManager.default.createDirectory(at: fixturesRoot, withIntermediateDirectories: true)

@@ -1,9 +1,15 @@
-name: Swift M8F qualification
+name: Swift M8P qualification
 
 on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      ios_runtime:
+        description: Installed iOS simulator runtime for optional arm64 consumer and standalone qualification
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -15,31 +21,50 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Listed in actions/runner-images macos-15-Readme.md on 2026-10-01.
+          # Xcode paths listed in the matching runner-images inventories, checked 2026-10-03.
           - track: minimum
             runner: macos-15
             developer: /Applications/Xcode_26.0.1.app/Contents/Developer
+            architecture: arm64
+          - track: minimum
+            runner: macos-15-intel
+            developer: /Applications/Xcode_26.0.1.app/Contents/Developer
+            architecture: x86_64
           # Use the current hosted image's real default, not an invented Xcode path.
           - track: current
             runner: macos-26
             developer: /Applications/Xcode.app/Contents/Developer
+            architecture: arm64
     runs-on: ${{ matrix.runner }}
     env:
       DEVELOPER_DIR: ${{ matrix.developer }}
     steps:
       - uses: actions/checkout@v4
+      - name: Require the selected compiler and native runner architecture
+        run: |
+          mkdir -p .build/reports
+          python3 Tools/test_deployment_host.py
+          python3 Tools/verify_deployment.py --host-only --compiler-track '${{ matrix.track }}' --host-architecture '${{ matrix.architecture }}' --output-directory .build/host-preflight --report .build/reports/host-preflight.json
       - name: Check selected compiler, declared floors and zero dependencies
         run: |
           xcodebuild -version
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}'
           python3 Tools/reference_baseline.py --check
           python3 Tools/sync_url_oracle.py --check
+          python3 Tools/sync_native_contracts.py --check
+          python3 Tools/sync_manifest_contracts.py --check
+          python3 Tools/sync_diagnostic_text.py --check
+          python3 Tools/sync_manifest_normalization.py --check
+          python3 Tools/verify_manifest_normalization.py --check
+          python3 Tools/verify_diagnostic_text.py --check
           python3 Tools/api_inventory.py --check
           python3 Tools/verify_api_coverage.py --check
           python3 Tools/measure_package.py --check
           python3 Tools/manifest_contract.py --check
           mkdir -p .build/reports
           python3 Tools/test_idna_archive.py
+          python3 Tools/test_ios_runtime.py
+          python3 Tools/test_ios_conformance.py
           python3 Tools/verify_manifest_urls.py --check > .build/reports/manifest-url-probe.json
           python3 Tools/verify_idna_urls.py --check > .build/reports/manifest-idna-probe.json
           python3 Tools/generate_identifier_tables.py --check
@@ -81,6 +106,11 @@ jobs:
           swift run --skip-build LokalizedConformance --manifest-urls --reference Reference --report .build/reports/manifest-urls.json
           swift run --skip-build LokalizedConformance --idna-normalization --reference Reference --report .build/reports/idna-normalization.json
           swift run --skip-build LokalizedConformance --manifest-contract --reference Reference --report .build/reports/manifest-contract.json
+          python3 Tools/verify_manifest_contract_report.py .build/reports/manifest-contract.json --self-test > .build/reports/manifest-contract-check.json
+          swift run --skip-build LokalizedConformance --manifest-normalization --reference Reference --report .build/reports/manifest-normalization.json
+          python3 Tools/verify_manifest_normalization.py --report-check .build/reports/manifest-normalization.json --negative-controls > .build/reports/manifest-normalization-check.json
+          swift run --skip-build LokalizedConformance --diagnostic-text --reference Reference --report .build/reports/diagnostic-text.json
+          python3 Tools/verify_diagnostic_text.py --report-check .build/reports/diagnostic-text.json --negative-controls > .build/reports/diagnostic-text-check.json
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --manifest-contract-report .build/reports/manifest-contract.json --manifest-urls-report .build/reports/manifest-urls.json --idna-normalization-report .build/reports/idna-normalization.json
           python3 Tools/verify_manifest_urls.py --report-check .build/reports/manifest-urls.json --negative-controls > .build/reports/manifest-url-report-controls.json
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --inventory-report .build/reports/inventory.json
@@ -94,24 +124,68 @@ jobs:
           swift run --skip-build LokalizedConformance --audit --reference Reference --report .build/reports/audit.json > .build/reports/audit-stdout.json || audit_status=$?
           test "$audit_status" -eq 1
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --audit-report .build/reports/audit.json --binary "$(swift build --show-bin-path)/LokalizedConformance"
-      - name: Build a fresh package without reference artifacts or resolver inputs
-        run: python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --offline-build
+      - name: Qualify concurrent runtime and local loads with Thread Sanitizer
+        env:
+          TSAN_OPTIONS: halt_on_error=1:abort_on_error=0:exitcode=66:report_bugs=1
+        run: |
+          set -o pipefail
+          python3 Tests/ConcurrencyControls/check_sanitizer.py --snapshot .build/reports/sanitizer-inputs.json
+          xcrun clang -g -O1 -fsanitize=thread Tests/ConcurrencyControls/ThreadSanitizerRace.c -o .build/ThreadSanitizerRace
+          control_status=0
+          .build/ThreadSanitizerRace > .build/reports/sanitizer-positive-control.log 2>&1 || control_status=$?
+          test "$control_status" -eq 66
+          swift test --sanitize thread --scratch-path .build/thread-sanitizer --filter 'ConcurrencyTests|RuntimeSemanticsTests|PreferredLanguageChooserTests|LocalCatalogLoaderTests' 2>&1 | tee .build/reports/thread-sanitizer.log
+          python3 Tests/ConcurrencyControls/check_sanitizer.py --check --input-snapshot .build/reports/sanitizer-inputs.json --scratch-directory .build/thread-sanitizer --test-log .build/reports/thread-sanitizer.log --control-log .build/reports/sanitizer-positive-control.log --control-exit-code "$control_status" --report .build/reports/thread-sanitizer.json
+      - name: Qualify source distribution, notices and a fresh reference-free consumer
+        run: |
+          python3 Tools/test_source_package.py
+          python3 Tools/source_package.py --check
+          python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --offline-build --source-archive .build/reports/lokalized-swift-source.tar.gz --report .build/reports/source-distribution.json
+          python3 Tools/source_package.py --archive-check .build/reports/lokalized-swift-source.tar.gz > .build/reports/source-distribution-check.json
       - name: Measure optimized public consumers and enforce measured size caps
         run: |
           python3 Tools/measure_package.py --measure --samples 3 --compiler-track '${{ matrix.track }}' --report .build/reports/package-performance.json > .build/reports/package-performance.log
           python3 Tools/measure_package.py --report-check .build/reports/package-performance.json --negative-controls > .build/reports/package-performance-check.json
       - name: Compile and inspect iOS and macOS deployment targets
-        run: python3 Tools/verify_deployment.py --compiler-track '${{ matrix.track }}' --output-directory .build/deployment --report .build/reports/deployment.json
+        run: python3 Tools/verify_deployment.py --compiler-track '${{ matrix.track }}' --host-architecture '${{ matrix.architecture }}' --output-directory .build/deployment --report .build/reports/deployment.json
+      - name: Qualify declared shared native adaptations with source-bound evidence
+        run: |
+          python3 Tools/test_native_contracts.py
+          python3 Tools/verify_native_contracts.py --audit-report .build/reports/audit.json --type-report .build/reports/callback-types.json --runtime-adapter-report .build/reports/runtime-adapter.json --native-type-report .build/reports/native-representations.json --loader-dispositions-report .build/reports/loader-dispositions.json --deployment-report .build/reports/deployment.json --report .build/reports/native-contracts.json
+          python3 Tools/verify_native_contracts.py --audit-report .build/reports/audit.json --type-report .build/reports/callback-types.json --runtime-adapter-report .build/reports/runtime-adapter.json --native-type-report .build/reports/native-representations.json --loader-dispositions-report .build/reports/loader-dispositions.json --deployment-report .build/reports/deployment.json --report-check .build/reports/native-contracts.json --negative-controls > .build/reports/native-contract-controls.json
+      - name: Qualify shared manifest native adaptations with compiler and host evidence
+        run: |
+          python3 Tools/test_manifest_native_contracts.py
+          python3 Tools/verify_manifest_types.py --report .build/reports/manifest-types.json
+          python3 Tools/verify_manifest_native_contracts.py --type-report .build/reports/manifest-types.json --runtime-report .build/reports/manifest-contract.json --deployment-report .build/reports/deployment.json --report .build/reports/manifest-native-contracts.json
+          python3 Tools/verify_manifest_native_contracts.py --type-report .build/reports/manifest-types.json --runtime-report .build/reports/manifest-contract.json --deployment-report .build/reports/deployment.json --report-check .build/reports/manifest-native-contracts.json --negative-controls > .build/reports/manifest-native-contract-controls.json
       - name: Build packaged SwiftPM and Apple application resource consumers
         run: python3 Tools/verify_local_delivery.py --compiler-track '${{ matrix.track }}' --report .build/reports/local-delivery.json
+      - name: Execute packaged catalogs on the requested installed iOS simulator
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.ios_runtime != '' && matrix.track == 'current' }}
+        env:
+          LOKALIZED_IOS_RUNTIME: ${{ inputs.ios_runtime }}
+        run: |
+          python3 Tools/verify_ios_runtime.py --delivery-report .build/reports/local-delivery.json --runtime "$LOKALIZED_IOS_RUNTIME" --report .build/reports/ios-runtime.json
+          python3 Tools/verify_ios_runtime.py --delivery-report .build/reports/local-delivery.json --report-check .build/reports/ios-runtime.json --negative-controls > .build/reports/ios-runtime-check.json
+      - name: Execute every standalone qualification command on the requested iOS simulator
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.ios_runtime != '' && matrix.track == 'current' }}
+        env:
+          LOKALIZED_IOS_RUNTIME: ${{ inputs.ios_runtime }}
+        run: |
+          python3 Tools/verify_ios_conformance.py --deployment-report .build/reports/deployment.json --runtime "$LOKALIZED_IOS_RUNTIME" --report .build/reports/ios-conformance.json
+          python3 Tools/verify_ios_conformance.py --deployment-report .build/reports/deployment.json --report-check .build/reports/ios-conformance.json --negative-controls > .build/reports/ios-conformance-check.json
       - name: Retain audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m8f-audit-${{ matrix.track }}
+          name: m8p-audit-${{ matrix.track }}-${{ matrix.architecture }}
           path: .build/reports/
           if-no-files-found: error
 
-# This verifies the minimum compiler and a current hosted compiler. It does not
-# claim iOS 15/macOS 12 runtime testing or Intel execution; those need actual hosts.
-# Hosted image reference: https://github.com/actions/runner-images/tree/main/images/macos
+# These jobs require Swift 6.2 on native arm64 and Intel, plus a current arm64
+# compiler. Configuration alone is not execution evidence. No iOS 15/macOS 12
+# runtime claim is made. Optional simulator execution uses the current arm64 job.
+# Runner labels: https://docs.github.com/en/actions/reference/runners/github-hosted-runners
+# Minimum arm64: https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md
+# Minimum Intel: https://github.com/actions/runner-images/blob/main/images/macos/macos-15-Readme.md

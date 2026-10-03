@@ -5,7 +5,10 @@ package enum ManifestLocale {
         guard !text.isEmpty else { throw LocaleTagError(.malformedLanguageTag, "A locale tag must be a non-empty string") }
         let parts = JDKLocaleTag.parse(text)
         guard parts.wellFormed else { throw LocaleTagError(.malformedLanguageTag, "Locale tag '\(text)' is not a well-formed IETF BCP 47 locale") }
-        return JDKLocaleTag.make(parts).tag
+        let projected = JDKLocaleTag.make(parts).tag
+        // Manifest-normalization profile 1.1.0 gives private-use-only tags one
+        // spelling. Core LocaleTag keeps the pinned JDK carrier behavior.
+        return projected.hasPrefix("und-x-") ? String(projected.dropFirst(4)) : projected
     }
     package static func primaryLanguage(_ tag: String) -> String {
         let parts = JDKLocaleTag.parse(tag)

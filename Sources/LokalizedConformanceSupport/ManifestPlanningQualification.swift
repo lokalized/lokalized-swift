@@ -82,8 +82,8 @@ public extension ConformanceRunner {
                    "identity refusal precedes invalid lookup")
         // The pinned JS helper projects UND twice. Retain this source behavior;
         // a platform spelling must not erase its observable non-idempotence.
-        try expect(try ManifestLocale.normalizeTag("UND-x-foo") == "und-x-foo", "first JDK projection")
-        try expect(try ManifestLocale.normalizeTag("und-x-foo") == "x-foo", "second JDK projection remains observable")
+        try expect(try ManifestLocale.normalizeTag("UND-x-foo") == "x-foo", "manifest private-use projection")
+        try expect(try ManifestLocale.normalizeTag("und-x-foo") == "x-foo", "manifest private-use projection is stable")
         return checks
     }
 }

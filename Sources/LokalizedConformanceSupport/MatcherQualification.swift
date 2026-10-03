@@ -31,6 +31,34 @@ public extension ConformanceRunner {
         try expect(try simple.bestMatchFor([]) == "en", "bestMatch returns fallback for an unmatched request")
         try expect(try simple.matchFor(LocaleTag("fr")).locale == "fr", "typed locale ingress")
 
+        // Single exact preferences retain quality, typed identities and fresh
+        // result objects, including aliases, unknown tags and private use.
+        let exactTags = [try LocaleTag("en-US"), try LocaleTag("mo"), try LocaleTag("qaa"),
+                         try LocaleTag("x-a"), try LocaleTag("en-US-u-nu-latn"),
+                         LocaleTag.forLanguageTag("no-NO-x-lvariant-NY")]
+        for mode in [LanguageRangeEquivalents.ianaRegistry, .jdk] {
+            for tag in exactTags {
+                let matcher = try DefaultLocaleMatcher(supportedLocales: [tag], fallbackLocale: tag, languageRangeEquivalents: mode)
+                let preference = try LanguageRange(tag.tag.uppercased(), weight: Double.leastNonzeroMagnitude)
+                let result = try matcher.matchFor([preference])
+                try expect(result.localeTag == tag && result.fallbackLocaleTag == tag && result.consideredLocaleTags == [tag]
+                           && result.matchType == .exact && result.effectiveWeight?.bitPattern == preference.weight.bitPattern
+                           && result.languageRange == preference && result.requestedLanguageRanges == [preference],
+                           "single exact preference preserves every field: \(mode), \(tag.tag)")
+                let repeated = try matcher.matchFor([preference])
+                try expect(repeated == result && repeated !== result, "single exact result is fresh: \(mode), \(tag.tag)")
+            }
+        }
+        try refusal("A matched locale result requires a finite effective weight greater than 0 and at most 1") {
+            _ = try simple.matchFor([LanguageRange("fr", weight: .nan)])
+        }
+        for zero in [0.0, -0.0] {
+            let excluded = try simple.matchFor([LanguageRange("fr", weight: zero)])
+            try expect(excluded.matchType == .noMatch && excluded.locale == nil
+                       && excluded.requestedLanguageRanges[0].weight.bitPattern == zero.bitPattern,
+                       "single exact signed-zero preference remains excluded")
+        }
+
         let signed = try DefaultLocaleMatcher(supportedLocales: ["en", "nsl"], fallbackLocale: "en")
         let localeIngress = try signed.matchFor("sgn-nsl")
         let rangeIngress = try signed.matchFor([LanguageRange("sgn-nsl")])

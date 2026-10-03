@@ -1,5 +1,10 @@
 # Local loader dispositions
 
+M8H applies a versioned shared contract to the five filename adaptations and
+retains the 159 JVM cases as informational platform-specific carriers. See
+[native contract coverage](NATIVE-CONTRACTS.md). This low-level dossier itself
+continues to add no original runtime passes or shared coverage claims.
+
 M8C accounts for the remaining 164 loader IDs individually: **90 JVM package-discovery cases, 69 classloader resource-map cases, and five native filename-attribution differences**. Every one is `informationalIds` in the unchanged shared corpus. The report retains each authored input/fixture fingerprint, reference-observation fingerprint, native carrier choice, rationale and applicable native controls. It does not relabel donor classloader observations as native runtime passes.
 
 ## Native carrier scope

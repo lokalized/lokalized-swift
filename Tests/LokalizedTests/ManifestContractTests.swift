@@ -9,17 +9,20 @@ final class ManifestContractTests: XCTestCase {
         URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Reference", isDirectory: true)
     }
 
-    func testFrozenNativeManifestContractObservations() throws {
+    func testVersionedNativeManifestContractObservations() throws {
         let report = try ManifestContractQualification.run(referenceDirectory: reference)
         XCTAssertEqual(report.totalCases, 499)
+        XCTAssertEqual(report.historicalAgreementIDs.count, 464)
+        XCTAssertEqual(report.archiveCorrectionIDs.count, 4)
+        XCTAssertEqual(report.behaviorProfileVersion, "1.1.0")
         XCTAssertEqual(report.eligibleIDs.count, 468)
         XCTAssertEqual(report.pendingCarriers.count, 31)
         XCTAssertEqual(report.runtimePassed, report.eligibleIDs)
         XCTAssertEqual(report.eligibleIDsSHA256, "f8062a5ef05939d4100f68b1a1c64ab351632992a56719154831e5c1babb69c1")
-        XCTAssertEqual(report.strictNativeEqualIDs.count, 165)
-        XCTAssertEqual(report.projectedMatchedIDs.count, 303)
-        XCTAssertEqual(digestIDs(report.strictNativeEqualIDs), "d76f309201418fdda3c0e7b157ed135576d1a1fb9309c0dc70136dea3bb5bb0f")
-        XCTAssertEqual(digestIDs(report.projectedMatchedIDs), "35ce8481225f5fde66ec8f966523eda98d7425f18120200deb562c10f897342c")
+        XCTAssertEqual(report.strictNativeEqualIDs.count, 162)
+        XCTAssertEqual(report.projectedMatchedIDs.count, 306)
+        XCTAssertEqual(digestIDs(report.strictNativeEqualIDs), "8173cf865643f95030aa34f52dfc014d81cc65e2d055cdf09f148140a8759e16")
+        XCTAssertEqual(digestIDs(report.projectedMatchedIDs), "c4d1fdc893f09153a3acb72b96b413daea5ef8df2c753d10220897fe80e351ab")
         XCTAssertEqual(digestIDs(report.pendingCarriers.map(\.id)), "c6157779eb161a1e0193b8abc246bc80112e3ba67e27d0f296d3722006f481f4")
         XCTAssertEqual(report.observations.map(\.id), report.eligibleIDs)
         XCTAssertEqual(report.adaptationObservations.map(\.id), report.projectedMatchedIDs)

@@ -15,10 +15,16 @@ public struct ManifestContractAdaptation: Encodable, Sendable {
     public let referenceObservationJSON: String
     public let comparisonObservationJSON: String
     public let difference: String?
+    public let amendedReferenceObservationJSON: String?
 }
 
 public struct ManifestContractReport: Encodable, Sendable {
-    public let scope = "native-manifest-validation-identity-planning"
+    public let scope = "native-manifest-validation-identity-planning-v1.1"
+    public let behaviorProfileID = "manifest-normalization-v1.1"
+    public let behaviorProfileVersion = "1.1.0"
+    public let behaviorProfileSHA256 = ManifestNormalizationQualification.profileSHA256
+    public let archiveCorrectionIDs: [String]
+    public let historicalAgreementIDs: [String]
     public let nativeMappingsRatified = false
     public let status: String
     public let totalCases: Int
@@ -49,6 +55,8 @@ public enum ManifestContractQualification {
 
     public static func run(referenceDirectory: URL) throws -> ManifestContractReport {
         let rows = try load(referenceDirectory: referenceDirectory)
+        let amendments = try ManifestNormalizationQualification.archiveCorrections(referenceDirectory: referenceDirectory)
+        var historicalAgreement: [String] = []
         var eligible: [String] = [], passed: [String] = []
         var strict: [String] = [], projected: [String] = []
         var failed: [ConformanceFailure] = []
@@ -66,17 +74,20 @@ public enum ManifestContractQualification {
                         referenceObservationJSON: try text(row.expected), reason: reason.evidence))
                 case .observed(let native, let comparison, let rules):
                     eligible.append(row.id)
-                    let difference = try JSONComparison.firstDifference(expected: row.expected, actual: comparison)
+                    let expected = amendments[row.id] ?? row.expected
+                    if try JSONComparison.firstDifference(expected: row.expected, actual: comparison) == nil { historicalAgreement.append(row.id) }
+                    let difference = try JSONComparison.firstDifference(expected: expected, actual: comparison)
                     if let difference {
                         failed.append(.init(id: row.id, detail: difference + "; actual=" + (try text(comparison))))
                     } else {
                         passed.append(row.id)
-                        if try JSONComparison.firstDifference(expected: row.expected, actual: native) == nil { strict.append(row.id) }
+                        if try JSONComparison.firstDifference(expected: expected, actual: native) == nil { strict.append(row.id) }
                         else { projected.append(row.id) }
                     }
                     let observation = ManifestContractAdaptation(id: row.id, rules: rules,
                         nativeObservationJSON: try text(native), referenceObservationJSON: try text(row.expected),
-                        comparisonObservationJSON: try text(comparison), difference: difference)
+                        comparisonObservationJSON: try text(comparison), difference: difference,
+                        amendedReferenceObservationJSON: try amendments[row.id].map(text))
                     observations.append(observation)
                     if !rules.isEmpty { adaptations.append(observation) }
                 }
@@ -86,7 +97,8 @@ public enum ManifestContractQualification {
         }
         eligible.sort(); passed.sort(); strict.sort(); projected.sort(); pending.sort { $0.id < $1.id }
         pendingObservations.sort { $0.id < $1.id }; observations.sort { $0.id < $1.id }; adaptations.sort { $0.id < $1.id }
-        return .init(status: failed.isEmpty ? "passed" : "failed", totalCases: rows.count,
+        return .init(archiveCorrectionIDs: amendments.keys.sorted(), historicalAgreementIDs: historicalAgreement.sorted(),
+            status: failed.isEmpty ? "passed" : "failed", totalCases: rows.count,
             eligibleIDs: eligible, eligibleIDsSHA256: digestIDs(eligible), runtimePassed: passed,
             strictNativeEqualIDs: strict, projectedMatchedIDs: projected,
             failed: failed, pendingCarriers: pending, pendingObservations: pendingObservations,
@@ -274,7 +286,7 @@ public enum ManifestContractQualification {
         }
         return .init(source: source, limits: fields["limits"])
     }
-    private static func semanticValue(_ value: JSONValue) throws -> StringsManifestValue {
+    static func semanticValue(_ value: JSONValue) throws -> StringsManifestValue {
         switch value {
         case .object(let members): return .object(try members.map { .init(name: $0.name, value: try semanticValue($0.value)) })
         case .array(let values): return .array(try values.map(semanticValue))
@@ -432,7 +444,7 @@ public enum ManifestContractQualification {
         return .object([.test("name", .string("JSONReadError")), .test("reason", .string(error.reason)),
             .test("offset", .number(String(error.location.offset))), .test("line", .number(String(error.location.line))), .test("column", .number(String(error.location.column)))])
     }
-    private static func manifestObservation(_ value: StringsManifestV1) -> JSONValue {
+    static func manifestObservation(_ value: StringsManifestV1) -> JSONValue {
         let files = value.files.keys.sorted().map { key -> JSONMember in
             let file = value.files[key]!
             var entry: [JSONMember] = [.test("url", .string(file.url)), .test("sha256", .string(file.sha256))]
@@ -453,7 +465,7 @@ public enum ManifestContractQualification {
             .test("resolvedFallbackLocale", .string(input.resolvedFallbackLocale)), .test("localeToSha256", .object(input.localeToSha256.keys.sorted().map { .test($0.string, .string(input.localeToSha256[$0]!)) })),
             .test("tiebreakerLocalesByLanguageCode", tiesObservation(input.tiebreakerLocalesByLanguageCode))])
     }
-    private static func identityObservation(_ input: CatalogIdentityInputV1, projectedInput: JSONValue? = nil) throws -> JSONValue {
+    static func identityObservation(_ input: CatalogIdentityInputV1, projectedInput: JSONValue? = nil) throws -> JSONValue {
         let bytes = try LocalizedStringLoader.catalogIdentityBytes(input)
         let identity = try LocalizedStringLoader.computeCatalogIdentity(input)
         var fields: [JSONMember] = [.test("identity", .object([.test("catalogVersion", .string(identity.catalogVersion)), .test("catalogFingerprint", .string(identity.catalogFingerprint))])),
@@ -462,11 +474,11 @@ public enum ManifestContractQualification {
         if let projectedInput { fields.append(.test("input", projectedInput)) }
         return .object(fields)
     }
-    private static func configurationObservation(_ value: ManifestLocaleConfiguration) -> JSONValue {
+    static func configurationObservation(_ value: ManifestLocaleConfiguration) -> JSONValue {
         .object([.test("fallbackLocale", .string(value.fallbackLocale)), .test("supportedLocales", .array(value.supportedLocales.map(JSONValue.string))),
             .test("tiebreakerLocalesByLanguageCode", tiesObservation(Dictionary(uniqueKeysWithValues: value.tiebreakerLocalesByLanguageCode.map { (ExactString($0.key), $0.value) })))])
     }
-    private static func entryObservation(_ value: FetchEntry) -> JSONValue {
+    static func entryObservation(_ value: FetchEntry) -> JSONValue {
         var fields: [JSONMember] = [.test("locale", .string(value.locale)), .test("url", .string(value.url)), .test("sha256", .string(value.sha256))]
         if let bytes = value.expectedDecodedBytes { fields.append(.test("expectedDecodedBytes", .number(String(bytes)))) }
         return .object(fields)

@@ -2,7 +2,7 @@
 """Verify zero package dependencies, declared floors, toolchain and scoped qualification reports.
 
 Uses Python's standard library and the selected system Swift/Xcode toolchain only.
---offline-build compiles a fresh source copy with no resolver inputs or sibling repos.
+--offline-build consumes an inspected source archive with no resolver inputs or sibling repos.
 It is not an OS-runtime test or a claim of completed localization functionality.
 """
 import argparse
@@ -26,8 +26,8 @@ def invoke(args, cwd=ROOT):
     return result.stdout
 
 
-def package_check(track):
-    manifest = json.loads(invoke(["swift", "package", "--disable-sandbox", "dump-package"]))
+def package_check(track, root=ROOT):
+    manifest = json.loads(invoke(["swift", "package", "--disable-sandbox", "dump-package"], root))
     if manifest.get("dependencies") != []:
         raise RuntimeError("Lokalized must have zero external Swift package dependencies")
     if manifest.get("toolsVersion", {}).get("_version") != "6.2.0":
@@ -274,14 +274,18 @@ def binary_check(path, platform):
             "coverage": "compiled deployment floor only; no old-OS runtime execution"}
 
 
-def offline_build():
+def offline_build(track="current", archive=None):
+    from source_package import create_archive, check_archive, notices_check, source_files
     with tempfile.TemporaryDirectory(prefix="lokalized-offline-package-") as temporary:
+        archive = archive or Path(temporary) / "lokalized-swift-source.tar.gz"
+        distribution = create_archive(ROOT, archive)
         copy = Path(temporary) / "Package"
-        copy.mkdir()
-        shutil.copy2(ROOT / "Package.swift", copy / "Package.swift")
-        shutil.copytree(ROOT / "Sources", copy / "Sources")
-        if (ROOT / "Tests").is_dir():
-            shutil.copytree(ROOT / "Tests", copy / "Tests")
+        check_archive(archive, distribution["files"], copy)
+        extracted_manifest = package_check(track, copy)
+        notices = notices_check(copy)
+        # Remove actual development inputs before building the extracted package.
+        for name in ("Reference", "Tools"):
+            shutil.rmtree(copy / name)
         invoke(["swift", "build", "--disable-sandbox", "--scratch-path", str(Path(temporary) / "Build")], copy)
         consumer = Path(temporary) / "Consumer"
         (consumer / "Sources/Consumer").mkdir(parents=True)
@@ -447,9 +451,28 @@ print("consumer-import-passed")
         output = invoke(["swift", "run", "--skip-build", "--disable-sandbox", "--scratch-path", scratch, "Consumer"], consumer)
         if output.strip() != "consumer-import-passed":
             raise RuntimeError("Fresh consumer did not execute the actual public APIs")
+        bin_path = Path(invoke(["swift", "build", "--disable-sandbox", "--scratch-path", scratch,
+                                "--show-bin-path"], consumer).strip())
+        binary = bin_path / "Consumer"
+        floor = binary_check(binary, "macos")
+        floor["sha256"] = hashlib.sha256(binary.read_bytes()).hexdigest()
+        bundles = list(bin_path.glob("*_Lokalized.bundle"))
+        privacy = [(bundle / "Contents/Resources" if (bundle / "Contents").is_dir() else bundle)
+                   / "PrivacyInfo.xcprivacy" for bundle in bundles]
+        privacy_sha = hashlib.sha256((copy / "Sources/Lokalized/PrivacyInfo.xcprivacy").read_bytes()).hexdigest()
+        if (len(privacy) != 1 or not privacy[0].is_file()
+                or hashlib.sha256(privacy[0].read_bytes()).hexdigest() != privacy_sha):
+            raise RuntimeError(f"Consumer product lost or changed the SDK privacy declaration: {privacy}")
+        if list(Path(temporary).rglob("Package.resolved")):
+            raise RuntimeError("Offline consumer created a package resolver input")
+        if source_files(ROOT) != distribution["files"]:
+            raise RuntimeError("Source-package inputs changed during consumer qualification")
     return {"freshPackageBuild": "passed", "dependencies": "none",
             "freshConsumerImport": "compiled and executed (temporary local path dependency only)",
             "referenceArtifactsRequiredToBuild": False,
+            "sourceDistribution": distribution, "extractedManifest": extracted_manifest,
+            "notices": notices, "removedBeforeBuild": ["Reference", "Tools"],
+            "consumerBinary": floor, "packagedPrivacySHA256": privacy_sha,
             "coverage": "no resolution inputs; does not measure network traffic"}
 
 
@@ -457,6 +480,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compiler-track", choices=("minimum", "current"), default="current")
     parser.add_argument("--offline-build", action="store_true")
+    parser.add_argument("--source-archive", type=Path, help="Retain the source tar.gz used by --offline-build")
+    parser.add_argument("--report", type=Path)
     parser.add_argument("--audit-report", type=Path)
     parser.add_argument("--inventory-report", type=Path)
     parser.add_argument("--resolution-components-report", type=Path)
@@ -469,9 +494,11 @@ def main():
     parser.add_argument("--binary", type=Path)
     parser.add_argument("--binary-platform", choices=tuple(EXPECTED_PLATFORMS), default="macos")
     args = parser.parse_args()
+    if args.source_archive and not args.offline_build:
+        parser.error("--source-archive requires --offline-build")
     result = package_check(args.compiler_track)
     if args.offline_build:
-        result["freshBuild"] = offline_build()
+        result["freshBuild"] = offline_build(args.compiler_track, args.source_archive)
     if args.audit_report:
         result["audit"] = audit_check(args.audit_report, args.reference)
     if args.inventory_report:
@@ -493,7 +520,13 @@ def main():
         result["idnaNormalization"] = report_check(args.idna_normalization_report, args.reference)
     if args.binary:
         result["binaryFloor"] = binary_check(args.binary, args.binary_platform)
-    print(json.dumps(result, sort_keys=True))
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
+    displayed = dict(result)
+    if "freshBuild" in displayed:
+        displayed["freshBuild"] = {k: v for k, v in result["freshBuild"].items() if k != "sourceDistribution"}
+    print(json.dumps(displayed, sort_keys=True))
 
 
 if __name__ == "__main__":

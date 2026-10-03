@@ -1,5 +1,9 @@
 # Native type representation evidence
 
+M8H applies the versioned shared native contract to this low-level evidence.
+See [native contract coverage](NATIVE-CONTRACTS.md) for the separate qualified
+coverage sets. This dossier continues to add no original runtime passes.
+
 M8A qualifies all twenty pending runtime inputs whose null shapes cannot inhabit the public Swift types. This is evidence for a native API disposition, not replay of Java's null diagnostics. The main corpus remains at 2,197 runtime passes, zero native mappings and 184 pending cases. The runtime adapter remains at 1,432 complete comparisons and twenty pending configurations.
 
 `Tools/verify_callback_types.py` compiles the current library into an isolated temporary module and dynamic library, checks a valid external consumer, then requires seventeen invalid consumers to fail specifically for their intended nil/type mismatch. The compiler's diagnostic must identify both nil incompatibility and the relevant public type; an unrelated compilation failure does not count. The nine added consumers cover catalog values/keys/elements/entry labels, tiebreaker lists/elements/language keys, and placeholder names. The original eight consumers are retained. Positive examples preserve valid optional settings, explicit `.null` placeholder values and ordinary nonoptional collections.

@@ -19,7 +19,13 @@ Each public planning door revalidates all manifest structure, build/data identit
 
 The manifest door follows serialized JS locale semantics. Locale normalization uses pinned JDK tag parsing and rendering; CLDR aliases are used for election and candidate resolution, without replacing every ingress tag by its alias. The planner accepts syntactically valid lookup tags such as unknown `zz-AA` and the non-rebuildable serialized `en-x-lvariant-NY`. Case-distinct known authored variants such as `en-FONIPA` and `en-fonipa` can coexist when their resolution order is explicit. The direct native matcher keeps its existing stricter `LocaleTag` construction contract.
 
-Actual source operations are retained where JDK projection is not idempotent. For example, `UND-x-foo` first renders as `und-x-foo`, while a second projection renders as `x-foo`. The pinned JS public chain projects the lookup before its candidate engine projects again; `fetchSet` revalidates its manifest before invoking public `chain`. These repeated operations remain observable instead of being optimized away.
+[Manifest normalization profile 1.1.0](MANIFEST-NORMALIZATION.md) makes repeated
+validation and lookup projection stable. A private-use-only projected `und-x-…`
+tag becomes `x-…`; script/region/variant/ordinary extension information remains.
+Core `LocaleTag` keeps its historical Java-compatible projection. Public planning
+still revalidates and normalizes in its original order, including fingerprint
+refusal before an invalid lookup. Existing archived non-idempotent results remain
+historical evidence with explicitly named amendments.
 
 ## URL qualification scope
 

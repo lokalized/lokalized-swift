@@ -59,6 +59,18 @@ Constructor validation checks the requested count, selected locale, fallback loc
 
 Directly constructed `LanguageRange` values reproduce Java's unusual acceptance of NaN weights. Java ordering and NaN propagation are retained through election, and a selected NaN effective weight is refused by result validation. Signed zero remains an exclusion. Range equality preserves copied NaN identity and distinguishes separately constructed NaNs; its Swift hash normalizes signed zero to satisfy Swift's equality/hash contract. Header grammar does not admit NaN.
 
+M8G skips member preparation and election when one finite, positive range exactly
+matches a configured tag case-insensitively. In the complete election that tag
+owns the highest-specificity anchor, all surviving candidates have the same
+quality, and the serving walk chooses the exact tag first. The existing loaded
+locale facts exclude undetermined non-private preferences from the shortcut;
+private-use exact preferences remain eligible. Zero/signed-zero, NaN, wildcard,
+nonexact and multiple-range requests retain the complete election. There is no
+new index or request cache. The shortcut retains the original `LanguageRange`
+and configured `LocaleTag` and constructs a fresh result through the existing
+validated initializer. String/typed ingress validation and suppliers/callbacks
+continue to execute per call. See [measurement and qualification](PERFORMANCE.md).
+
 ## Strict parsing and supplied header handling
 
 `LanguageRange.parse(_:equivalents:)` exposes standalone strict parsing with pinned IANA (default) or JDK expansion. A configured matcher’s `parseLanguageRanges` uses its configured equivalence mode. It has no header-length or matching-count cap. `matchFor` and result construction accept at most 32 expanded ranges and reject a larger list whole; they do not truncate it.
@@ -85,4 +97,8 @@ swift run LokalizedConformance --self-test
 swift run LokalizedConformance --audit --reference Reference
 ```
 
-The overall shared audit remains incomplete while later milestones are unimplemented; an incomplete report exits with failure and explicitly lists pending cases. Locale-table and equivalent-table generators and their independent development audits are documented in the linked data documents. Passing matcher vectors does not stand in for those full data checks or later translation qualification.
+The overall shared audit retains 184 pending native carrier/representation cases;
+an incomplete report exits with failure and explicitly lists those cases.
+Locale-table and equivalent-table generators and their independent development
+audits are documented in the linked data documents. Passing matcher vectors does
+not ratify shared representation mappings or establish other-platform execution.
