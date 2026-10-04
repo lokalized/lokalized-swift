@@ -39,8 +39,8 @@ package enum ManifestURL {
     private static func invalid() -> Failure { .init(feature: nil, kind: .invalidURL, description: "Invalid URL") }
     private static func clean(_ text: String) -> String {
         let scalars = Array(text.unicodeScalars)
-        let first = scalars.firstIndex { $0.value > 32 } ?? scalars.endIndex
-        let end = scalars.lastIndex { $0.value > 32 }.map { $0 + 1 } ?? first
+        let first: Int = scalars.firstIndex(where: { $0.value > 32 }) ?? scalars.endIndex
+        let end: Int = scalars.lastIndex(where: { $0.value > 32 }).map { $0 + 1 } ?? first
         return String(String.UnicodeScalarView(scalars[first..<end].filter { ![9, 10, 13].contains($0.value) }))
     }
     private static func scheme(_ text: String) -> (String, String)? {

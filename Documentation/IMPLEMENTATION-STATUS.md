@@ -29,7 +29,7 @@ October 3, 2026. M0–M6 are implemented: package/reference/conformance foundati
 - Explicit Bundle directory/resource-path maps, bounded native directory/file/caller-owned stream APIs, aggregate budgets, canonical source provenance and a packaged SDK privacy manifest. Real SwiftPM and iOS/macOS app consumers preserve ordinary catalog paths and both English/French catalogs together.
 - `PreferredLanguageChooser` accepts injectable ordered preferences or explicitly acquires Apple preferences. It limits raw entries to 32, skips malformed native tags, preserves direct match identity and returns honest empty-range fallback diagnostics. Independent contexts need no process-wide language mutation.
 - Frozen behavioral/data/naming artifacts, a mechanical API census and declaration-preserving input bytes from pinned authored fixtures. The original corpus remains unchanged. The harness compares every observed field, projects only documented native error/set representations, and leaves unfinished operations explicit.
-- CI for minimum Swift 6.2 on native arm64 and Intel and a current arm64 hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. A compiled kernel probe requires the actual native architecture. GitHub has not executed this workflow yet.
+- CI for minimum Swift 6.2 on native arm64 and Intel and a current arm64 hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. A compiled kernel probe requires the actual native architecture. The October 3 minimum-track jobs passed host preflights but failed compiling the URL probe; M8Q fixes the reported inference ambiguity and still requires a hosted rerun.
 
 ## Local verification
 
@@ -293,3 +293,24 @@ tools changed; the actual iOS source/reference bytes are unchanged. No iOS run
 is added by this packaging slice. Minimum compiler/OS, native Intel, physical
 device, hosted CI and deferred observer-vector gates still require their own
 environments or shared release decisions. Work remains uncommitted and unstaged.
+
+**M8Q: minimum-compiler CI repair** addresses the actual Swift 6.2 failure in
+the [October 3 hosted run](https://github.com/lokalized/lokalized-swift/actions/runs/37132141541).
+Both native minimum tracks passed compiler/kernel and package checks, then
+failed inferring nonoptional URL-trimming indices. Explicit `Int` indices in
+the scalar-array helper and `String.Index` indices in the two locale/header
+helpers remove the ambiguity without changing the trimming policy. The CI
+checkout/upload actions use the sibling libraries' verified v7.0.1 commit pins
+and Node 24. Runner architecture requirements remain unchanged.
+
+Current-host Swift 6.4 passes all 283 XCTest methods (282 passed, one existing
+filesystem skip), the separately compiled 3,479 URL and 56,513 IDNA observations,
+and source-size budgets. Fresh four-target SDK and extracted-source consumer
+receipts are recorded separately for the changed sources. Earlier source-bound
+SDK, iOS, packaged-app and sanitizer receipts remain historical; this repair
+does not count them as current execution. The fixed sources still need hosted
+Swift 6.2/Intel verification after the maintainer commits and pushes. Minimum-OS,
+physical-device and deferred observer-vector gates remain open. See
+[deployment evidence](DEPLOYMENT.md); local summary:
+`.build/reports/m8q-qualification-summary.json`. Changes remain uncommitted
+and unstaged.

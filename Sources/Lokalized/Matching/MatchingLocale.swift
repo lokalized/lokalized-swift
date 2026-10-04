@@ -72,15 +72,15 @@ package enum MatchingLocale {
 
     package static func javaTrim(_ text: String) -> String {
         let units = text.utf16
-        let start = units.firstIndex { $0 > 32 } ?? units.endIndex
-        let end = units.lastIndex { $0 > 32 }.map { units.index(after: $0) } ?? start
+        let start: String.Index = units.firstIndex(where: { $0 > 32 }) ?? units.endIndex
+        let end: String.Index = units.lastIndex(where: { $0 > 32 }).map { units.index(after: $0) } ?? start
         return String(decoding: units[start..<end], as: UTF16.self)
     }
     package static func normalizedAcceptLanguage(_ text: String) -> String {
         text.split(separator: ",", omittingEmptySubsequences: false).compactMap { member -> String? in
             let units = member.utf16
-            let start = units.firstIndex { $0 != 32 && $0 != 9 } ?? units.endIndex
-            let end = units.lastIndex { $0 != 32 && $0 != 9 }.map { units.index(after: $0) } ?? start
+            let start: String.Index = units.firstIndex(where: { $0 != 32 && $0 != 9 }) ?? units.endIndex
+            let end: String.Index = units.lastIndex(where: { $0 != 32 && $0 != 9 }).map { units.index(after: $0) } ?? start
             if start == end { return nil }
             return String(decoding: units[start..<end].map { $0 == 9 ? 32 : $0 }, as: UTF16.self)
         }.joined(separator: ",")

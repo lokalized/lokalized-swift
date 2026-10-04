@@ -106,9 +106,23 @@ native coverage, packaged consumers and optimized measurements. Unmeasured
 compiler/SDK/architecture profiles retain the existing explicit unmeasured binary
 budget; source caps remain enforced. No size cap is invented for Intel.
 
-This configuration has not been executed by GitHub. Swift 6.2, native Intel and
-hosted CI remain open until actual successful runs are retained. Neither modern
-runner establishes macOS 12 or iOS 15 runtime behavior.
+The [October 3 hosted run](https://github.com/lokalized/lokalized-swift/actions/runs/37132141541)
+at `4d1de2430c517ab735c37d304bf7d6c0d6ea6d61` executed both minimum tracks.
+The maintainer supplied logs confirming native arm64/Intel host preflights,
+Xcode 26.0.1, Swift 6.2 and the package floor/zero-dependency checks passed.
+Both jobs then failed compiling the URL probe: Swift 6.2 inferred optional
+indices in `ManifestURL.clean`. M8Q supplies explicit nonoptional index types
+there and in the matching locale/header trimming helpers. The fixed sources
+still require a successful Swift 6.2 run; the host preflights alone do not
+qualify the library or Intel runtime behavior. Neither modern runner establishes
+macOS 12 or iOS 15 runtime behavior.
+
+The workflow pins `actions/checkout` and `actions/upload-artifact` to their
+verified v7.0.1 commits, matching the sibling libraries. Both actions declare
+Node 24 in their [checkout](https://github.com/actions/checkout/blob/v7.0.1/action.yml)
+and [upload](https://github.com/actions/upload-artifact/blob/v7.0.1/action.yml)
+definitions. GitHub's arm64 capacity warning concerns hosted queue time and
+does not change the required native architecture coverage.
 
 ## Local evidence
 

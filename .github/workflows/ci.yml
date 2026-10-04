@@ -1,4 +1,4 @@
-name: Swift M8P qualification
+name: Swift M8Q qualification
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
     env:
       DEVELOPER_DIR: ${{ matrix.developer }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Require the selected compiler and native runner architecture
         run: |
           mkdir -p .build/reports
@@ -177,9 +177,9 @@ jobs:
           python3 Tools/verify_ios_conformance.py --deployment-report .build/reports/deployment.json --report-check .build/reports/ios-conformance.json --negative-controls > .build/reports/ios-conformance-check.json
       - name: Retain audit evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: m8p-audit-${{ matrix.track }}-${{ matrix.architecture }}
+          name: m8q-audit-${{ matrix.track }}-${{ matrix.architecture }}
           path: .build/reports/
           if-no-files-found: error
 
