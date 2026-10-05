@@ -21,7 +21,11 @@ directory-index hosting suffices; no SPA rewrite is required. Retain the complet
 edition directory, including its data, navigation index, JavaScript, and CSS.
 
 Only the public `Lokalized` module is published. The conformance executable and
-support module are excluded. All public top-level declarations must have source
+support module are excluded. The generator compiles only the library target and
+emits its public symbol graphs during compilation, avoiding Swift 6.2's
+package-wide export of unbuilt generated test modules. Each reference build uses
+fresh build and graph directories so it cannot publish stale symbols.
+All public top-level declarations must have source
 documentation, and unresolved DocC links fail generation. `coverage.json`
 reports documented symbols and remaining member-level gaps, including
 compiler-generated members; complete signatures do not imply complete prose

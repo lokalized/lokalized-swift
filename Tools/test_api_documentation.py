@@ -4,9 +4,10 @@
 Copyright 2026 Revetware LLC. Licensed under the Apache License, Version 2.0.
 """
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 import tempfile
-from build_api_documentation import coverage_for, edition_for, symbol_graphs, validate_release_source
+from build_api_documentation import coverage_for, edition_for, extract_symbol_graphs, symbol_graphs, validate_release_source
 
 
 def graph(documented=True, module="Lokalized", member=False):
@@ -19,35 +20,51 @@ def graph(documented=True, module="Lokalized", member=False):
 
 
 class ReferenceTests(unittest.TestCase):
-    def test_reported_symbol_graph_directory_supports_compiler_layouts(self):
+    def test_only_public_library_graphs_are_selected(self):
         with tempfile.TemporaryDirectory() as temporary:
-            scratch = Path(temporary)
-            for layout in ("arm64-apple-macosx/symbolgraph", "out/symbolgraph"):
-                directory = scratch / layout
-                directory.mkdir(parents=True)
-                for name in ("Lokalized.symbols.json", "Lokalized@Foundation.symbols.json",
-                             "LokalizedConformanceSupport.symbols.json"):
-                    (directory / name).write_text("{}")
-                selected = symbol_graphs(scratch, f"Build complete!\nFiles written to {directory}\n")
-                self.assertEqual({path.name for path in selected},
-                                 {"Lokalized.symbols.json", "Lokalized@Foundation.symbols.json"})
+            directory = Path(temporary)
+            for name in ("Lokalized.symbols.json", "Lokalized@Foundation.symbols.json",
+                         "LokalizedConformanceSupport.symbols.json", "lokalized_swiftPackageTests.symbols.json"):
+                (directory / name).write_text("{}")
+            self.assertEqual({path.name for path in symbol_graphs(directory)},
+                             {"Lokalized.symbols.json", "Lokalized@Foundation.symbols.json"})
 
-    def test_symbol_graph_directory_cannot_escape_scratch(self):
+    def test_extension_graphs_cannot_replace_missing_library_graph(self):
         with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            scratch = root / "build"
-            scratch.mkdir()
-            outside = root / "other"
-            outside.mkdir()
-            with self.assertRaisesRegex(ValueError, "inside the documentation scratch"):
-                symbol_graphs(scratch, f"Files written to {outside}\n")
+            directory = Path(temporary)
+            (directory / "Lokalized@Foundation.symbols.json").write_text("{}")
+            with self.assertRaisesRegex(ValueError, "was not emitted"):
+                symbol_graphs(directory)
 
-    def test_missing_or_ambiguous_symbol_graph_directory_is_refused(self):
+    def test_extraction_builds_only_library_and_discards_stale_outputs(self):
         with tempfile.TemporaryDirectory() as temporary:
-            scratch = Path(temporary)
-            for output in ("Build complete!", f"Files written to {scratch}\nFiles written to {scratch}\n"):
-                with self.assertRaisesRegex(ValueError, "one symbol-graph output directory"):
-                    symbol_graphs(scratch, output)
+            output = Path(temporary)
+            (output / "build").mkdir()
+            (output / "build" / "stale.swiftmodule").write_text("old module")
+            directory = output / "build" / "symbolgraphs"
+            directory.mkdir()
+            (directory / "Lokalized@OldModule.symbols.json").write_text("{}")
+
+            def compile_library(command, env):
+                self.assertEqual(command[:3], ["xcrun", "swift", "build"])
+                self.assertEqual(command[command.index("--target") + 1], "Lokalized")
+                self.assertNotIn("--build-tests", command)
+                self.assertEqual(command[command.index("-symbol-graph-minimum-access-level") + 2], "public")
+                self.assertFalse((output / "build" / "stale.swiftmodule").exists())
+                self.assertEqual(list(directory.iterdir()), [])
+                (directory / "Lokalized.symbols.json").write_text("{}")
+
+            with patch("build_api_documentation.run", side_effect=compile_library):
+                self.assertEqual(extract_symbol_graphs(output, {}), [directory / "Lokalized.symbols.json"])
+
+    def test_extraction_cannot_pass_using_a_previous_builds_graph(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            directory = output / "build" / "symbolgraphs"
+            directory.mkdir(parents=True)
+            (directory / "Lokalized.symbols.json").write_text("{}")
+            with patch("build_api_documentation.run", return_value=""), self.assertRaisesRegex(ValueError, "was not emitted"):
+                extract_symbol_graphs(output, {})
 
     def test_development_is_not_a_release(self):
         self.assertEqual(edition_for(None), "development")

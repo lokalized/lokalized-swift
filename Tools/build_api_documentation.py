@@ -57,17 +57,31 @@ def validate_release_source(release, dirty, tags):
         raise ValueError(f"HEAD has no {release} or v{release} release tag")
 
 
-def symbol_graphs(scratch, output):
-    # SwiftPM 6.2 and newer build systems use different scratch layouts.
-    # The command reports its actual directory; do not guess a private path.
-    locations = re.findall(r"^Files written to (.+)$", output, re.MULTILINE)
-    if len(locations) != 1:
-        raise ValueError("SwiftPM must report one symbol-graph output directory")
-    directory = Path(locations[0]).resolve()
-    if not directory.is_relative_to(scratch.resolve()) or not directory.is_dir():
-        raise ValueError("SwiftPM symbol graphs must be inside the documentation scratch directory")
-    # Do not publish the conformance executable or its support module.
-    return sorted(directory.glob("Lokalized.symbols.json")) + sorted(directory.glob("Lokalized@*.symbols.json"))
+def symbol_graphs(directory):
+    primary = directory / "Lokalized.symbols.json"
+    if not primary.is_file():
+        raise ValueError("The public Lokalized symbol graph was not emitted")
+    # Do not publish the conformance executable, support module or test modules.
+    return [primary] + sorted(directory.glob("Lokalized@*.symbols.json"))
+
+
+def extract_symbol_graphs(output, env):
+    scratch = output / "build"
+    directory = scratch / "symbolgraphs"
+    # Emission happens during compilation. A fresh scratch directory ensures
+    # incremental builds cannot skip it or leave symbols from older source.
+    if scratch.exists():
+        shutil.rmtree(scratch)
+    directory.mkdir(parents=True)
+    # SwiftPM 6.2's package-wide dump also tries to extract unbuilt synthesized
+    # test modules. Emit graphs for the library target during its build instead.
+    run(["xcrun", "swift", "build", "--disable-sandbox", "--scratch-path", str(scratch),
+         "--cache-path", str(output / "package-cache"), "--config-path", str(output / "configuration"),
+         "--security-path", str(output / "security"), "--manifest-cache", "local", "--target", "Lokalized",
+         "-Xswiftc", "-emit-symbol-graph", "-Xswiftc", "-emit-symbol-graph-dir", "-Xswiftc", str(directory),
+         "-Xswiftc", "-symbol-graph-minimum-access-level", "-Xswiftc", "public",
+         "-Xswiftc", "-omit-extension-block-symbols"], env)
+    return symbol_graphs(directory)
 
 
 def input_fingerprint():
@@ -106,13 +120,8 @@ def build_documentation(output, release=None):
     fingerprint = input_fingerprint()
     env = dict(os.environ, CLANG_MODULE_CACHE_PATH=str(output / "clang-cache"),
                SWIFTPM_MODULECACHE_OVERRIDE=str(output / "swift-cache"))
-    scratch = output / "build"
     print("Extract public symbol graphs with the selected Swift compiler", flush=True)
-    graph_output = run(["xcrun", "swift", "package", "--disable-sandbox", "--scratch-path", str(scratch),
-         "--cache-path", str(output / "package-cache"), "--config-path", str(output / "configuration"),
-         "--security-path", str(output / "security"), "--manifest-cache", "local",
-         "dump-symbol-graph", "--minimum-access-level", "public"], env)
-    graphs = symbol_graphs(scratch, graph_output)
+    graphs = extract_symbol_graphs(output, env)
     coverage = coverage_for([json.loads(path.read_text()) for path in graphs])
     selected_graphs = output / "symbolgraphs"
     shutil.rmtree(selected_graphs, ignore_errors=True)
