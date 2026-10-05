@@ -30,8 +30,7 @@ public extension LocalizedStringLoader {
         do {
             parsed = try JSONReader.parse(text, limits: .init(maximumCharacters: max(1, text.utf16.count), maximumDepth: 128,
                                                             maximumNodes: Int.max), allowLeadingBOM: false)
-        } catch let readerCause as JSONReadError {
-            let cause = ManifestRawParser.syntaxCause(readerCause, text: text)
+        } catch let cause as JSONReadError {
             throw StringsParseError(message: "\(source):\(cause.location.line):\(cause.location.column): unable to parse localized strings file",
                 source: source, line: cause.location.line, column: cause.location.column, cause: cause)
         }
@@ -58,19 +57,6 @@ private func manifestSourceError(_ message: String, source: String, cause: (any 
 }
 
 private enum ManifestRawParser {
-    static func syntaxCause(_ cause: JSONReadError, text: String) -> JSONReadError {
-        // The shared reader consumes the unsupported escape before refusing it.
-        // The manifest reference reports that code unit while it is current.
-        let offset = max(0, cause.location.offset - (cause.reason == "Invalid string escape" ? 1 : 0))
-        // CR and LF advance the line; a CRLF pair advances it only once.
-        var line = 1, lineOffset = 0, previousWasCR = false
-        for (index, unit) in text.utf16.prefix(offset).enumerated() {
-            if unit == 13 { line += 1; lineOffset = index + 1 }
-            else if unit == 10 { if !previousWasCR { line += 1 }; lineOffset = index + 1 }
-            previousWasCR = unit == 13
-        }
-        return .init(reason: cause.reason, location: .init(offset: offset, line: line, column: offset - lineOffset + 1))
-    }
     static func checkNesting(_ input: String, source: String, maximum: Int) throws {
         var depth = 0, quoted = false, escaped = false
         for unit in input.utf16 {

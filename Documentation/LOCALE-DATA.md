@@ -38,6 +38,14 @@ RTL lookup uses an explicit script when present and the likely script otherwise.
 ASCII tag casing and the pinned Unicode 15 ROOT lowercase helper keep this
 behavior independent of host Unicode updates.
 
+The lenient CLDR tag parser additionally follows Java's UTF-16 `char` letter
+and decimal-digit tests for script/region subtags, including non-ASCII inputs.
+Its BMP uppercase mappings and digit ranges come from the pinned JDK and are
+compiled into `LocaleUnicodeTables.swift`. JDK tag syntax remains ASCII-only;
+the two parsers have deliberately different acceptance rules. [Locale-input
+stress](LOCALE-STRESS.md) compares both paths under generated mutations and
+records the Unicode/grapheme regressions and source-budget change.
+
 ## Data provenance and representation
 
 The frozen input is `Reference/cldr-locale-data.json`, CLDR 48.2, with source
@@ -90,6 +98,7 @@ Run from the package directory:
 
 ```sh
 python3 Tools/generate_locale_data.py --check
+python3 Tools/generate_locale_unicode_tables.py --check
 python3 Tools/verify_locales.py --check --report .build/reports/locale-goldens.json
 swift run LokalizedConformance --locale-data --report .build/reports/locale-data.json
 ```

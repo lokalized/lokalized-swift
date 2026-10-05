@@ -1,5 +1,18 @@
 /// BCP 47's ASCII casing and predicates, independent of host Unicode tables.
 package enum LocaleASCII {
+    /// Java's subtag delimiter is a UTF-16 code unit. Swift Character splitting
+    /// can attach a following combining mark to '-' and miss that delimiter.
+    package static func splitSubtags(_ text: String) -> [String] {
+        let bytes = Array(text.utf8)
+        var result: [String] = []
+        var start = 0
+        for index in bytes.indices where bytes[index] == 45 {
+            result.append(String(decoding: bytes[start..<index], as: UTF8.self))
+            start = index + 1
+        }
+        result.append(String(decoding: bytes[start...], as: UTF8.self))
+        return result
+    }
     package static func lower(_ text: String) -> String {
         String(decoding: text.utf8.map { (65...90).contains($0) ? $0 + 32 : $0 }, as: UTF8.self)
     }

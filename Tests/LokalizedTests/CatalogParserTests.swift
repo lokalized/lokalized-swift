@@ -37,6 +37,57 @@ final class CatalogParserTests: XCTestCase {
         }
     }
 
+    func testUnsupportedEscapeReportsCurrentUTF16UnitForBothInputDoors() throws {
+        // Minimized from the differential probe; the offending x remains current.
+        let cases: [(String, Int, Int)] = [
+            (#""\x"#, 1, 3),
+            (#"{"a":"\x"}"#, 1, 8),
+            ("\u{FEFF}{\"a\":\"\\x\"}", 1, 8),
+            ("\r\n{\"😀\":\"\\q\"}", 2, 9),
+            ("{\"a\":\"\\\n\"}", 1, 8)
+        ]
+        for (text, line, column) in cases {
+            for parse in [
+                { try LocalizedStringLoader.parse(text, locale: "en", source: "escape") },
+                { try LocalizedStringLoader.parse(Data(text.utf8), locale: "en", source: "escape") }
+            ] {
+                XCTAssertThrowsError(try parse()) {
+                    let error = $0 as? StringsParseError
+                    XCTAssertEqual(error?.message, "escape:\(line):\(column): unable to parse localized strings file")
+                    XCTAssertEqual(error?.line, line); XCTAssertEqual(error?.column, column)
+                    XCTAssertEqual((error?.cause as? JSONReadError)?.reason, "Invalid string escape")
+                }
+            }
+        }
+    }
+
+    func testSurrogateValidationPreservesCompetingSyntaxErrorPriority() throws {
+        let cases: [(String, Int)] = [
+            (#""\uD800"#, 8),
+            (#"{"a":"\uD800"#, 13),
+            (#"{"a":"\uD800\x"}"#, 14),
+            ("{\"a\":\"\\uD800\n\"}", 13),
+            (#"{"a":"\uD800x"}"#, 7),
+            (#"{"a":"\uD800\u0000"}"#, 7),
+            (#"{"a":"\uDC00"}"#, 7)
+        ]
+        for (text, column) in cases {
+            for parse in [
+                { _ = try LocalizedStringLoader.parse(text, locale: "en", source: "surrogate") },
+                { _ = try LocalizedStringLoader.parse(Data(text.utf8), locale: "en", source: "surrogate") },
+                { _ = try LocalizedStringLoader.parseStringsManifest(text, source: "surrogate") },
+                { _ = try LocalizedStringLoader.parseStringsManifest(Data(text.utf8), source: "surrogate") }
+            ] {
+                XCTAssertThrowsError(try parse()) {
+                    XCTAssertEqual(($0 as? StringsParseError)?.message,
+                                   "surrogate:1:\(column): unable to parse localized strings file")
+                }
+            }
+        }
+        let paired = try LocalizedStringLoader.parse(#"{"a":"\uD83D\uDE00😀"}"#, locale: "en")
+        XCTAssertEqual(paired.strings.first?.translation?.utf16.map(Int.init), [0xD83D, 0xDE00, 0xD83D, 0xDE00])
+    }
+
     func testDuplicatePrescanPrecedesSchemaWithinRootAndLaterRootsRemainLater() throws {
         let same = try refusal(#"{"A":{"oops":1,"translation":"x","translation":"y"}}"#)
         XCTAssertEqual(same.message, "test: duplicate JSON object member 'translation' encountered at $.A")

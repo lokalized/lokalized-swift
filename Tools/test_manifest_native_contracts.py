@@ -8,12 +8,30 @@ import unittest
 
 import sync_manifest_contracts as sync
 import verify_manifest_types as types
+import verify_manifest_native_contracts as native
 from ManifestContracts import native_policy as policy
 
 ROOT=Path(__file__).resolve().parents[1]
 
 
 class ManifestNativeTests(unittest.TestCase):
+    def test_host_observation_control_targets_the_actual_architecture(self):
+        triples = ['arm64-apple-macosx12.0', 'x86_64-apple-macosx12.0']
+        for host in triples:
+            with self.subTest(host=host):
+                # Match the real deployment shape: every target carries the
+                # field, but only the executing host carries an object there.
+                evidence = {'compiler': {'target': host}, 'deployment': {'targets': [
+                    {'triple': triple, 'runtimeExecution':
+                        {'manifestContract': {'runtimePassed': ['first', 'second']}}
+                        if triple == host else 'not executed'} for triple in triples]}}
+                native.corrupt_host_observation(evidence)
+                for target in evidence['deployment']['targets']:
+                    if target['triple'] == host:
+                        self.assertEqual(target['runtimeExecution']['manifestContract']['runtimePassed'], ['first'])
+                    else:
+                        self.assertEqual(target['runtimeExecution'], 'not executed')
+
     def test_snapshot_and_profile_are_complete_offline(self):
         self.assertEqual(len(sync.read_pinned(ROOT)),14)
         profile=policy.read(ROOT/'Reference/swift-manifest-v1.json')

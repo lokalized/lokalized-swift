@@ -20,7 +20,7 @@ package enum JDKLocaleTag {
         let source = grandfathered[LocaleASCII.lower(text)] ?? text
         var parts = Parts()
         guard !source.isEmpty else { parts.wellFormed = false; return parts }
-        let subtags = source.split(separator: "-", omittingEmptySubsequences: false).map(String.init)
+        let subtags = LocaleASCII.splitSubtags(source)
         var index = 0
         if LocaleASCII.language(subtags[0]) {
             parts.language = LocaleASCII.lower(subtags[0]); parts.undetermined = subtags[0] == "und"; index += 1
@@ -118,8 +118,8 @@ package enum JDKLocaleTag {
         return locale
     }
     package static func isCatalogLanguageTag(_ text: String) -> Bool {
-        let groups = text.split(separator: "-", omittingEmptySubsequences: false)
-        guard !groups.isEmpty && groups.allSatisfy({ LocaleASCII.alphanumeric(String($0)) }) && parse(text).wellFormed else { return false }
+        let groups = LocaleASCII.splitSubtags(text)
+        guard !groups.isEmpty && groups.allSatisfy(LocaleASCII.alphanumeric) && parse(text).wellFormed else { return false }
         if LocaleASCII.lower(text).hasPrefix("x-") { return true }
         let explicit = LocaleASCII.lower(text) == "und" || LocaleASCII.lower(text).hasPrefix("und-")
         return (!make(parse(text)).language.isEmpty || explicit) && CldrLocaleData.isKnownLanguageTag(text)

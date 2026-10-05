@@ -55,6 +55,10 @@ Recognized expression, numeric argument and library state errors receive the cat
 
 `ExpressionEvaluationTests` has 15 native test methods. The standalone `ExpressionQualification.run()` contributes 211 checks to the conformance runner's self-test, without XCTest, corpus fixtures or expected-driven execution. Checks cover all 61 forms and ten axes, exact large decimals and typed numeric widths, precedence, genuine short circuit, reusable compiled state, source versus expanded operands, lowered-limit refusal priority, raw-text rejection, UTF-16 input limits, callback timing/identity, Unicode key distinctions, eager compilation causes and the maximum flat token shape.
 
+The development-only [expression stress differential](EXPRESSION-STRESS.md)
+separately compares generated compile and evaluation cases with freshly compiled,
+frozen Java sources. Its two recorded seeds pass 4,150 cases and 11,298 evaluations.
+
 ```sh
 swift test
 swift run LokalizedConformance --self-test

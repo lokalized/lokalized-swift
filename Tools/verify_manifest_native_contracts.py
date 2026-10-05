@@ -144,6 +144,12 @@ def check_report(actual, expected):
     policy.require(policy.canonical(actual) == policy.canonical(expected), 'Native manifest coverage receipt is stale or altered')
 
 
+def corrupt_host_observation(evidence):
+    host = next(target for target in evidence['deployment']['targets']
+                if target['triple'] == evidence['compiler']['target'])
+    host['runtimeExecution']['manifestContract']['runtimePassed'].pop()
+
+
 def negative_controls(expected, paths):
     rejected = []
     changes = [
@@ -175,7 +181,7 @@ def negative_controls(expected, paths):
         ('runtime-control-source-changed', lambda d:d['compiler']['runtimeControls'].update(source='print("passed")')),
         ('deployment-failed', lambda d:d['deployment'].update(status='failed')),
         ('deployment-source-changed', lambda d:d['deployment']['sourceSha256'].update({'Sources/Lokalized/API/CatalogIdentity.swift':'0'*64})),
-        ('host-observation-changed', lambda d:next(t for t in d['deployment']['targets'] if 'runtimeExecution' in t)['runtimeExecution']['manifestContract']['runtimePassed'].pop()),
+        ('host-observation-changed', corrupt_host_observation),
         ('execution-logs-omitted', lambda d:d['deployment'].update(commands=[])),
         ('runtime-pass-omitted', lambda d:d['runtime']['runtimePassed'].pop()),
     ]

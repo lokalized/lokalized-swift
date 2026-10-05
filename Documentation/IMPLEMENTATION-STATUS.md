@@ -1,6 +1,6 @@
 # Implementation status
 
-October 3, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
+October 4, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
 
 ## Implemented behavior
 
@@ -29,7 +29,7 @@ October 3, 2026. M0–M6 are implemented: package/reference/conformance foundati
 - Explicit Bundle directory/resource-path maps, bounded native directory/file/caller-owned stream APIs, aggregate budgets, canonical source provenance and a packaged SDK privacy manifest. Real SwiftPM and iOS/macOS app consumers preserve ordinary catalog paths and both English/French catalogs together.
 - `PreferredLanguageChooser` accepts injectable ordered preferences or explicitly acquires Apple preferences. It limits raw entries to 32, skips malformed native tags, preserves direct match identity and returns honest empty-range fallback diagnostics. Independent contexts need no process-wide language mutation.
 - Frozen behavioral/data/naming artifacts, a mechanical API census and declaration-preserving input bytes from pinned authored fixtures. The original corpus remains unchanged. The harness compares every observed field, projects only documented native error/set representations, and leaves unfinished operations explicit.
-- CI for minimum Swift 6.2 on native arm64 and Intel and a current arm64 hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. A compiled kernel probe requires the actual native architecture. The October 3 minimum-track jobs passed host preflights but failed compiling the URL probe; M8Q fixes the reported inference ambiguity and still requires a hosted rerun.
+- CI for minimum Swift 6.2 on native arm64 and Intel and a current arm64 hosted compiler, zero-dependency/fresh-consumer checks, generators, exhaustive plural/locale audits, floating/locale/range goldens, deployment inspection, the exact 2,197-ID whole-runtime ratchet, a 1,432-ID full runtime adapter inventory, 145 real filesystem observations and the retained 578-ID component projection. A compiled kernel probe requires the actual native architecture. The October 4 rerun passed the previously failing compiler/check step on both minimum Swift 6.2 tracks and the current track; the full jobs remain in progress at this observation.
 
 ## Local verification
 
@@ -62,19 +62,60 @@ The separate `--resolution-components` audit passes **578 input-selected single-
 
 The development corpus envelope reaches nesting depth 132 because it embeds intentionally invalid catalogs; its reader allows depth 256. Public catalog JSON depth is 64 by default / 128 maximum. Numeric observation decoding preserves explicit carrier widths and exact decimal text; malformed/unknown fields fail rather than turning into a passing refusal.
 
-## Remaining scope and qualification
+## Current compatibility and remaining release gates
 
-Each direct parse/define/merge call owns its session. M6 shares aggregate counters across native stream/file/directory/Bundle/resource loads and keeps JSON depth/resource bytes and returned warnings per file. Discovery is bounded before selected files are processed in unsigned UTF-8 order. Caller streams stay open; owned descriptors close on every exit. Selected special files are refused before reads, and canonical paths require strict UTF-8. [Local loading](LOCAL-LOADING.md) records exact versus folded collision priority and ownership. Native `defineCatalog` follows JS's dedicated model-catalog validation order and budgets; Java `Strings` construction has its separately implemented contextual validation contract in M5. The remaining 164 loading cases are 159 JVM classpath/resource carriers and five unresolved filename-attribution differences from deterministic native ordering. [The load adapter](LOAD-ADAPTER.md) retains actual and frozen observations for all five, with input-derived guards. No native mapping is ratified and no expected filename or warning is substituted.
+Each direct parse/define/merge call owns its session. Local stream/file/directory/
+Bundle/resource-map loads share aggregate counters and retain per-file JSON depth,
+warnings and origins. Discovery uses bounded UTF-8 ordering; supplied streams stay
+open, and owned descriptors close on every exit. [Local loading](LOCAL-LOADING.md)
+records validation order, collisions, ownership and budgets.
 
-The [deployment probe](DEPLOYMENT.md) separates emitted binary floors from old-OS execution. Swift 6.2 compilation, iOS 15 runtime, macOS 12 runtime and Intel runtime execution remain unverified locally. CI configuration is not a completed CI run.
+The original raw corpus retains 2,197 passing and 184 pending IDs. The shared
+[core native contract](NATIVE-CONTRACTS.md) separately accounts for all 2,155
+required portable obligations: 2,135 exact runtime matches and twenty qualified
+nonoptional source boundaries. Informational coverage records 62 exact matches,
+five complete filename adaptations and 159 JVM-only carriers. Those five sets
+are disjoint and exhaust all 2,381 cases. They qualify declared adaptations;
+they do not rewrite raw expectations, create runtime passes for impossible
+inputs or certify universal parity. [Native type evidence](NATIVE-REPRESENTATIONS.md)
+and [loader dispositions](LOADER-DISPOSITIONS.md) preserve unreplayed channels
+and complete native/reference filename observations.
 
-The [data-encoding experiment](DATA-ENCODING.md) selects the initial compiled-data/index family. [Identifier data](IDENTIFIER-DATA.md), [plural data](PLURAL-DATA.md), [locale data](LOCALE-DATA.md) and [range data](LANGUAGE-RANGES.md) now have deterministic schemas and qualified kernels. [M8D measurements](PERFORMANCE.md) cover optimized source-only consumer builds, package size, construction/lookup and live malloc/RSS on the current Swift 6.4 arm64 host. Allocation/performance measurement on Swift 6.2 and actual minimum OS execution remain open. Locale maps/sets initialize lazily from compiled text; their measured costs are separate from the earlier static-blob experiment.
+The manifest archive retains 499 cases. Under the separate versioned normalization
+amendment, 468 native observations pass: 162 strict native-equal and 306 explicitly
+projected observations, including four documented corrections to historical
+expectations. The [manifest native contract](MANIFEST-NATIVE-CONTRACTS.md) accounts
+for the other 31 dynamic-carrier inputs through compiler/runtime boundaries.
+[Manifest normalization](MANIFEST-NORMALIZATION.md) and [diagnostic text](DIAGNOSTIC-TEXT.md)
+close the coordinated shared corrections. Archived counts in the milestone
+history below describe their original runs.
 
-Twenty native nil-shape/callback configurations remain explicit pending cases: eleven callback-null configurations, four null catalog shapes, three null tiebreaker shapes, one null placeholder name and one actual unmapped phonetic consultation. Nonoptional Swift callbacks cannot represent these inputs. M8A qualifies seventeen negative-compile consumers, a valid external consumer and 23 adjacent runtime controls. Per-case evidence now accounts for all twenty unavailable inputs and retains all original unreplayed channels; no representation mapping is ratified or counted. See [native representation evidence](NATIVE-REPRESENTATIONS.md). The two null-callback nonconsultation controls also remain visible; separate native controls qualify their runtime timing.
+The [October 4 hosted rerun](https://github.com/lokalized/lokalized-swift/actions/runs/37229344974)
+at `725cfe91c6c1561be4a67c4777e3a6ebb99e71f2` completed successfully on minimum
+Swift 6.2 arm64 and current arm64. Intel passed build/tests, sanitizer, source
+distribution, measurements, SDK deployment and core native coverage, then failed
+the manifest native-adaptation step. M8S repairs a reproducible Intel-specific
+negative-control selection bug in that checker. Public job metadata establishes
+step outcomes; authenticated failure logs and artifact contents were not read.
+The correction and newer M8R/M8S work require another hosted run after push.
+The [deployment probe](DEPLOYMENT.md) separates native execution, four-target
+compilation and emitted OS floors. iOS 15/macOS 12 runtime and physical-device
+execution remain unverified. The current iOS 26.5 simulator evidence is scoped
+separately and never substitutes for a minimum-version/device run. Shared
+observer vectors remain deferred until the reference Java release.
+
+[Performance](PERFORMANCE.md) records optimized consumer measurements on the
+current Swift 6.4 arm64 host, with source caps and measured-profile binary caps.
+Swift 6.2 performance remains unmeasured locally; CI retains its actual profile
+rather than applying another compiler's cap. [Compiled data](DATA-ENCODING.md),
+[identifiers](IDENTIFIER-DATA.md), [plurals](PLURAL-DATA.md), [locales](LOCALE-DATA.md)
+and [language ranges](LANGUAGE-RANGES.md) have pinned schemas and qualified kernels.
 
 `--runtime-adapter` independently selects and compares all 1,432 eligible runtime cases from fixture/input shapes and actual callback consultations. It records guards for all twenty pending cases; expectations never configure execution. Its eligible-ID SHA-256 is `364e6f0954c2adc1c825a86aee4ea9b423fb850e741b13a01cb2973b6a1a6b60`. The main 2,197-ID digest is `2c4848b0b481d01523e11813efbf5dd874cc5c75ca8b15aaa41e5ff5f25ee76f`. The 145-ID loader digest is `6c6043d0326a9a524690c485292cc2cd748161504fbaa5c0c7fcb97d91e16991`; pending main IDs hash to `618df840c1a5bb7808f0e747ad8c18f5f90532d2676ea05454d9efe0f41b7d76`. All ID digests hash sorted exact IDs with LF after every ID. CI refuses changed eligibility, missing fields, missing guards, partial passes and unexpected mappings.
 
 The archived `perCallOverrideOrder` records a Java builder setter sequence. The adapter checks that exact input recipe and passes its final single locale source to Swift's immutable options; constructing simultaneous Swift locale sources is refused independently. This is an input construction adaptation, never an expected-result choice.
+
+## Milestone history
 
 **M7A: manifest foundation** implements the pinned format version 1 wire shape, explicit decoded/typed claim carriers, strict bounded Data/text parsing, full-manifest schema/tiebreaker/fallback validation, all seven runtime data checks, exact narrow JCS bytes and system SHA-256. Every public planning door revalidates before producing configuration, absent candidate chains or declared first-use fetch entries. These operations perform no catalog I/O and produce no verified loaded records. The original 2,381-case audit and its 2,197/184 sets remain unchanged.
 
@@ -314,3 +355,97 @@ physical-device and deferred observer-vector gates remain open. See
 [deployment evidence](DEPLOYMENT.md); local summary:
 `.build/reports/m8q-qualification-summary.json`. Changes remain uncommitted
 and unstaged.
+
+
+**M8R: executable consumer documentation** reorganizes the README around package
+installation and a complete translation example. The new [usage guide](USAGE.md)
+contains real English/French resources and a runnable MainActor-default consumer
+covering plural fragments, per-call language choices, ordered preferences,
+written decimals, fallback diagnostics, default/throwing failure responses and
+exact Unicode keys. The [development guide](DEVELOPMENT.md) holds maintainer
+commands and distinguishes raw corpus observations from qualified native contracts.
+
+The documentation checker reads the actual Markdown manifests, six Swift blocks,
+two JSON resources and expected output. It substitutes only the remote package
+reference with a fresh local source snapshot, validates dependency shapes and
+builds/runs both complete programs without Reference/Tools. Both programs pass
+on Swift 6.4, matching all twelve documented output lines; seven offline admission
+controls pass. CI runs this recipe on all three tracks. A fresh source archive
+includes the new guides/tools and its extracted reference-free public consumer
+passes. All 129 Swift source hashes and all 66 M8Q SDK input hashes remain current;
+production code, dependencies, catalog syntax and frozen corpora are unchanged.
+The full runtime suite is not repeated for this documentation slice. Scoped
+receipts: `.build/reports/m8r-documentation.json` and
+`.build/reports/m8r-qualification-summary.json`. Work remains uncommitted and unstaged.
+
+**M8S: adversarial catalog parsing** adds development-only deterministic generation
+and differential execution against fresh, byte-pinned Java 3.1.0 sources and the
+pinned Corretto JDK. Two seeds pass 13,210 case executions, comparing complete
+decoded models, actual refusal class/main message and ordered warning messages.
+Finite JSON/schema/budget/Unicode mutation families and eleven offline admission
+controls supplement the frozen corpus; generated cases are not checked-in runtime
+resources. [Parser stress](PARSER-STRESS.md) records scope, commands and minimized
+regressions. Locale ingress and expression-evaluation fuzzing remain separate
+at this milestone.
+
+The probe found and fixed two shared-reader defects: unsupported escapes advanced
+the error cursor, and premature high-surrogate validation displaced competing
+syntax failures. Catalog and manifest text/byte regressions preserve Java's error
+positions; valid pairs remain exact and unpaired surrogates remain refused.
+Manifest parsing no longer needs its separate one-unit cursor compensation.
+
+All 285 native test methods pass with one existing filesystem skip. Fresh
+four-target SDK qualification inspects sixteen binaries and executes the native
+arm64 consumer/data/runtime/filesystem/manifest/URL/NFC checks; original corpus
+coverage remains 2,197 passing and 184 pending. Both documentation programs pass
+against the changed source. Current source-bound receipts replace M8Q/M8R evidence
+where parser/support hashes changed; minimum-OS, device, current-source simulator
+and sanitizer execution remain separate scopes.
+
+The hosted rerun completed successfully on current and minimum Swift 6.2 arm64.
+Intel reached the manifest native-adaptation check after passing its preceding
+qualification steps. M8S fixes an independently reproduced architecture-selection
+bug in that check's negative control and tests both host shapes; six offline
+manifest tests, 31 compiler consumers, sixteen adjacent runtime controls and all
+23 manifest evidence corruptions pass locally. Hosted confirmation remains
+necessary. No production API, external dependency, HTTP loading, shared archive
+or conformance-policy changes occur. Evidence:
+`.build/reports/m8s-qualification-summary.json`. Work remains uncommitted and unstaged.
+
+**M8T: adversarial expression evaluation** adds a development-only differential
+against the same fresh, byte-pinned Java 3.1.0 sources and Corretto JDK. Two seeds
+pass 4,150 cases and 11,298 evaluations, comparing compiled/refused expressions,
+typed Boolean outcomes, full diagnostic cause chains and ordered phonetic resolver
+calls. All 61 language forms, numeric carriers, plural categories, Boolean
+short-circuit paths, malformed grammar and configured/default limits are exercised.
+Seven offline admission checks run in CI. [Expression stress](EXPRESSION-STRESS.md)
+records the input recipe, scope and commands. The only detected mismatch was in
+the probe: Foundation JSON dictionary decoding lost composed/decomposed key
+identity; the corrected probe uses Lokalized's exact-key reader. Production Swift
+sources, package dependencies, shared archives and conformance policy are unchanged.
+Receipts: `.build/reports/expression-stress-default.json` and
+`.build/reports/expression-stress-second-seed.json`. Hosted Swift 6.2/Intel and
+minimum-OS evidence remain separate gates. Work remains uncommitted and unstaged.
+
+**M8U: adversarial locale input** adds deterministic generated/mutated tags to
+the existing complete CLDR table and fixed JDK projection checks. Two seeds
+pass 5,676 Java/Swift comparisons across 21 exact UTF-16 output fields;
+2,928 inputs are strictly accepted and 2,748 refused by Java. The first sample
+found 59 differences: the lenient CLDR parser classified Unicode script/region
+subtags with ASCII rules, and Swift grapheme splitting could hide a hyphen
+before a combining mark. Byte-delimited subtags and a pinned-JDK uppercase/
+decimal-digit table close both gaps. Eight offline recipe controls and the
+generated-table digest check run in CI. Focused native locale tests and live
+JDK table reproduction pass. [Locale stress](LOCALE-STRESS.md) records the
+recipe, source pins, limited scope and regression examples.
+
+The new compiled table adds 37,608 source bytes and no runtime resource or
+external dependency. The runtime Swift source budget rises one 64 KiB step to
+1,376,256 bytes, while its generated-source cap stays unchanged and passes.
+The complete Swift suite passes 286 test methods with one existing filesystem
+skip. One optimized source-only consumer build measures 2,301,576 stripped
+bytes, under the existing 2,555,904-byte cap. Receipts:
+`.build/reports/locale-stress-default.json`,
+`.build/reports/locale-stress-second-seed.json` and
+`.build/reports/locale-stress-package-size.json`. Work remains uncommitted and
+unstaged.

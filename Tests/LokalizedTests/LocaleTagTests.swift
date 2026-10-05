@@ -39,6 +39,20 @@ final class LocaleTagTests: XCTestCase {
         XCTAssertEqual(LocaleTag.forLanguageTag("i-Klingon").tag, "und")
     }
 
+    func testLocaleSeparatorsAndLenientUnicodeSubtagsMatchJava() throws {
+        let malformed = "ji-\u{301}u"
+        XCTAssertEqual(LocaleASCII.splitSubtags(malformed), ["ji", "\u{301}u"])
+        XCTAssertEqual(LocaleTag.forLanguageTag(malformed).tag, "yi")
+        XCTAssertThrowsError(try LocaleTag(malformed))
+
+        XCTAssertEqual(CldrLocaleData.canonicalLanguageTag("in-Katn-fonipa-x"), "id-Katn-fonipa-x")
+        XCTAssertEqual(CldrLocaleData.likelySubtagFor("in-Katn-fonipa-x"), "id-Katn-ID-fonipa")
+        XCTAssertEqual(CldrLocaleData.canonicalLanguageTag("en-١٢٣"), "en-١٢٣")
+        XCTAssertEqual(LocaleUnicodeTables.upper("aßé"), "ASSÉ")
+        XCTAssertTrue(LocaleUnicodeTables.isDigit(0x0661))
+        XCTAssertFalse(LocaleUnicodeTables.isDigit(0x2160))
+    }
+
     func testUnicodeExtensionsSortAttributesAndKeywordsAndRetainFirstDuplicates() throws {
         XCTAssertEqual(try LocaleTag("en-US-u-nu-latn-ca-gregory").tag, "en-US-u-ca-gregory-nu-latn")
         XCTAssertEqual(try LocaleTag("en-u-zzz-aaa-zzz-nu-latn-ca-gregory").tag, "en-u-aaa-zzz-ca-gregory-nu-latn")

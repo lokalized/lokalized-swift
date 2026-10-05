@@ -140,7 +140,7 @@ public extension ConformanceRunner {
             }
         }
         let unchanged = try failure { _ = try JSONReader.parse(#"{"x":"\q"}"#) } as? JSONReadError
-        try expect(unchanged?.location.column == 9, "shared catalog reader cursor remains unchanged")
+        try expect(unchanged?.location.column == 8, "shared catalog reader reports the offending escape character")
         return checks
     }
 }

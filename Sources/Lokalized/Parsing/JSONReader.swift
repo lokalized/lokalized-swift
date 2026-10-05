@@ -251,38 +251,46 @@ package struct JSONReader {
     private mutating func readString() throws -> String {
         take() // opening quote, checked by caller
         var output: [UInt16] = []
+        var pendingHighSurrogate: JSONSourceLocation?
         while let unit = peek {
-            if unit == 34 { take(); return String(decoding: output, as: UTF16.self) }
-            guard unit >= 32 else { throw error("Unescaped control character in string") }
-            if unit != 92 { output.append(take()); continue }
-            let escapeLocation = location
-            take()
-            guard let escaped = peek else { throw error("Unterminated string escape") }
-            take()
-            switch escaped {
-            case 34, 92, 47: output.append(escaped)
-            case 98: output.append(8)
-            case 102: output.append(12)
-            case 110: output.append(10)
-            case 114: output.append(13)
-            case 116: output.append(9)
-            case 117:
-                let first = try readHexUnit()
-                if (0xD800...0xDBFF).contains(first) {
-                    guard peek == 92 else { throw JSONReadError(reason: "Unpaired high surrogate", location: escapeLocation) }
-                    take()
-                    guard peek == 117 else { throw JSONReadError(reason: "Unpaired high surrogate", location: escapeLocation) }
-                    take()
-                    let second = try readHexUnit()
-                    guard (0xDC00...0xDFFF).contains(second) else { throw JSONReadError(reason: "Unpaired high surrogate", location: escapeLocation) }
-                    output.append(first)
-                    output.append(second)
-                } else {
-                    guard !(0xDC00...0xDFFF).contains(first) else { throw JSONReadError(reason: "Unpaired low surrogate", location: escapeLocation) }
-                    output.append(first)
+            if unit == 34 {
+                if let pendingHighSurrogate {
+                    throw JSONReadError(reason: "Unpaired high surrogate", location: pendingHighSurrogate)
                 }
-            default: throw error("Invalid string escape")
+                take(); return String(decoding: output, as: UTF16.self)
             }
+            guard unit >= 32 else { throw error("Unescaped control character in string") }
+            let characterLocation = location
+            let character: UInt16
+            if unit != 92 { character = take() }
+            else {
+                take()
+                guard let escaped = peek else { throw error("Unterminated string escape") }
+                switch escaped {
+                case 34, 92, 47: character = take()
+                case 98: take(); character = 8
+                case 102: take(); character = 12
+                case 110: take(); character = 10
+                case 114: take(); character = 13
+                case 116: take(); character = 9
+                case 117: take(); character = try readHexUnit()
+                default: throw error("Invalid string escape")
+                }
+            }
+            // Decode the following character before judging a pending high
+            // surrogate. Malformed escapes, raw controls and EOF take priority,
+            // matching the reference parser's observable first-error position.
+            if let pending = pendingHighSurrogate {
+                guard (0xDC00...0xDFFF).contains(character) else {
+                    throw JSONReadError(reason: "Unpaired high surrogate", location: pending)
+                }
+                pendingHighSurrogate = nil
+            } else if (0xD800...0xDBFF).contains(character) {
+                pendingHighSurrogate = characterLocation
+            } else if (0xDC00...0xDFFF).contains(character) {
+                throw JSONReadError(reason: "Unpaired low surrogate", location: characterLocation)
+            }
+            output.append(character)
         }
         throw error("Unterminated string")
     }

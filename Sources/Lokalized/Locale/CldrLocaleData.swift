@@ -25,12 +25,16 @@ package struct CldrTagParts: Sendable {
         if LanguageRangeLowercase.apply(normalized).hasPrefix("x-") {
             self.init(extensions: [LanguageRangeLowercase.apply(normalized)], privateUse: true); return
         }
-        var subtags = normalized.split(separator: "-", omittingEmptySubsequences: false).map(String.init)
+        var subtags = LocaleASCII.splitSubtags(normalized)
         if subtags.count > 1 { while subtags.last == "" { subtags.removeLast() } }
         var language = "", script = "", region = "", variants: [String] = [], extensions: [String] = [], index = 0
         if let first = subtags.first, !first.isEmpty { language = LanguageRangeLowercase.apply(first); index = 1 }
-        if index < subtags.count && LocaleASCII.script(subtags[index]) { script = LocaleASCII.title(subtags[index]); index += 1 }
-        if index < subtags.count && LocaleASCII.region(subtags[index]) { region = LocaleASCII.upper(subtags[index]); index += 1 }
+        if index < subtags.count && Self.isScriptSubtag(subtags[index]) {
+            script = Self.canonicalScriptSubtag(subtags[index]); index += 1
+        }
+        if index < subtags.count && Self.isRegionSubtag(subtags[index]) {
+            region = LocaleUnicodeTables.upper(subtags[index]); index += 1
+        }
         while index < subtags.count && subtags[index].utf16.count != 1 { variants.append(LanguageRangeLowercase.apply(subtags[index])); index += 1 }
         while index < subtags.count { extensions.append(LanguageRangeLowercase.apply(subtags[index])); index += 1 }
         self.init(language: language, script: script, region: region, variants: variants, extensions: extensions)
@@ -40,9 +44,27 @@ package struct CldrTagParts: Sendable {
         let values = [language, script, region].filter { !$0.isEmpty } + variants + extensions
         return values.isEmpty ? "und" : values.joined(separator: "-")
     }
+    private static func isAlphabetic(_ text: String) -> Bool {
+        !text.isEmpty && text.utf16.allSatisfy { IdentifierTables.contains(UInt32($0), start: true) }
+    }
+    private static func isScriptSubtag(_ text: String) -> Bool {
+        text.utf16.count == 4 && isAlphabetic(text)
+    }
+    private static func isRegionSubtag(_ text: String) -> Bool {
+        let units = Array(text.utf16)
+        return units.count == 2 && isAlphabetic(text)
+            || units.count == 3 && units.allSatisfy(LocaleUnicodeTables.isDigit)
+    }
+    private static func canonicalScriptSubtag(_ text: String) -> String {
+        let units = Array(text.utf16)
+        guard let first = units.first else { return "" }
+        return LocaleUnicodeTables.upper(String(decoding: [first], as: UTF16.self))
+            + LanguageRangeLowercase.apply(String(decoding: units.dropFirst(), as: UTF16.self))
+    }
     package func with(language: String? = nil, script: String? = nil, region: String? = nil, variants: [String]? = nil) -> Self {
         .init(language: language.map(LanguageRangeLowercase.apply) ?? self.language,
-              script: script.map(LocaleASCII.title) ?? self.script, region: region.map(LocaleASCII.upper) ?? self.region,
+              script: script.map(Self.canonicalScriptSubtag) ?? self.script,
+              region: region.map(LocaleUnicodeTables.upper) ?? self.region,
               variants: variants ?? self.variants, extensions: extensions, privateUse: privateUse)
     }
 }

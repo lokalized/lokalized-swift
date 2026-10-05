@@ -112,10 +112,38 @@ The maintainer supplied logs confirming native arm64/Intel host preflights,
 Xcode 26.0.1, Swift 6.2 and the package floor/zero-dependency checks passed.
 Both jobs then failed compiling the URL probe: Swift 6.2 inferred optional
 indices in `ManifestURL.clean`. M8Q supplies explicit nonoptional index types
-there and in the matching locale/header trimming helpers. The fixed sources
-still require a successful Swift 6.2 run; the host preflights alone do not
-qualify the library or Intel runtime behavior. Neither modern runner establishes
+there and in the matching locale/header trimming helpers. That failed run's
+host preflights alone did not qualify the library or Intel runtime behavior.
+Neither modern runner establishes
 macOS 12 or iOS 15 runtime behavior.
+
+On October 4, the [rerun at `725cfe9`](https://github.com/lokalized/lokalized-swift/actions/runs/37229344974)
+completed successfully on minimum Swift 6.2 arm64 and current arm64, including
+the previously failing URL probe. The Intel job passed build/tests, sanitizer,
+source distribution, optimized measurements, SDK deployment and core native
+coverage, then failed the manifest native-adaptation step. Public step metadata
+is recorded in `.build/reports/m8s-hosted-jobs.json`; authenticated logs and
+artifact contents were not downloaded.
+
+M8S found a reproducible Intel-shaped failure in that check's corruption control:
+it selected the first target with a `runtimeExecution` field, but every target
+has that field and the unexecuted arm64 target stores a string there. The
+correction selects the exact compiler target and has offline arm64/Intel tests.
+The fresh current-host manifest qualification and all its negative controls pass.
+This identifies and fixes a concrete failure path; a hosted rerun must confirm
+the failed Intel step. The unpushed M8R documentation and M8S changes were not
+part of that hosted run.
+
+M8S also corrects the shared JSON reader's escape cursor and surrogate/syntax
+error priority, documented in [parser stress](PARSER-STRESS.md). Fresh local
+qualification compiles/imports/links/inspects sixteen binaries across all four
+SDK targets at the declared floors, with Apple/system dependencies only. Native
+arm64 macOS consumers and the complete host qualification commands pass, retaining
+the original 2,197 passing / 184 pending raw corpus sets. The receipt is
+`.build/reports/m8s-deployment.json`, bound to all 129 current Swift sources and
+66 SDK qualification inputs. This local run uses Swift 6.4; Intel/iOS SDK builds
+are compilation evidence. Earlier source-bound packaged-app, simulator and
+sanitizer receipts remain historical for these changed parser sources.
 
 The workflow pins `actions/checkout` and `actions/upload-artifact` to their
 verified v7.0.1 commits, matching the sibling libraries. Both actions declare

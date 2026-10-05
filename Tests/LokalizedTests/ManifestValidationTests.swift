@@ -138,7 +138,7 @@ final class ManifestValidationTests: XCTestCase {
             }
         }
         XCTAssertThrowsError(try JSONReader.parse(#"{"x":"\q"}"#)) {
-            XCTAssertEqual(($0 as? JSONReadError)?.location.column, 9, "shared catalog reader behavior is unchanged")
+            XCTAssertEqual(($0 as? JSONReadError)?.location.column, 8, "the shared reader reports the offending escape character")
         }
     }
     func testManifestByteInputEnforcesBothByteAndUTF16CharacterCapsWithoutAggregateCharge() throws {

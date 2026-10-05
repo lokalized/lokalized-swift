@@ -1,4 +1,4 @@
-name: Swift M8Q qualification
+name: Swift M8S qualification
 
 on:
   push:
@@ -65,9 +65,13 @@ jobs:
           python3 Tools/test_idna_archive.py
           python3 Tools/test_ios_runtime.py
           python3 Tools/test_ios_conformance.py
+          python3 Tools/test_parser_stress.py
+          python3 Tools/test_expression_stress.py
+          python3 Tools/test_locale_stress.py
           python3 Tools/verify_manifest_urls.py --check > .build/reports/manifest-url-probe.json
           python3 Tools/verify_idna_urls.py --check > .build/reports/manifest-idna-probe.json
           python3 Tools/generate_identifier_tables.py --check
+          python3 Tools/generate_locale_unicode_tables.py --check
           python3 Tools/generate_idna_tables.py --check
           python3 Tools/generate_idna_compatibility.py --check
           python3 Tools/generate_idna_normalization_compatibility.py --check
@@ -142,6 +146,10 @@ jobs:
           python3 Tools/source_package.py --check
           python3 Tools/verify_package.py --compiler-track '${{ matrix.track }}' --offline-build --source-archive .build/reports/lokalized-swift-source.tar.gz --report .build/reports/source-distribution.json
           python3 Tools/source_package.py --archive-check .build/reports/lokalized-swift-source.tar.gz > .build/reports/source-distribution-check.json
+      - name: Compile and execute consumer documentation from Markdown
+        run: |
+          python3 Tools/test_documentation.py
+          python3 Tools/verify_documentation.py --compiler-track '${{ matrix.track }}' --report .build/reports/documentation.json
       - name: Measure optimized public consumers and enforce measured size caps
         run: |
           python3 Tools/measure_package.py --measure --samples 3 --compiler-track '${{ matrix.track }}' --report .build/reports/package-performance.json > .build/reports/package-performance.log
@@ -179,7 +187,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: m8q-audit-${{ matrix.track }}-${{ matrix.architecture }}
+          name: m8s-audit-${{ matrix.track }}-${{ matrix.architecture }}
           path: .build/reports/
           if-no-files-found: error
 
