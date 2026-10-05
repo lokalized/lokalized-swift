@@ -1,3 +1,4 @@
+/// Why an attempted locale could not produce a translation for a key.
 public enum TranslationFailureReason: String, CaseIterable, Hashable, Sendable, CustomStringConvertible {
     case missingTranslation = "missing-translation"
     case noMatchingAlternative = "no-matching-alternative"

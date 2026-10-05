@@ -48,7 +48,7 @@ class DocumentationTests(unittest.TestCase):
 
     def test_changed_dependency_requires_review(self):
         with self.assertRaises(ValueError):
-            extract(self.text.replace('branch: "main"', 'branch: "other"'), "quickstart", ())
+            extract(self.text.replace('from: "1.0.0"', 'from: "2.0.0"'), "quickstart", ())
 
 
 if __name__ == "__main__":

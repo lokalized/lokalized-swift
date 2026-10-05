@@ -9,8 +9,7 @@ and an explicit display policy on `MainActor`.
 ## Preserve the catalog directory
 
 Create `Package.swift` with a resource-owning `Catalogs` target. The dependency
-uses the current development branch; select a reviewed revision for a stable
-application build.
+uses a version requirement starting at the 1.0.0 release.
 
 <!-- lokalized-example: catalogs manifest -->
 ```swift
@@ -21,7 +20,7 @@ let package = Package(
     name: "Catalogs",
     platforms: [.iOS(.v15), .macOS(.v12)],
     dependencies: [
-        .package(url: "https://github.com/lokalized/lokalized-swift", branch: "main")
+        .package(url: "https://github.com/lokalized/lokalized-swift", from: "1.0.0")
     ],
     targets: [.executableTarget(name: "Catalogs", dependencies: [
         .product(name: "Lokalized", package: "lokalized-swift")

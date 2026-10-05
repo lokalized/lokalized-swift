@@ -17,7 +17,7 @@ public struct BuildMetadata: Hashable, Sendable {
 
     public static let current = Self(
         producerImplementation: "lokalized-swift",
-        producerVersion: "0.1.0-dev",
+        producerVersion: "1.0.0",
         cldrVersion: "48.2",
         dataFingerprint: "9b4f24165b6dd1ee6dbb5f0822abc7bcde49c5b94d35903045826b45e1f30e68",
         ianaRegistryDate: "2026-09-17",

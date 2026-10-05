@@ -59,6 +59,7 @@ public struct LocaleTag: Hashable, Sendable, CustomStringConvertible {
     }
 }
 
+/// A malformed language tag or locale refused by strict locale construction.
 public struct LocaleTagError: Error, Hashable, Sendable, CustomStringConvertible {
     public enum Kind: String, Sendable { case malformedLanguageTag, malformedLocale }
     public let kind: Kind

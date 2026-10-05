@@ -13,6 +13,7 @@ public indirect enum StringsManifestValue: Sendable {
     case null
 }
 
+/// One exact-name object member in a decoded manifest, preserving input order.
 public struct StringsManifestMember: Sendable {
     public let name: ExactString
     public let value: StringsManifestValue
@@ -21,6 +22,8 @@ public struct StringsManifestMember: Sendable {
     }
 }
 
+/// A manifest's claimed URL, SHA-256 digest, and optional decoded byte count.
+/// Constructing this value does not load a file or verify its contents.
 public struct StringsManifestFile: Sendable {
     public let url: String
     public let sha256: String
@@ -95,6 +98,7 @@ public struct StringsManifestV1: Sendable {
     }
 }
 
+/// Locale selection settings derived from a validated manifest.
 public struct ManifestLocaleConfiguration: Sendable {
     public let fallbackLocale: String
     public let supportedLocales: [String]

@@ -17,7 +17,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = "lokalized-swift"
-ROOT_FILES = {"Package.swift", "README.md", "LICENSE", "NOTICE", "THIRD-PARTY-NOTICES.md",
+ROOT_FILES = {"Package.swift", "README.md", "CHANGELOG.md", "LICENSE", "NOTICE", "THIRD-PARTY-NOTICES.md",
               ".gitignore", ".gitattributes"}
 DIRECTORIES = {"Sources", "Tests", "Reference", "Tools", "Documentation", "Examples",
                "Licenses", ".github"}

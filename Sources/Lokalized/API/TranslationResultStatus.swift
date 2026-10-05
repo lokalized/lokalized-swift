@@ -1,3 +1,4 @@
+/// Whether a lookup produced a translation or the final failure handler's text.
 public enum TranslationResultStatus: String, CaseIterable, Hashable, Sendable, CustomStringConvertible {
     case translated
     case returnedKey = "returned-key"

@@ -12,6 +12,8 @@ swift build
 swift test
 swift run --skip-build LokalizedConformance --self-test
 python3 Tools/verify_documentation.py --report .build/reports/documentation.json
+python3 Tools/test_api_documentation.py
+python3 Tools/build_api_documentation.py
 python3 Tools/verify_package.py
 python3 Tools/measure_package.py --check
 git diff --check
@@ -19,13 +21,18 @@ git diff --check
 
 The documentation check extracts the README/usage manifests, Swift blocks,
 UTF-8 JSON resources and expected output directly from Markdown. It substitutes
-only the remote development dependency with a fresh local source snapshot,
+only the remote release dependency with a fresh local source snapshot,
 then builds and executes both complete programs. The original library manifest
 is preserved, and Reference/Tools are absent from the snapshot. MainActor-default
 resource consumption is exercised by the usage manifest. Receipts retain the
 actual source/document hashes, compiler, commands, binary digests and exact
 output. This checks these examples on the selected host; Apple app packaging
 and other compiler/OS execution remain separately scoped.
+
+The DocC reference build extracts the public library symbol graph, validates
+source summaries and symbol links, and produces an ignored static site. See
+[API reference hosting](API-REFERENCE.md) for development and release editions,
+coverage reporting, CI artifacts, and `swiftdoc.lokalized.com` setup.
 
 ## Frozen behavior and native adaptations
 
@@ -62,8 +69,9 @@ whole-runtime channel. The shared
 [manifest native contract](MANIFEST-NATIVE-CONTRACTS.md) and
 [loader dispositions](LOADER-DISPOSITIONS.md) account for native adaptations
 separately, preserving original observations and unreplayed channels. Complete
-accounting does not certify universal parity. Shared observer vectors remain
-deferred under the pinned naming policy until the reference Java release.
+accounting does not certify universal parity. Separate shared profiles qualify
+successful-fallback observers and exact UTF-16 catalog identifiers without
+changing the frozen corpus.
 
 ## Data and reference integrity
 

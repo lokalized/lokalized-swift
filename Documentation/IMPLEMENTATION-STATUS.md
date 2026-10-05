@@ -1,6 +1,6 @@
 # Implementation status
 
-October 4, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
+October 5, 2026. M0–M6 are implemented: package/reference/conformance foundations, immutable models, catalog parsing/validation/merging, exact numbers, complete generated plural rules, pinned locale negotiation, expression evaluation, recursive fragment resolution, the public synchronous translation runtime, bounded local delivery and Apple preferred-language acquisition. M7A adds manifest models, parsing/validation, canonical identity and deterministic load planning. M7B1 adds Unicode/punycode host processing with pinned mapping, normalization and compatibility properties. Swift network delivery is outside scope: loading follows Java's local model, with remote acquisition owned by applications.
 
 ## Implemented behavior
 
@@ -64,6 +64,14 @@ The development corpus envelope reaches nesting depth 132 because it embeds inte
 
 ## Current compatibility and remaining release gates
 
+The 1.0.0 preparation sets public build metadata to `1.0.0`, changes consumer
+examples to a SwiftPM version requirement starting at `1.0.0`, and adds the
+[changelog](../CHANGELOG.md) to the source distribution. The release remains
+unpublished until the maintainer commits the final sources and pushes its
+semantic-version tag. Tagged API documentation requires that clean release
+checkout; development documentation remains labelled as development.
+
+
 Each direct parse/define/merge call owns its session. Local stream/file/directory/
 Bundle/resource-map loads share aggregate counters and retain per-file JSON depth,
 warnings and origins. Discovery uses bounded UTF-8 ordering; supplied streams stay
@@ -90,19 +98,20 @@ for the other 31 dynamic-carrier inputs through compiler/runtime boundaries.
 close the coordinated shared corrections. Archived counts in the milestone
 history below describe their original runs.
 
-The [October 4 hosted rerun](https://github.com/lokalized/lokalized-swift/actions/runs/37229344974)
-at `725cfe91c6c1561be4a67c4777e3a6ebb99e71f2` completed successfully on minimum
-Swift 6.2 arm64 and current arm64. Intel passed build/tests, sanitizer, source
-distribution, measurements, SDK deployment and core native coverage, then failed
-the manifest native-adaptation step. M8S repairs a reproducible Intel-specific
-negative-control selection bug in that checker. Public job metadata establishes
-step outcomes; authenticated failure logs and artifact contents were not read.
-The correction and newer M8R/M8S work require another hosted run after push.
+The [October 5 hosted run](https://github.com/lokalized/lokalized-swift/actions/runs/37251334464)
+at `7f2485544f99e6d1053c5863ba9f6742b59fdc13` completed successfully on all
+three jobs: minimum Swift 6.2 arm64, minimum Swift 6.2 Intel and current arm64.
+Public job metadata confirms the qualification steps passed; authenticated logs
+and artifact contents were not read. This supersedes the October 4 Intel checker
+failure. The uncommitted 1.0.0 metadata, API documentation and newest shared-profile
+tests require a fresh hosted run after commit and push.
 The [deployment probe](DEPLOYMENT.md) separates native execution, four-target
 compilation and emitted OS floors. iOS 15/macOS 12 runtime and physical-device
 execution remain unverified. The current iOS 26.5 simulator evidence is scoped
-separately and never substitutes for a minimum-version/device run. Shared
-observer vectors remain deferred until the reference Java release.
+separately and never substitutes for a minimum-version/device run. Both optional
+iOS execution steps were skipped in the October 5 push run. Separate shared
+fallback-observer and exact-identifier profiles now qualify those behaviors
+without changing the original corpus.
 
 [Performance](PERFORMANCE.md) records optimized consumer measurements on the
 current Swift 6.4 arm64 host, with source caps and measured-profile binary caps.
@@ -449,3 +458,94 @@ bytes, under the existing 2,555,904-byte cap. Receipts:
 `.build/reports/locale-stress-second-seed.json` and
 `.build/reports/locale-stress-package-size.json`. Work remains uncommitted and
 unstaged.
+
+**M8V: shared fallback-observer profile** introduces a seven-case versioned
+supplement in `lokalized-spec` without changing the frozen Java 3.1.0 corpus.
+Java 3.1.1, JavaScript and Swift replay byte-identical pinned test snapshots.
+The common cases check first/later-candidate success, total exhaustion, policy
+stopping, observer exception precedence, per-call replacement, exact candidate
+and preceding-failure order, and retained result/match identity. The shared
+profile checker has seven admission/negative-control tests. This profile does
+not yet cover resolution-cause identity, negotiation-only fallback, nested or
+concurrent observer calls, native constructor refusals or JS thenable returns;
+port-local tests retain those obligations. See
+[`lokalized-spec/FALLBACK-OBSERVER.md`](../../lokalized-spec/FALLBACK-OBSERVER.md).
+All seven rows pass in each port. The full Java and JS suites pass, and Swift
+passes 287 native methods with one existing filesystem skip. The spec profile
+gate, seven negative controls and byte-for-byte snapshot comparison pass.
+The broader spec umbrella still stops at its pre-existing historical IANA
+source stamp because the current Java checkout is 3.1.1 while that oracle is
+pinned to 3.1.0. The test-only snapshot adds no Swift runtime dependency or
+HTTP loading; current Swift 6.4 package verification reports zero external
+dependencies. Minimum compiler/OS, Intel and physical-device execution remain
+separate gates. Work remains uncommitted and unstaged.
+
+**M8W: expanded shared observer evidence** extends the still-uncommitted v1
+profile from seven to ten cases, with three catalog/ingress variants now
+replayed by Java, JS and Swift. `observer.negotiation-only` proves that
+`isFallback` can be true while a first-candidate answer produces no event.
+`observer.no-matching-alternative` keeps that reason distinct from a missing
+key in the same ordered event. `observer.distinct-causes` passes two separate
+throwing placeholder objects through policy callbacks and proves that the
+observer retains each exact object, in order. The shared artifact and all
+three test snapshots have the new SHA-256
+`3dfda588e59cbf8f2b52ee0921dcd5d2d7fcfe2201e1f4853552ecbc3db45869`.
+Ten shared admission/negative controls and the three focused port suites pass.
+The full Java and JS suites pass; Swift again passes 287 test methods with one
+existing filesystem skip. The source-package controls and current Swift 6.4
+package verification pass, with zero external dependencies. Only
+test/development material changes; no Swift runtime source, package
+dependency or transport behavior changes. Port-local reentry, concurrency,
+native construction and JS thenable checks remain outside this profile.
+
+**M8X: inherited and reentrant observer parity** extends the still-uncommitted
+shared v1 profile to twelve cases. An explicit per-call null observer inherits
+the instance callback in all three ports. An instance observer also performs a
+nested lookup synchronously; the profile pins the outer and nested results,
+ordered policy calls, ordered events and each event's result/match-reference
+identity. The shared artifact and three test snapshots have SHA-256
+`4c844d73e8d333dde8432cb9e76fcdeb22b4937b50a632205fe74855b6e57d18`.
+Concurrent lookups, native event construction and JS thenable checks remain
+port-local. This slice changes test/development files only, preserving zero
+Swift runtime dependencies and the no-HTTP loading policy. The shared checker
+passes all twelve cases and fifteen admission/negative-control tests, including
+byte-identical sibling snapshots. Focused and full Java/JS/Swift suites pass;
+Swift executes 287 test methods with one existing filesystem skip. Swift source
+package and current compiler checks pass, and package verification reports zero
+external dependencies. Work remains uncommitted and unstaged.
+
+**M8Y: shared exact Unicode identifier profile** adds six public-parser/runtime
+cases to `lokalized-spec`, with byte-identical pinned snapshots in Java, JS and
+Swift. The cases distinguish composed and decomposed catalog keys in one file,
+prove that either spelling misses a catalog containing only the other spelling,
+keep canonically equivalent placeholder names separate and refuse an escaped/
+literal duplicate of the same decoded key. Source documents remain strings in
+the profile so host dictionary decoding cannot erase the distinctions before
+Lokalized parses them; Swift result comparisons use exact UTF-16 code units.
+The artifact SHA-256 is
+`1577a144581595526560a74cfa3dee0cc6e36d549cfe6dd37a78eab4221db638`.
+See [`lokalized-spec/EXACT-IDENTIFIERS.md`](../../lokalized-spec/EXACT-IDENTIFIERS.md).
+Eight shared admission/negative-control tests, all six rows in each port and
+the byte-for-byte snapshot comparison pass. The shared gate joins the spec
+umbrella and JS CI. This slice adds no runtime code, dependency or HTTP loader;
+the original behavioral corpus and its coverage partitions remain unchanged.
+Full Java and JS suites and JS declarations pass. Swift executes 288 test methods
+with one existing filesystem skip and zero failures; the source-package check
+and current Swift 6.4 package verification pass with zero external dependencies.
+Minimum compiler/OS and physical-device evidence remain separate release gates.
+Work remains uncommitted and unstaged.
+
+**M8Z: shared identifier category/scalar boundaries** extends the still-uncommitted
+exact-identifier v1 profile from six to fifteen cases. Three generated-fragment
+lookups exercise Mn/Mc/Me and Nl/No/Nd continuations, a supplementary U+10400
+initial letter and underscore/hyphen placement. Six parser refusals isolate
+invalid mark/number/hyphen starters and emoji/format continuations. Every
+refusal, including the prior exact duplicate, now compares the complete message
+and exact offending spelling; Swift checks UTF-16 units. The artifact and all
+three snapshots share SHA-256
+`3b20ec306ec5da919909e28a6db04085ad4cf9133d76adb6cf87f3631ee72e6f`.
+All fifteen cases pass through each port's public APIs, with twelve shared
+admission/negative controls and byte-identical snapshots. The sampled category
+boundaries preserve the existing grammar and Swift's Unicode 15.0 tables;
+production sources, package dependencies and HTTP scope remain unchanged.
+The source-package inventory check passes. Work remains uncommitted and unstaged.

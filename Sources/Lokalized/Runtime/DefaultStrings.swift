@@ -16,6 +16,11 @@ public final class DefaultStrings: Strings, Sendable {
     private let catalogs: [LocaleTag: CompiledCatalogResolution]
     private let keysByLocale: [LocaleTag: Set<ExactString>]
 
+    /// Validates configuration, invokes the catalog supplier once, and compiles
+    /// translations. Share the resulting immutable instance across callers;
+    /// captured application state in suppliers and callbacks must be thread-safe.
+    ///
+    /// - Throws: Configuration or catalog errors, or an error from the supplier.
     public init(configuration: StringsConfiguration) throws {
         // Construction order is observable when a supplier or catalog is invalid.
         do { try JDKLocaleTag.requireWellFormed(configuration.fallbackLocale, description: "Fallback locale") }
@@ -81,15 +86,20 @@ public final class DefaultStrings: Strings, Sendable {
         languageRangeEquivalents = matcher.languageRangeEquivalents
     }
 
+    /// Negotiates one requested tag and returns its selection diagnostics.
     public func matchFor(_ locale: String) throws -> LocaleMatchResult { try matcher.matchFor(locale) }
+    /// Negotiates weighted language ranges against the loaded catalog locales.
     public func matchFor(_ languageRanges: [LanguageRange]) throws -> LocaleMatchResult { try matcher.matchFor(languageRanges) }
+    /// Parses language ranges using this instance's configured equivalence data.
     public func parseLanguageRanges(_ ranges: String) throws -> [LanguageRange] { try matcher.parseLanguageRanges(ranges) }
 
+    /// Returns exact keys in a loaded locale without performing locale negotiation.
     public func getKeysForLocale(_ locale: LocaleTag) throws -> Set<ExactString> {
         try JDKLocaleTag.requireWellFormed(locale, description: "Locale")
         guard let keys = keysByLocale[locale] else { throw Self.unsupported(locale) }
         return keys
     }
+    /// Returns source keys absent from the target catalog; both locales must be loaded.
     public func getMissingKeys(sourceLocale: LocaleTag, targetLocale: LocaleTag) throws -> Set<ExactString> {
         try JDKLocaleTag.requireWellFormed(sourceLocale, description: "Source locale")
         try JDKLocaleTag.requireWellFormed(targetLocale, description: "Target locale")
@@ -102,6 +112,14 @@ public final class DefaultStrings: Strings, Sendable {
         return source.subtracting(target)
     }
 
+    /// Resolves an exact key using typed values and optional per-call overrides.
+    ///
+    /// - Parameters:
+    ///   - key: Localized string identifier, preserving exact UTF-16 identity.
+    ///   - placeholders: Values for expression evaluation and interpolation.
+    ///   - options: Locale, bidi, and callback overrides; omitted settings inherit this instance.
+    /// - Returns: Text and diagnostic outcome, including attempted and resolved locales.
+    /// - Throws: Unhandled evaluation errors or errors from application callbacks.
     public func getResult(_ key: ExactString, placeholders: PlaceholderValues, options: TranslationOptions) throws -> TranslationResult {
         let (lookupLocale, match) = try localeLookup(options)
         let isolation = options.bidiIsolation ?? bidiIsolation

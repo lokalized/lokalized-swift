@@ -32,6 +32,8 @@ public extension LanguageForm {
     var description: String { displayName }
 }
 
+/// CLDR cardinal categories for quantities. Category names are locale-specific;
+/// use `forNumber` or `forOperands` to select a category with the pinned rules.
 public enum Cardinality: String, CaseIterable, LanguageForm {
     case zero = "CARDINALITY_ZERO"
     case one = "CARDINALITY_ONE"
@@ -43,6 +45,8 @@ public enum Cardinality: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .cardinality }
 }
 
+/// CLDR ordinal categories for positions such as first, second, and third.
+/// Use `forNumber` or `forOperands` to select a category for a locale.
 public enum Ordinality: String, CaseIterable, LanguageForm {
     case zero = "ORDINALITY_ZERO"
     case one = "ORDINALITY_ONE"
@@ -54,6 +58,7 @@ public enum Ordinality: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .ordinality }
 }
 
+/// Grammatical gender supplied by the application to select a placeholder form.
 public enum Gender: String, CaseIterable, LanguageForm {
     case masculine = "GENDER_MASCULINE"
     case feminine = "GENDER_FEMININE"
@@ -63,6 +68,7 @@ public enum Gender: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .gender }
 }
 
+/// Grammatical case supplied by the application to select a placeholder form.
 public enum GrammaticalCase: String, CaseIterable, LanguageForm {
     case nominative = "CASE_NOMINATIVE"
     case accusative = "CASE_ACCUSATIVE"
@@ -77,6 +83,7 @@ public enum GrammaticalCase: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .grammaticalCase }
 }
 
+/// Definiteness supplied by the application to select a placeholder form.
 public enum Definiteness: String, CaseIterable, LanguageForm {
     case definite = "DEFINITENESS_DEFINITE"
     case indefinite = "DEFINITENESS_INDEFINITE"
@@ -85,6 +92,7 @@ public enum Definiteness: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .definiteness }
 }
 
+/// Noun classifier supplied by the application to select a placeholder form.
 public enum Classifier: String, CaseIterable, LanguageForm {
     case general = "CLASSIFIER_GENERAL"
     case person = "CLASSIFIER_PERSON"
@@ -98,6 +106,7 @@ public enum Classifier: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .classifier }
 }
 
+/// Register or level of formality supplied by the application.
 public enum Formality: String, CaseIterable, LanguageForm {
     case casual = "FORMALITY_CASUAL"
     case informal = "FORMALITY_INFORMAL"
@@ -108,6 +117,7 @@ public enum Formality: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .formality }
 }
 
+/// Whether a plural first-person form includes the person being addressed.
 public enum Clusivity: String, CaseIterable, LanguageForm {
     case inclusive = "CLUSIVITY_INCLUSIVE"
     case exclusive = "CLUSIVITY_EXCLUSIVE"
@@ -115,6 +125,7 @@ public enum Clusivity: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .clusivity }
 }
 
+/// Grammatical animacy supplied by the application to select a placeholder form.
 public enum Animacy: String, CaseIterable, LanguageForm {
     case animate = "ANIMACY_ANIMATE"
     case inanimate = "ANIMACY_INANIMATE"
@@ -122,6 +133,8 @@ public enum Animacy: String, CaseIterable, LanguageForm {
     public static var axis: LanguageFormAxis { .animacy }
 }
 
+/// Phonetic categories used to select forms based on a term's pronunciation.
+/// A `PhoneticResolver` provides these language-specific decisions.
 public enum Phonetic: String, CaseIterable, LanguageForm {
     case vowel = "PHONETIC_VOWEL"
     case consonant = "PHONETIC_CONSONANT"

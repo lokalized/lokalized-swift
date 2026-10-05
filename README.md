@@ -5,18 +5,18 @@ Swift port supports **iOS 15+ and macOS 12+**, using **Swift 6.2+** in Swift 6
 language mode, with **zero external runtime dependencies**. CLDR plural rules,
 locale negotiation and Unicode data ship as compiled Swift data.
 
-The port is under development. Parsing, translation, plural selection, locale
-matching, local loading and pure manifest helpers are implemented. The
-[implementation status](Documentation/IMPLEMENTATION-STATUS.md) records current
-compatibility evidence and remaining release gates.
+Parsing, translation, plural selection, locale matching, local loading and pure
+manifest helpers use the shared Lokalized catalog format. The
+[changelog](CHANGELOG.md) describes the 1.0.0 release, and the
+[implementation status](Documentation/IMPLEMENTATION-STATUS.md) records native
+adaptations, compatibility evidence and remaining release qualification.
 
 ## Add the package
 
 In Xcode, add `https://github.com/lokalized/lokalized-swift` under Package
-Dependencies and select the `Lokalized` library product. In a Swift package,
-add the dependency and product to your target. This complete executable example
-uses the development branch; pin a reviewed commit for reproducible builds
-while the port is awaiting its first release.
+Dependencies, select version 1.0.0 or later, and select the `Lokalized` library
+product. In a Swift package, add the dependency and product to your target.
+This complete executable example uses a version requirement starting at 1.0.0.
 
 <!-- lokalized-example: quickstart manifest -->
 ```swift
@@ -27,7 +27,7 @@ let package = Package(
     name: "QuickStart",
     platforms: [.iOS(.v15), .macOS(.v12)],
     dependencies: [
-        .package(url: "https://github.com/lokalized/lokalized-swift", branch: "main")
+        .package(url: "https://github.com/lokalized/lokalized-swift", from: "1.0.0")
     ],
     targets: [.executableTarget(name: "QuickStart", dependencies: [
         .product(name: "Lokalized", package: "lokalized-swift")
@@ -86,6 +86,7 @@ and plan references synchronously without reading catalog bodies.
 
 ## API guides
 
+- [Generated API reference: build and hosting](Documentation/API-REFERENCE.md).
 - [Translation and callbacks](Documentation/RUNTIME-API.md),
   [bidi and display](Documentation/RUNTIME-SEMANTICS.md),
   [expressions](Documentation/EXPRESSIONS.md) and [fragments](Documentation/FRAGMENTS.md).

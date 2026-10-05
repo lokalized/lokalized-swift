@@ -20,7 +20,7 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[1]
 DOCUMENTS = (("README.md", "quickstart", "QuickStart", ()),
              ("Documentation/USAGE.md", "catalogs", "Catalogs", ("en", "fr")))
-REMOTE = '.package(url: "https://github.com/lokalized/lokalized-swift", branch: "main")'
+REMOTE = '.package(url: "https://github.com/lokalized/lokalized-swift", from: "1.0.0")'
 BLOCK = re.compile(r'<!-- lokalized-example: ([a-z]+) ([a-z-]+) -->\n```([a-z]+)\n(.*?)\n```', re.DOTALL)
 
 

@@ -47,6 +47,7 @@ package func usableAcceptLanguageRanges(_ header: String?, using matcher: any Lo
     return ranges.count <= DefaultLocaleMatcher.maximumLanguageRanges ? ranges : []
 }
 
+/// Invalid locale-matcher configuration or language-range input.
 public struct LocaleMatcherError: Error, Hashable, Sendable, CustomStringConvertible {
     public enum Kind: String, Sendable { case invalidArgument, configuration }
     public let kind: Kind

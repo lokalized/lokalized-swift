@@ -38,4 +38,6 @@ public struct LocalizedStringWarning: Hashable, Sendable {
     }
 }
 
+/// Synchronous observer for a parsing or loading warning. Throwing aborts the
+/// operation; captures must support concurrent and reentrant invocation.
 public typealias LocalizedStringWarningHandler = @Sendable (LocalizedStringWarning) throws -> Void

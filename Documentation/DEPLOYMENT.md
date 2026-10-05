@@ -130,9 +130,14 @@ it selected the first target with a `runtimeExecution` field, but every target
 has that field and the unexecuted arm64 target stores a string there. The
 correction selects the exact compiler target and has offline arm64/Intel tests.
 The fresh current-host manifest qualification and all its negative controls pass.
-This identifies and fixes a concrete failure path; a hosted rerun must confirm
-the failed Intel step. The unpushed M8R documentation and M8S changes were not
-part of that hosted run.
+The [October 5 hosted rerun](https://github.com/lokalized/lokalized-swift/actions/runs/37251334464)
+at `7f2485544f99e6d1053c5863ba9f6742b59fdc13` confirms the repaired Intel step:
+all minimum arm64, minimum Intel and current arm64 jobs passed. Public job/step
+metadata establishes those outcomes; authenticated logs and artifact contents
+were not downloaded. Both optional iOS execution steps were skipped. The new
+1.0.0 metadata, API documentation and newest shared-profile tests still need a
+hosted run after commit and push. Minimum-OS and physical-device execution
+remain unverified.
 
 M8S also corrects the shared JSON reader's escape cursor and surrogate/syntax
 error priority, documented in [parser stress](PARSER-STRESS.md). Fresh local
