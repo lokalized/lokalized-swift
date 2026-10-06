@@ -17,7 +17,7 @@ entries from JSON using ``LocalizedStringLoader`` and preserve them in
 ```swift
 import Lokalized
 
-func makeStrings(localeSupplier: @escaping LocaleSupplier) throws -> DefaultStrings {
+func makeStrings(localeSupplier: @escaping LocaleSupplier) throws -> any Strings {
     let english = try LocaleTag("en")
     let greeting = try LocalizedString(
         key: "Welcome, {{name}}",
@@ -31,6 +31,11 @@ func makeStrings(localeSupplier: @escaping LocaleSupplier) throws -> DefaultStri
     ))
 }
 ```
+
+The factory returns ``Strings``, the public translation and locale-matching
+protocol. Swift spells this protocol value as `any Strings`; the underlying
+instance is still ``DefaultStrings``. App factories and consumers can use the
+protocol when they do not need implementation-specific configuration properties.
 
 The application supplies the locale callback when constructing the runtime.
 Callbacks are synchronous and `@Sendable`; any state they read must support

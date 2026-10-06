@@ -43,7 +43,7 @@ let message = try strings.get("I read {{bookCount}} books.",
 Lokalized has proudly powered production systems since 2017. The Java, JavaScript, and Swift libraries share the same translation-file format; platform APIs adapt how applications supply values and load files.
 
 **Note: this README provides a high-level overview of Lokalized.**<br/>
-**For details, please refer to the official documentation at [lokalized.com](https://www.lokalized.com/?platform=swift).**
+**For details, see the [official documentation](https://www.lokalized.com/?platform=swift) and [Swift API reference](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/).**
 
 ## Why Lokalized?
 
@@ -134,7 +134,7 @@ Save this as `Examples/Readme/books/pt-BR.json` (or `Sources/QuickStart/Lokalize
 }
 ```
 
-The abbreviated book example covers `ONE` and `OTHER`. Portuguese also defines `MANY`, so loading reports an incomplete-cardinality warning. Production files should define every required form; `ParsedStringsFile.warnings` and the loader's `warningHandler` expose these gaps.
+The abbreviated book example covers `ONE` and `OTHER`. Portuguese also defines `MANY`, so loading reports an incomplete-cardinality warning. Production files should define every required form; [`ParsedStringsFile.warnings`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/parsedstringsfile/warnings/) and the loader's `warningHandler` expose these gaps.
 
 ### 2. Create a Strings Instance
 
@@ -146,7 +146,7 @@ import Foundation
 import Lokalized
 
 func makeStrings(in bundle: Bundle,
-                 currentLocale: @escaping @Sendable () -> LocaleTag) throws -> DefaultStrings {
+                 currentLocale: @escaping @Sendable () -> LocaleTag) throws -> any Strings {
     let files = try LocalizedStringLoader.loadFromBundle(bundle)
     let catalogs = files.mapValues { LocalizedCatalog(strings: $0.strings) }
     return try DefaultStrings(configuration: StringsConfiguration(
@@ -162,7 +162,9 @@ let strings = try makeStrings(in: .module, currentLocale: { locale })
 
 Use `.main` in an Xcode app and `.module` from a SwiftPM target that owns copied resources. The locale supplier reads your getter on each applicable lookup; it must be safe for concurrent calls. For actor-isolated settings, read the locale on that actor and pass a per-invocation option instead.
 
-A macOS tool can use `LocalizedStringLoader.loadFromDirectory` for caller-chosen files; [see local loading](#loading-localized-strings).
+The factory returns [`any Strings`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/strings/), the public translation and locale-matching protocol, while constructing a [`DefaultStrings`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/defaultstrings/) implementation. This keeps app callers coupled to the API they use. The protocol is [`Sendable`](https://developer.apple.com/documentation/swift/sendable), so its values can be shared across concurrency boundaries.
+
+A macOS tool can use [`LocalizedStringLoader.loadFromDirectory`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/localizedstringloader/loadfromdirectory%28_:warninghandler:loadingoptions:%29/) for caller-chosen files; [see local loading](#loading-localized-strings).
 
 By default, exhausted lookups return the key with available placeholders interpolated into it. Failure handlers can throw instead, or keep the key while reporting structured telemetry; [see failure handling](#translation-failure-handling). Load files and create the immutable instance once, then share it. To reload files, construct a new instance and let your application replace the shared snapshot.
 
@@ -229,7 +231,7 @@ let message = try strings.get("I read {{bookCount}} books.",
 // "Li 1 livro."
 ```
 
-In an iOS or macOS app, use `PreferredLanguageChooser.chooseAppleLocale(using:)` to sample Apple's current ordered preferences, or pass app-owned preferences with `chooseLocaleForPreferredLanguages(_:using:)`. Existing instances do not subscribe to system changes or mutate a process-wide language.
+In an iOS or macOS app, use [`PreferredLanguageChooser.chooseAppleLocale(using:)`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/preferredlanguagechooser/chooseapplelocale%28using:%29/) to sample Apple's current ordered preferences, or pass app-owned preferences with [`chooseLocaleForPreferredLanguages(_:using:)`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/preferredlanguagechooser/chooselocaleforpreferredlanguages%28_:using:%29/). Existing instances do not subscribe to system changes or mutate a process-wide language.
 
 ### Locale Matching Behavior
 
@@ -253,7 +255,7 @@ Parsed range lists are bounded at 32 entries. The raw-header helper bounds input
 
 ## Loading Localized Strings
 
-Load synchronous local inputs: `String`, `Data`, a caller-owned `InputStream`, local file URLs, directories, Bundles, or explicit resource maps. Streams remain caller-owned and are never closed by Lokalized. A directory load does not recursively scan child directories:
+Load synchronous local inputs: [`String`](https://developer.apple.com/documentation/swift/string), [`Data`](https://developer.apple.com/documentation/foundation/data), a caller-owned [`InputStream`](https://developer.apple.com/documentation/foundation/inputstream), local file URLs, directories, [`Bundle`](https://developer.apple.com/documentation/foundation/bundle) resources, or explicit resource maps. Streams remain caller-owned and are never closed by Lokalized. A directory load does not recursively scan child directories:
 
 ```swift
 let files = try LocalizedStringLoader.loadFromDirectory(
@@ -262,7 +264,7 @@ let catalogs = files.mapValues { LocalizedCatalog(strings: $0.strings) }
 // Provide catalogs through localizedStringSupplier when constructing DefaultStrings.
 ```
 
-For an app, use `loadFromBundle(.main)`; for SwiftPM resources, use `.module` from the resource-owning target. `loadFromResources` and `resourcePathsByLocale` provide explicit mappings. Applications own remote acquisition; no loader starts an HTTP request. Manifest APIs validate, compute identity, and plan references without reading catalog bodies. See [local loading](Documentation/LOCAL-LOADING.md) and [Apple local delivery](Documentation/APPLE-LOCAL-DELIVERY.md).
+For an app, use [`loadFromBundle(.main)`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/localizedstringloader/loadfrombundle%28_:directory:warninghandler:loadingoptions:%29/); for SwiftPM resources, use `.module` from the resource-owning target. `loadFromResources` and `resourcePathsByLocale` provide explicit mappings. Applications own remote acquisition; no loader starts an HTTP request. Manifest APIs validate, compute identity, and plan references without reading catalog bodies. See [local loading](Documentation/LOCAL-LOADING.md) and [Apple local delivery](Documentation/APPLE-LOCAL-DELIVERY.md).
 
 Loading is bounded per input and per aggregate load. Malformed UTF-8/JSON, duplicate members, invalid expressions, and invalid localized strings fail validation. A blank or BOM-only file is invalid; use `{}` for an intentionally empty file. Missing locale-specific plural forms produce structured warnings; they are not silently filled from an unrelated language.
 
@@ -276,7 +278,7 @@ let message = try strings.get("I read {{bookCount}} books.",
 // "Li 1 livro."
 ```
 
-Per-call options can also override language ranges, an existing match, bidi isolation, fallback policy, failure handling, or successful-fallback observation. An explicit locale or match bypasses the configured locale supplier for that call. A per-call observer replaces the instance observer; omission inherits it.
+[`TranslationOptions`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/translationoptions/) can also override language ranges, an existing match, bidi isolation, fallback policy, failure handling, or successful-fallback observation. An explicit locale or match bypasses the configured locale supplier for that call. A per-call observer replaces the instance observer; omission inherits it.
 
 ## Runtime Safety Limits
 
@@ -833,7 +835,7 @@ A successful translation from a later candidate is not an exhausted failure. Att
 
 ## Translation Diagnostics
 
-`get` returns text. `getResult` also reports how the key was resolved, including the matched and resolved locales, fallback status, outcome status, and any retained failure. Negotiation and per-key fallback are separate: the file chosen for the user may lack a key that exists in a later candidate.
+[`get`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/strings/get%28_:placeholders:options:%29/) returns text. [`getResult`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/strings/getresult%28_:placeholders:options:%29/) also reports how the key was resolved, including the matched and resolved locales, fallback status, outcome status, and any retained failure. Negotiation and per-key fallback are separate: the file chosen for the user may lack a key that exists in a later candidate.
 
 ```swift
 let result = try strings.getResult("I read {{bookCount}} books.",
@@ -870,7 +872,7 @@ Write `{{bookCount}}`, with no spaces inside the braces. Names start with a Unic
 
 A generated placeholder can select by language form, use a start/end pair for a cardinality range, or select an expression-driven fragment. Generated placeholders can refer to other generated fragments. Parent definitions are inherited by selected alternatives unless the child replaces them. Authored keys and placeholder identifiers retain exact Unicode identity.
 
-Swift's ordinary `String` equality treats canonically equivalent strings as equal. Use `ExactString` and Lokalized's exact collection types when building keys programmatically; ordinary dictionaries can collapse distinct keys before the runtime receives them. JSON catalogs preserve the authored identities. See [exact Unicode keys](Documentation/USAGE.md#keep-authored-unicode-keys-exact).
+Swift's ordinary [`String`](https://developer.apple.com/documentation/swift/string) equality treats canonically equivalent strings as equal. Use [`ExactString`](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/exactstring/) and Lokalized's exact collection types when building keys programmatically; ordinary dictionaries can collapse distinct keys before the runtime receives them. JSON catalogs preserve the authored identities. See [exact Unicode keys](Documentation/USAGE.md#keep-authored-unicode-keys-exact).
 
 #### Alternatives
 
@@ -1044,6 +1046,6 @@ struct WelcomeView: View {
 }
 ```
 
-This view assumes the loaded app catalogs define `welcome`. `Text(verbatim:)` displays the resolved value without treating it as an Apple localization key. The app's observable language state must trigger view updates; the supplier does not redraw SwiftUI views. UIKit and AppKit assign the same resolved string to a label's text or string value.
+This view assumes the loaded app catalogs define `welcome`. [`Text(verbatim:)`](https://developer.apple.com/documentation/swiftui/text/init%28verbatim:%29) displays the resolved value without treating it as an Apple localization key. The app's observable language state must trigger view updates; the supplier does not redraw SwiftUI views. UIKit and AppKit assign the same resolved string to a label's text or string value.
 
-See the [usage guide](Documentation/USAGE.md), [runnable Apple examples](Examples/README.md), [runtime API](Documentation/RUNTIME-API.md), [locale matching](Documentation/LOCALE-MATCHING.md), and [development guide](Documentation/DEVELOPMENT.md). [Generated API documentation](Documentation/API-REFERENCE.md) describes the DocC reference at **swiftdoc.lokalized.com**. The [changelog](CHANGELOG.md) and [implementation status](Documentation/IMPLEMENTATION-STATUS.md) record release scope and native compatibility evidence.
+See the [usage guide](Documentation/USAGE.md), [runnable Apple examples](Examples/README.md), [runtime API](Documentation/RUNTIME-API.md), [locale matching](Documentation/LOCALE-MATCHING.md), and [development guide](Documentation/DEVELOPMENT.md). Browse the [Swift API reference](https://swiftdoc.lokalized.com/1.0.0/documentation/lokalized/) or read how the [generated documentation](Documentation/API-REFERENCE.md) is built. The [changelog](CHANGELOG.md) and [implementation status](Documentation/IMPLEMENTATION-STATUS.md) record release scope and native compatibility evidence.
