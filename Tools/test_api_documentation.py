@@ -6,8 +6,12 @@ Copyright 2026 Revetware LLC. Licensed under the Apache License, Version 2.0.
 import unittest
 from unittest.mock import patch
 from pathlib import Path
+import re
+import shlex
+import subprocess
+import sys
 import tempfile
-from build_api_documentation import coverage_for, edition_for, extract_symbol_graphs, symbol_graphs, validate_release_source
+from build_api_documentation import ROOT, coverage_for, edition_for, extract_symbol_graphs, symbol_graphs, validate_release_source
 
 
 def graph(documented=True, module="Lokalized", member=False):
@@ -20,6 +24,45 @@ def graph(documented=True, module="Lokalized", member=False):
 
 
 class ReferenceTests(unittest.TestCase):
+    def test_ci_artifact_preserves_docc_routes_and_payloads(self):
+        workflow = (ROOT / ".github/workflows/api-documentation.yml").read_text()
+        commands = re.findall(r"^\s*run: ((?:env \S+ )?tar .+)$", workflow, re.MULTILINE)
+        self.assertEqual(len(commands), 1, "The static site needs one archive step")
+        upload = re.search(r"name: swift-api-reference\n\s+path: ([^\n]+)", workflow)
+        self.assertIsNotNone(upload)
+        uploaded_path = Path(upload.group(1))
+        self.assertNotRegex(uploaded_path.name, r'[":<>|*?\r\n]')
+
+        # These are real DocC route shapes rejected by direct artifact upload.
+        contents = {
+            "site/index.html": b"reference editions",
+            "site/development/data/documentation/lokalized/animacy/!=(_:_:).json": b'{"title":"!=(_:_:)"}',
+            "site/development/data/documentation/lokalized/exactdecimal/<(_:_:).json": b'{"title":"<(_:_:)"}',
+            "site/development/documentation/lokalized/index.html": b"module page",
+            "site/development/js/index.js": b"load the original symbol routes",
+        }
+        # AppleDouble's ._ prefix cannot be restored beside a 255-byte name.
+        long_route = "site/development/data/documentation/lokalized/options/" + "init(" + "a" * 244 + ").json"
+        contents[long_route] = b"long initializer route"
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            output = directory / ".build/api-documentation"
+            for name, data in contents.items():
+                path = output / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+            if sys.platform == "darwin":
+                subprocess.run(["xattr", "-w", "com.lokalized.reference-test", "macOS-only metadata",
+                                str(output / long_route)], check=True)
+            subprocess.run(shlex.split(commands[0]), cwd=directory, check=True)
+            archive = directory / uploaded_path
+            self.assertTrue(archive.is_file(), "The uploaded path must be the archive, not the site directory")
+            extracted = directory / "extracted"
+            extracted.mkdir()
+            subprocess.run(["tar", "-xzf", str(archive), "-C", str(extracted)], check=True)
+            self.assertEqual({path.relative_to(extracted).as_posix(): path.read_bytes()
+                              for path in extracted.rglob("*") if path.is_file()}, contents)
+
     def test_only_public_library_graphs_are_selected(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)

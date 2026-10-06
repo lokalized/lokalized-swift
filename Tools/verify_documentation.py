@@ -18,10 +18,10 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCUMENTS = (("README.md", "quickstart", "QuickStart", ()),
+DOCUMENTS = (("README.md", "quickstart", "QuickStart", ("pt-BR",)),
              ("Documentation/USAGE.md", "catalogs", "Catalogs", ("en", "fr")))
 REMOTE = '.package(url: "https://github.com/lokalized/lokalized-swift", from: "1.0.0")'
-BLOCK = re.compile(r'<!-- lokalized-example: ([a-z]+) ([a-z-]+) -->\n```([a-z]+)\n(.*?)\n```', re.DOTALL)
+BLOCK = re.compile(r'<!-- lokalized-example: ([a-z]+) ([A-Za-z0-9-]+) -->\n```([a-z]+)\n(.*?)\n```', re.DOTALL)
 
 
 def sha(data):
@@ -107,7 +107,7 @@ def qualify(args, report):
             (consumer / "Package.swift").write_text(example["manifest"])
             (source_directory / "main.swift").write_text(example["source"])
             for locale, text in example["catalogs"].items():
-                resource = source_directory / "Lokalized" / ("en" if locale == "en" else "fr.json")
+                resource = source_directory / "Lokalized" / ("en" if locale == "en" else locale + ".json")
                 resource.parent.mkdir(exist_ok=True)
                 resource.write_text(text, encoding="utf-8")
             build = common + ["--scratch-path", str(scratch / (name + "-build"))]

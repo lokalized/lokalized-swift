@@ -26,29 +26,29 @@ class DocumentationTests(unittest.TestCase):
         start = self.text.index("<!-- lokalized-example: quickstart manifest -->")
         end = self.text.index("\n```", self.text.index("```swift", start)) + len("\n```")
         with self.assertRaises(ValueError):
-            extract(self.text + "\n" + self.text[start:end], "quickstart", ())
+            extract(self.text + "\n" + self.text[start:end], "quickstart", ("pt-BR",))
 
     def test_missing_output_is_refused(self):
         with self.assertRaises(ValueError):
-            extract(self.text.replace("<!-- lokalized-example: quickstart output -->", ""), "quickstart", ())
+            extract(self.text.replace("<!-- lokalized-example: quickstart output -->", ""), "quickstart", ("pt-BR",))
 
     def test_wrong_language_is_refused(self):
         with self.assertRaises(ValueError):
-            extract(self.text.replace("```text\nHello, Ada!", "```swift\nHello, Ada!"), "quickstart", ())
+            extract(self.text.replace("```text\nLi 3 livros.", "```swift\nLi 3 livros."), "quickstart", ("pt-BR",))
 
     def test_unknown_identity_is_refused(self):
         with self.assertRaises(ValueError):
-            extract(self.text.replace("quickstart source", "unknown source"), "quickstart", ())
+            extract(self.text.replace("quickstart source", "unknown source"), "quickstart", ("pt-BR",))
 
     def test_truncated_fence_is_refused(self):
         start = self.text.index("<!-- lokalized-example: quickstart output -->")
         end = self.text.index("\n```", self.text.index("```text", start))
         with self.assertRaises(ValueError):
-            extract(self.text[:end], "quickstart", ())
+            extract(self.text[:end], "quickstart", ("pt-BR",))
 
     def test_changed_dependency_requires_review(self):
         with self.assertRaises(ValueError):
-            extract(self.text.replace('from: "1.0.0"', 'from: "2.0.0"'), "quickstart", ())
+            extract(self.text.replace('from: "1.0.0"', 'from: "2.0.0"'), "quickstart", ("pt-BR",))
 
 
 if __name__ == "__main__":

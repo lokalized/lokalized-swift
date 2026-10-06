@@ -30,9 +30,15 @@ jobs:
           else
             python3 Tools/build_api_documentation.py
           fi
+      - name: Archive static reference for review and hosting
+        # DocC's Swift argument labels and operators produce filenames that
+        # upload-artifact rejects. Preserve the complete site inside a tarball.
+        # Omit AppleDouble metadata, whose ._ prefix can exceed filename limits.
+        run: env COPYFILE_DISABLE=1 tar -czf .build/api-documentation/swift-api-reference.tar.gz -C .build/api-documentation site
       - name: Upload static reference for review and hosting
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: swift-api-reference
-          path: .build/api-documentation/site
+          path: .build/api-documentation/swift-api-reference.tar.gz
+          compression-level: 0
           if-no-files-found: error

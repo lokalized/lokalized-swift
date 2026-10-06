@@ -32,7 +32,7 @@ compiler-generated members; complete signatures do not imply complete prose
 coverage. `reference-build.json` records the compiler, source revision, dirty
 state, input fingerprint, and coverage totals.
 
-Development documentation is explicitly labelled as unreleased source. Source
+Development documentation is explicitly labeled as unreleased source. Source
 links are emitted only for clean checkouts, so locally modified source is never
 attributed to an older GitHub revision. Generated files remain under ignored
 `.build/`. Consumer builds still have zero external dependencies.
@@ -54,8 +54,19 @@ The generated root index lists existing editions without removing their files.
 The `Swift API documentation` workflow builds with Xcode 26.0.1 / Swift 6.2 on
 the Intel macOS runner. It builds development references for ordinary pushes
 and pull requests, and versioned references for version-tag pushes. Download
-the `swift-api-reference` artifact to obtain the complete static `site/`
-contents. The workflow has only read permissions and does not deploy.
+the `swift-api-reference` artifact, unzip it, then extract the enclosed archive:
+
+```sh
+tar -xzf swift-api-reference.tar.gz
+```
+
+This produces the complete static `site/` directory. DocC uses Swift argument
+labels and operators in filenames, such as `!=(_:_:).json`; GitHub's artifact
+uploader rejects those names when files are uploaded individually. The tarball
+preserves the original filenames and links while omitting macOS file metadata.
+Extract on macOS or Linux before copying the site's contents into the hosting
+repository's `dist/` directory.
+The workflow has only read permissions and does not deploy.
 
 Publish those contents to a static host with the custom domain
 `swiftdoc.lokalized.com`, configure DNS as instructed by the host, and enable
