@@ -8,11 +8,11 @@
     }
   },
   "formatVersion": 1,
-  "policy": "Source caps round observed bytes to the next 64 KiB (resources 4 KiB). Measured profile binary cap adds 10% then rounds to 64 KiB. Other compiler/SDK/architecture profiles report sizes without a binary cap until measured. No timing or memory gate.",
+  "policy": "Source caps round observed bytes to the next 64 KiB (resources 4 KiB). Measured profile binary cap adds 10% then rounds to 64 KiB. Other compiler/SDK/architecture profiles report sizes without a binary cap until measured. No timing or memory gate. The runtime Swift source cap was refreshed on 2026-10-06 for consumer API comment coverage, after verifying unchanged Swift tokens and public declarations against v1.0.0. DocC catalogs remain in source receipts but are excluded from runtime-resource bytes because SwiftPM does not bundle them.",
   "scope": "native-package-size-budgets",
   "sourceByteCaps": {
     "generatedSwiftBytes": 851968,
     "runtimeResourceBytes": 4096,
-    "runtimeSwiftBytes": 1376256
+    "runtimeSwiftBytes": 1441792
   }
 }

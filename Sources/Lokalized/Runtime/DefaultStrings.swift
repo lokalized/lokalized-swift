@@ -1,16 +1,27 @@
 /// Immutable synchronous localization runtime backed by caller-supplied catalogs.
 /// Catalogs are validated and compiled once; all lookup state is per invocation.
 public final class DefaultStrings: Strings, Sendable {
+    /// The construction inputs supplied to this instance. Resolved defaults are available on the instance properties.
     public let configuration: StringsConfiguration
+    /// The normalized final fallback catalog locale.
     public var fallbackLocale: String { matcher.fallbackLocale }
+    /// The final fallback catalog locale as a typed value.
     public var fallbackLocaleTag: LocaleTag { matcher.fallbackTag }
+    /// The loaded catalog locales. Negotiable aliases are not additional loaded catalogs.
     public var supportedLocales: Set<LocaleTag> { Set(matcher.supportedTags) }
+    /// The resolved ordered locale preferences used to break ambiguous matches.
     public var tiebreakerLocalesByLanguageCode: [String: [LocaleTag]] { matcher.tiebreakerLocaleTagsByLanguageCode }
+    /// The resolved bounds for expression evaluation, numeric inputs, and output expansion.
     public let runtimeLimits: TranslationRuntimeLimits
+    /// The resolved placeholder isolation mode; the default is `.rtlLocales`.
     public let bidiIsolation: BidiIsolation
+    /// The resolved final failure callback; the default returns the requested key.
     public let translationFailureHandler: TranslationFailureHandler
+    /// The resolved policy for trying the next locale after a failed candidate.
     public let translationFallbackPolicy: TranslationFallbackPolicy
+    /// The optional observer called before returning a successful translation from a later candidate.
     public let translationFallbackObserver: TranslationFallbackObserver?
+    /// The resolved table used to expand parsed language ranges.
     public let languageRangeEquivalents: LanguageRangeEquivalents
     private let matcher: DefaultLocaleMatcher
     private let catalogs: [LocaleTag: CompiledCatalogResolution]

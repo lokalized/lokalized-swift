@@ -8,14 +8,20 @@ public struct ExactDecimal: Hashable, Sendable, CustomStringConvertible {
     /// Decimal digits without leading zeroes; zero is represented by one digit.
     package let digits: [UInt8]
     package let negative: Bool
+    /// The number of decimal places. Negative scales represent powers of ten: coefficient 12 and scale -2 represent 1,200.
     public let scale: Int
 
+    /// The number of coefficient digits without leading zeros. Zero has precision 1.
     public var precision: Int { digits.count }
+    /// The number's sign: -1 for negative, 0 for zero, or 1 for positive.
     public var signum: Int { isZero ? 0 : (negative ? -1 : 1) }
+    /// The signed decimal coefficient without leading zeros. The value equals this coefficient multiplied by ten to the power of negative `scale`.
     public var coefficient: String {
         (negative ? "-" : "") + String(decoding: digits, as: UTF8.self)
     }
+    /// Whether the coefficient is zero, regardless of scale.
     public var isZero: Bool { digits.count == 1 && digits[0] == 48 }
+    /// Whether the value has no nonzero fractional digits, regardless of its representation.
     public var isIntegerValued: Bool { scale <= 0 || isZero || trailingZeroCount >= scale }
 
     /// Parses ASCII decimal text, including an optional sign, decimal point,
@@ -131,7 +137,7 @@ public struct ExactDecimal: Hashable, Sendable, CustomStringConvertible {
         }
     }
 
-    /// Java BigDecimal.toPlainString: no exponent, with observable trailing zeroes.
+    /// Decimal notation without an exponent, preserving written fractional zeros.
     public var plainString: String {
         let body: String
         if scale <= 0 {
@@ -145,8 +151,9 @@ public struct ExactDecimal: Hashable, Sendable, CustomStringConvertible {
         return (negative ? "-" : "") + body
     }
 
-    /// Java BigDecimal.toString: plain notation when scale is nonnegative and
-    /// adjusted exponent is at least -6; otherwise canonical scientific notation.
+    /// Decimal notation when scale is nonnegative and the adjusted exponent is
+    /// at least -6; otherwise canonical scientific notation. Representation
+    /// preserves scale, including written fractional zeros.
     public var description: String {
         let exponent = precision - 1 - scale
         if scale >= 0 && exponent >= -6 { return plainString }

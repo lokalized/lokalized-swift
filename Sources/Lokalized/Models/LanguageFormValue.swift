@@ -3,15 +3,25 @@
 /// This is the key type for a generated-placeholder translation map. Its cases
 /// admit the ten built-in axes without accepting custom `LanguageForm` types.
 public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendable, CustomStringConvertible {
+    /// An explicit cardinal plural category.
     case cardinality(Cardinality)
+    /// An explicit ordinal plural category.
     case ordinality(Ordinality)
+    /// An explicit grammatical gender.
     case gender(Gender)
+    /// An explicit grammatical case.
     case grammaticalCase(GrammaticalCase)
+    /// An explicit definiteness or construct-state category.
     case definiteness(Definiteness)
+    /// An explicit noun classifier.
     case classifier(Classifier)
+    /// An explicit register or politeness category.
     case formality(Formality)
+    /// An explicit first-person inclusion category.
     case clusivity(Clusivity)
+    /// An explicit grammatical animacy category.
     case animacy(Animacy)
+    /// An explicit language-specific pronunciation category.
     case phonetic(Phonetic)
 
     /// All 61 values, in axis declaration order and then enum declaration order.
@@ -27,6 +37,7 @@ public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendabl
         + Animacy.allCases.map(Self.animacy)
         + Phonetic.allCases.map(Self.phonetic)
 
+    /// All supported language-form values, in the same order as `allCases`.
     public static var allValues: [Self] { allCases }
 
     /// Decodes a canonical file-format token such as `CARDINALITY_ONE`.
@@ -37,6 +48,7 @@ public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendabl
         self = form
     }
 
+    /// The canonical file-format token, such as `GENDER_FEMININE`.
     public var rawValue: String {
         switch self {
         case .cardinality(let form): form.rawValue
@@ -52,6 +64,7 @@ public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendabl
         }
     }
 
+    /// The grammatical or plural axis to which this value belongs.
     public var axis: LanguageFormAxis {
         switch self {
         case .cardinality: .cardinality
@@ -67,6 +80,7 @@ public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendabl
         }
     }
 
+    /// The uppercase form name without its axis prefix, such as `FEMININE`.
     public var displayName: String {
         switch self {
         case .cardinality(let form): form.displayName
@@ -82,5 +96,6 @@ public enum LanguageFormValue: RawRepresentable, CaseIterable, Hashable, Sendabl
         }
     }
 
+    /// The uppercase form name without its axis prefix.
     public var description: String { displayName }
 }

@@ -25,11 +25,12 @@ support module are excluded. The generator compiles only the library target and
 emits its public symbol graphs during compilation, avoiding Swift 6.2's
 package-wide export of unbuilt generated test modules. Each reference build uses
 fresh build and graph directories so it cannot publish stale symbols.
-All public top-level declarations must have source
-documentation, and unresolved DocC links fail generation. `coverage.json`
-reports documented symbols and remaining member-level gaps, including
-compiler-generated members; complete signatures do not imply complete prose
-coverage. `reference-build.json` records the compiler, source revision, dirty
+All authored public declarations, including methods, properties, initializers,
+and enum cases, must have source documentation. Known internal maintenance
+markers and unresolved DocC links fail generation. `coverage.json` reports
+authored API coverage separately from compiler-generated and inherited members,
+whose availability depends on the selected compiler. Complete signatures do not
+imply complete prose coverage. `reference-build.json` records the compiler, source revision, dirty
 state, input fingerprint, and coverage totals.
 
 Development documentation is explicitly labeled as unreleased source. Source
@@ -44,6 +45,21 @@ run `python3 Tools/build_api_documentation.py --release VERSION`, replacing
 `VERSION` with that version. Tags may be `VERSION` or `vVERSION`. The generator
 refuses dirty source or a missing matching tag. It does not create tags, commits,
 GitHub releases, or package publications.
+
+To correct documentation for an existing release without changing its code, use:
+
+```sh
+python3 Tools/build_api_documentation.py --release 1.0.0 \
+  --correction-reason "Improve consumer API documentation"
+```
+
+This explicit mode compares library Swift tokens, the source file inventory,
+package configuration, resources, and public declarations with the release tag.
+It uses SwiftParser and SwiftSyntax bundled with the selected Xcode only during
+verification; they are not package or runtime dependencies. Changes to code or
+public declarations are rejected. Prose can change in a locally modified tree,
+and the build metadata records the release revision, correction reason, and
+actual source fingerprint. The tag and published package remain unchanged.
 
 Release output lives at `VERSION/documentation/lokalized/`. DocC's hosting base
 path includes the edition, so assets and navigation remain inside that version.

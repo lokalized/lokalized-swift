@@ -64,7 +64,10 @@ def snapshot():
 def source_sizes(files):
     runtime=[f for f in files if f['path'].startswith('Sources/Lokalized/') and f['path'].endswith('.swift')]
     generated=[f for f in runtime if f['path'].startswith('Sources/Lokalized/Data/')]
-    resources=[f for f in files if f['path'].startswith('Sources/Lokalized/') and not f['path'].endswith('.swift')]
+    # SwiftPM treats .docc catalogs as documentation inputs, not runtime resources.
+    # Keep their hashes in the source receipt without charging the resource cap.
+    resources=[f for f in files if f['path'].startswith('Sources/Lokalized/') and not f['path'].endswith('.swift')
+               and not any(part.endswith('.docc') for part in Path(f['path']).parts)]
     return {'runtimeSwiftBytes':sum(f['bytes'] for f in runtime),'generatedSwiftBytes':sum(f['bytes'] for f in generated),
         'runtimeSwiftFiles':len(runtime),'generatedFiles':[{k:f[k] for k in ['path','bytes','sha256']} for f in generated],
         'runtimeResourceBytes':sum(f['bytes'] for f in resources),'runtimeResources':resources}

@@ -1,30 +1,52 @@
 public extension Ordinality {
+    /// Selects the ordinal category for the number using bundled CLDR rules.
+    ///
+    /// An explicit `visibleDecimalPlaces` sets fractional display digits without rounding. Decimal input otherwise preserves its written scale.
+    /// Throws `NumericError` for invalid numbers or limits, `PluralLocaleError` for malformed locale tags, or `UnsupportedLocaleError` when no rules apply.
     static func forNumber<Value: BinaryInteger>(_ number: Value, visibleDecimalPlaces: Int? = nil, locale: String,
                                                runtimeLimits: TranslationRuntimeLimits = .defaults) throws -> Self {
         try forNumber(NumericValue(number), visibleDecimalPlaces: visibleDecimalPlaces, locale: locale, runtimeLimits: runtimeLimits)
     }
 
+    /// Selects the ordinal category for the number using bundled CLDR rules.
+    ///
+    /// An explicit `visibleDecimalPlaces` sets fractional display digits without rounding. Decimal input otherwise preserves its written scale.
+    /// Throws `NumericError` for invalid numbers or limits, `PluralLocaleError` for malformed locale tags, or `UnsupportedLocaleError` when no rules apply.
     static func forNumber(_ number: Float, visibleDecimalPlaces: Int? = nil, locale: String,
                           runtimeLimits: TranslationRuntimeLimits = .defaults) throws -> Self {
         try forNumber(.float(number), visibleDecimalPlaces: visibleDecimalPlaces, locale: locale, runtimeLimits: runtimeLimits)
     }
 
+    /// Selects the ordinal category for the number using bundled CLDR rules.
+    ///
+    /// An explicit `visibleDecimalPlaces` sets fractional display digits without rounding. Decimal input otherwise preserves its written scale.
+    /// Throws `NumericError` for invalid numbers or limits, `PluralLocaleError` for malformed locale tags, or `UnsupportedLocaleError` when no rules apply.
     static func forNumber(_ number: Double, visibleDecimalPlaces: Int? = nil, locale: String,
                           runtimeLimits: TranslationRuntimeLimits = .defaults) throws -> Self {
         try forNumber(.double(number), visibleDecimalPlaces: visibleDecimalPlaces, locale: locale, runtimeLimits: runtimeLimits)
     }
 
+    /// Selects the ordinal category for the number using bundled CLDR rules.
+    ///
+    /// An explicit `visibleDecimalPlaces` sets fractional display digits without rounding. Decimal input otherwise preserves its written scale.
+    /// Throws `NumericError` for invalid numbers or limits, `PluralLocaleError` for malformed locale tags, or `UnsupportedLocaleError` when no rules apply.
     static func forNumber(_ number: ExactDecimal, visibleDecimalPlaces: Int? = nil, locale: String,
                           runtimeLimits: TranslationRuntimeLimits = .defaults) throws -> Self {
         try forNumber(.decimal(number), visibleDecimalPlaces: visibleDecimalPlaces, locale: locale, runtimeLimits: runtimeLimits)
     }
 
+    /// Selects the ordinal category for the number using bundled CLDR rules.
+    ///
+    /// An explicit `visibleDecimalPlaces` sets fractional display digits without rounding. Decimal input otherwise preserves its written scale.
+    /// Throws `NumericError` for invalid numbers or limits, `PluralLocaleError` for malformed locale tags, or `UnsupportedLocaleError` when no rules apply.
     static func forNumber(_ number: NumericValue, visibleDecimalPlaces: Int? = nil, locale: String,
                           runtimeLimits: TranslationRuntimeLimits = .defaults) throws -> Self {
         let operands = try PluralOperands(number, visibleDecimalPlaces: visibleDecimalPlaces, runtimeLimits: runtimeLimits)
         return try forOperands(operands, locale: locale)
     }
 
+    /// Selects the ordinal category from precomputed exact operands, including any compact exponent.
+    /// Malformed locale tags throw `PluralLocaleError`; locales without applicable rules throw `UnsupportedLocaleError`.
     static func forOperands(_ operands: PluralOperands, locale: String) throws -> Self {
         Self.allCases[try PluralRules.classify(operands, locale: PluralLocale(locale), ordinal: true)]
     }
@@ -36,6 +58,9 @@ public extension Ordinality {
         return group.rules.map { Self.allCases[$0.category] }
     }
 
+    /// Returns representative CLDR integer samples by ordinal category.
+    /// Samples are not an exhaustive numeric range; `Range.isInfinite` identifies categories with further values.
+    /// A well-formed unsupported locale returns an empty dictionary; malformed tags throw `PluralLocaleError`.
     static func exampleIntegerValuesForLocale(_ locale: String) throws -> [Self: Range<Int>] {
         guard let group = PluralRules.group(try PluralLocale(locale), ordinal: true) else { return [:] }
         var examples: [Self: Range<Int>] = [:]

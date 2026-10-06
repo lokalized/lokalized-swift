@@ -1,8 +1,10 @@
-/// A plural classifier received a locale outside its accepted tag syntax.
-/// The shared pinned locale kernel validates the supplied tag.
+/// A plural API received a malformed IETF BCP 47 locale tag.
 public struct PluralLocaleError: Error, Hashable, Sendable, CustomStringConvertible {
+    /// The locale tag that could not be evaluated.
     public let locale: String
+    /// The diagnostic explanation of the locale failure.
     public let message: String
+    /// The diagnostic message.
     public var description: String { message }
 
     package init(locale: String) {

@@ -1,9 +1,13 @@
 /// The original lookup inputs and error passed to a nonthrowing display policy.
 /// A class error retains its identity; caller values are a value-semantic snapshot.
 public struct TranslationDisplayFailure: Sendable {
+    /// The exact key passed to the display adapter.
     public let key: ExactString
+    /// The placeholder values supplied to the failed lookup.
     public let placeholders: PlaceholderValues
+    /// The per-call overrides supplied to the failed lookup.
     public let options: TranslationOptions
+    /// The original error thrown by the strings runtime or an application callback.
     public let error: any Error
 }
 
@@ -30,14 +34,20 @@ public enum TranslationErrorDisplayPolicy: Sendable {
 /// A portable synchronous adapter for rendering in a nonthrowing UI callback.
 /// No UIKit, SwiftUI or host locale negotiation is required.
 public struct StringsDisplayAdapter: Sendable {
+    /// The underlying throwing translation service.
     public let strings: any Strings
+    /// The policy used to turn a thrown lookup error into display text.
     public let errorDisplayPolicy: TranslationErrorDisplayPolicy
 
+    /// Creates a nonthrowing display adapter with an explicit policy for lookup errors.
     public init(_ strings: any Strings, errorDisplayPolicy: TranslationErrorDisplayPolicy) {
         self.strings = strings
         self.errorDisplayPolicy = errorDisplayPolicy
     }
 
+    /// Returns translation text for a synchronous UI callback.
+    /// Thrown runtime or application callback errors are converted to text by `errorDisplayPolicy`.
+    /// Successful runtime results, including failure-handler text, are returned unchanged.
     public func get(_ key: ExactString, placeholders: PlaceholderValues = [:],
                     options: TranslationOptions = TranslationOptions()) -> String {
         do {

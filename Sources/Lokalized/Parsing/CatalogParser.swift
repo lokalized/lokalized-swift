@@ -2,6 +2,11 @@ import Foundation
 
 /// Source-aware catalog parsing and same-locale shard assembly.
 public enum LocalizedStringLoader {
+    /// Parses a UTF-8 JSON catalog into validated localized entries.
+    ///
+    /// The locale identifies the catalog; the source label is used in errors, warnings, and origin records.
+    /// Loading options bound bytes, nesting, nodes, and warnings. Invalid content or exceeded limits throws `StringsParseError`.
+    /// Warning callback errors propagate unchanged.
     public static func parse(
         _ input: Data, locale: String, source: String = "<input>",
         warningHandler: LocalizedStringWarningHandler? = nil,
@@ -12,6 +17,10 @@ public enum LocalizedStringLoader {
         return try session.parseBytes(input, locale: locale)
     }
 
+    /// Parses JSON catalog text into validated localized entries.
+    ///
+    /// The locale identifies the catalog; the source label is used in errors, warnings, and origin records.
+    /// The character limit counts UTF-16 code units. Invalid content or exceeded limits throws `StringsParseError`; warning callback errors propagate unchanged.
     public static func parse(
         _ input: String, locale: String, source: String = "<input>",
         warningHandler: LocalizedStringWarningHandler? = nil,
@@ -26,9 +35,10 @@ public enum LocalizedStringLoader {
         return try session.parse(input, locale: locale)
     }
 
-    /// Validates typed definitions without inventing raw-input or JSON-depth
-    /// budgets. Placeholder maps use deterministic UTF-16 ordering; alternatives
-    /// retain their authored order.
+    /// Validates programmatically constructed entries as one catalog.
+    /// Checks templates, expressions, forms, nodes, and warnings. Byte and JSON
+    /// nesting limits apply to source parsing rather than typed definitions.
+    /// Invalid definitions throw `StringsParseError`; warning callback errors propagate.
     public static func defineCatalog(
         _ strings: [LocalizedString], locale: String, source: String = "<defined>",
         warningHandler: LocalizedStringWarningHandler? = nil,

@@ -1,4 +1,7 @@
 public extension DefaultLocaleMatcher {
+    /// Negotiates weighted language ranges against the supported locales.
+    /// Accepts at most 32 ranges and returns an unmatched result when none selects a locale; the configured fallback is still available.
+    /// Invalid range counts throw `LocaleMatcherError`.
     func matchFor(_ languageRanges: [LanguageRange]) throws -> LocaleMatchResult {
         try MatchingLocale.requireRangeCount(languageRanges.count)
         func noMatch() throws -> LocaleMatchResult {

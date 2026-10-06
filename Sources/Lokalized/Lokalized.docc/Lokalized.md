@@ -14,11 +14,15 @@ the library performs no HTTP loading.
 
 See the [Swift guide and cookbook](https://www.lokalized.com/?platform=swift)
 for installation, iOS and macOS app bundles, Swift Package Manager resources,
-SwiftUI, and macOS command-line examples. Detailed
-[native contracts](https://github.com/lokalized/lokalized-swift/tree/main/Documentation)
-describe exact strings, numeric operands, callback behavior, and local loading.
+SwiftUI, and macOS command-line examples. Additional
+[usage examples](https://github.com/lokalized/lokalized-swift/blob/main/Documentation/USAGE.md)
+cover exact strings, numeric operands, callbacks, and local loading.
 
 ## Topics
+
+### Getting started
+
+- <doc:UsingLokalized>
 
 ### Translation runtime
 

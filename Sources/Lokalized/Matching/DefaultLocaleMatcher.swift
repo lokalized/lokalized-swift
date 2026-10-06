@@ -1,20 +1,34 @@
-/// Immutable negotiation configuration backed by pinned JDK/IANA/CLDR tables.
-/// No Foundation.Locale or host ICU negotiation participates in matching.
+/// An immutable locale matcher using bundled IANA and CLDR data.
+/// Results are independent of the operating system's locale-data version.
+/// Configure supported catalog locales, a final fallback, and any tiebreakers.
 public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
+    /// The maximum number of language ranges accepted by one negotiation: 32.
     public static let maximumLanguageRanges = 32
+    /// The maximum accepted `Accept-Language` header length: 4,096 UTF-16 code units.
     public static let maximumAcceptLanguageCharacters = 4_096
+    /// The normalized supported locale tags in deterministic order.
     public let supportedLocales: [String]
+    /// The normalized final fallback locale. It is included among the supported locales.
     public let fallbackLocale: String
+    /// Ordered locale preferences for resolving ambiguous matches within a language.
     public let tiebreakerLocalesByLanguageCode: [String: [String]]
+    /// The equivalence table used when parsing language preferences.
     public let languageRangeEquivalents: LanguageRangeEquivalents
     package let supportedTags: [LocaleTag]
     package let fallbackTag: LocaleTag
     package let localeStatics: [MatcherLocale]
     private let localeStaticsByTag: [String: MatcherLocale]
+    /// The supported locales as typed values.
     public var supportedLocaleTags: [LocaleTag] { supportedTags }
+    /// The final fallback locale as a typed value.
     public var fallbackLocaleTag: LocaleTag { fallbackTag }
+    /// Typed locale preferences for resolving ambiguous matches within a language.
     public let tiebreakerLocaleTagsByLanguageCode: [String: [LocaleTag]]
 
+    /// Creates an immutable locale matcher with supported catalogs and a final fallback.
+    ///
+    /// The fallback must identify a supported locale. Duplicate normalized tags and invalid tiebreaker preferences throw `LocaleMatcherError`.
+    /// The default equivalence table is `.ianaRegistry`.
     public init(supportedLocales: [String], fallbackLocale: String,
                 tiebreakerLocalesByLanguageCode: [String: [String]] = [:],
                 languageRangeEquivalents: LanguageRangeEquivalents = .ianaRegistry) throws {
@@ -24,6 +38,10 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
                       validate: { try MatchingLocale.validated($0, description: $1) })
     }
 
+    /// Creates an immutable locale matcher with supported catalogs and a final fallback.
+    ///
+    /// The fallback must identify a supported locale. Duplicate normalized tags and invalid tiebreaker preferences throw `LocaleMatcherError`.
+    /// The default equivalence table is `.ianaRegistry`.
     public init(supportedLocales: [LocaleTag], fallbackLocale: LocaleTag,
                 tiebreakerLocalesByLanguageCode: [String: [LocaleTag]] = [:],
                 languageRangeEquivalents: LanguageRangeEquivalents = .ianaRegistry) throws {
@@ -116,6 +134,8 @@ public struct DefaultLocaleMatcher: LocaleMatcher, Sendable {
         localeStaticsByTag = Dictionary(uniqueKeysWithValues: statics.map { ($0.tag, $0) })
     }
 
+    /// Strictly parses a weighted language preference list and expands equivalent tags.
+    /// Malformed input throws `LanguageRangeError`. The default protocol implementation uses the bundled IANA table; `DefaultLocaleMatcher` uses its configured table.
     public func parseLanguageRanges(_ ranges: String) throws -> [LanguageRange] {
         try LanguageRangeParser.parse(ranges, equivalents: languageRangeEquivalents)
     }

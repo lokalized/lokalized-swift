@@ -38,8 +38,9 @@ public extension LocalizedStringLoader {
         return try validateStringsManifest(ManifestRawParser.project(parsed), loadingOptions: loadingOptions)
     }
 
-    /// Semantic object ingress: duplicate supplied members use last-value-wins
-    /// object semantics. This door does not invent source diagnostics or budgets.
+    /// Validates a decoded manifest value and recomputes its catalog identity.
+    /// Repeated exact member names use their last supplied value. Use the source
+    /// parsing helpers to reject duplicate JSON members and report source locations.
     static func validateStringsManifest(_ input: StringsManifestValue,
                                         loadingOptions: LocalizedStringLoadingOptions = .defaults) throws -> StringsManifestV1 {
         try ManifestValidator.validate(input, options: loadingOptions)

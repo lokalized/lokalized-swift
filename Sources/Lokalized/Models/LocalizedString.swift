@@ -35,12 +35,21 @@ public struct LocalizedString: Hashable, Sendable {
     /// This provenance affects diagnostics, not definition equality or hashing.
     package var placeholderDefinitionOrder: [ExactString] { storage.placeholderDefinitionOrder }
 
+    /// The exact root key, or the expression text for a whole-message alternative.
     public var key: ExactString { storage.key }
+    /// The default translation template, or `nil` when the entry supplies only alternatives.
     public var translation: String? { storage.translation }
+    /// Optional notes for translators; commentary does not change runtime wording.
     public var commentary: String? { storage.commentary }
+    /// Generated-placeholder names mapped to language-form or expression definitions.
     public var placeholderDefinitions: [ExactString: PlaceholderDefinition] { storage.placeholderDefinitions }
+    /// Whole-message alternatives tested in authored order before the default translation.
     public var alternatives: [LocalizedString] { storage.alternatives }
 
+    /// Creates a localized entry or whole-message alternative.
+    ///
+    /// Supply a translation or at least one alternative; otherwise `CatalogModelError` is thrown.
+    /// Template, expression, and generated-placeholder validation occurs when the catalog is parsed, defined, or used to construct `DefaultStrings`.
     public init(
         key: ExactString,
         translation: String? = nil,
@@ -67,6 +76,7 @@ public struct LocalizedString: Hashable, Sendable {
                           alternatives: alternatives)
     }
 
+    /// Compares the stored values for equality, preserving exact catalog-text spelling where applicable.
     public static func == (lhs: Self, rhs: Self) -> Bool {
         // Constructor-created values can exceed the catalog depth ceiling.
         // A worklist keeps equality safe before catalog validation occurs.
@@ -90,6 +100,7 @@ public struct LocalizedString: Hashable, Sendable {
         return true
     }
 
+    /// Hashes the values used by equality. Hash values are process-specific and must not be used as persistent catalog identifiers.
     public func hash(into hasher: inout Hasher) {
         // Postorder memoization avoids recursive hashing and exponential work
         // when an application reuses a subtree in several alternative slots.

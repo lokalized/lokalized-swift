@@ -11,7 +11,9 @@ import shlex
 import subprocess
 import sys
 import tempfile
-from build_api_documentation import ROOT, coverage_for, edition_for, extract_symbol_graphs, symbol_graphs, validate_release_source
+import json
+from build_api_documentation import ROOT, compare_documentation_inputs, coverage_for, edition_for, extract_symbol_graphs, public_declarations, symbol_graphs, validate_release_source
+from measure_package import source_sizes
 
 
 def graph(documented=True, module="Lokalized", member=False):
@@ -24,6 +26,13 @@ def graph(documented=True, module="Lokalized", member=False):
 
 
 class ReferenceTests(unittest.TestCase):
+    def test_docc_catalogs_are_not_counted_as_runtime_resources(self):
+        files = [{"path": "Sources/Lokalized/PrivacyInfo.xcprivacy", "bytes": 300, "sha256": "privacy"},
+                 {"path": "Sources/Lokalized/Lokalized.docc/UsingLokalized.md", "bytes": 6000, "sha256": "guide"}]
+        sizes = source_sizes(files)
+        self.assertEqual(sizes["runtimeResourceBytes"], 300)
+        self.assertEqual(sizes["runtimeResources"], files[:1])
+
     def test_ci_artifact_preserves_docc_routes_and_payloads(self):
         workflow = (ROOT / ".github/workflows/api-documentation.yml").read_text()
         commands = re.findall(r"^\s*run: ((?:env \S+ )?tar .+)$", workflow, re.MULTILINE)
@@ -88,7 +97,7 @@ class ReferenceTests(unittest.TestCase):
             directory.mkdir()
             (directory / "Lokalized@OldModule.symbols.json").write_text("{}")
 
-            def compile_library(command, env):
+            def compile_library(command, env, cwd=ROOT):
                 self.assertEqual(command[:3], ["xcrun", "swift", "build"])
                 self.assertEqual(command[command.index("--target") + 1], "Lokalized")
                 self.assertNotIn("--build-tests", command)
@@ -140,6 +149,76 @@ class ReferenceTests(unittest.TestCase):
         coverage = coverage_for([graph(documented=False, member=True)])
         self.assertEqual(coverage["documentedSymbols"], 0)
         self.assertEqual(coverage["undocumentedMembers"], ["Example/method()"])
+
+    def test_authored_members_need_prose_but_synthesized_members_are_separate(self):
+        authored = graph(documented=False, member=True)
+        authored["symbols"][0]["location"] = {"uri": "file:///project/Sources/Lokalized/API/Example.swift"}
+        with self.assertRaisesRegex(ValueError, "Authored public declarations need documentation"):
+            coverage_for([authored])
+        authored["symbols"][0]["docComment"] = {"lines": [{"text": "Translates the requested key."}]}
+        generated = graph(documented=False, member=True)
+        generated["symbols"][0]["identifier"]["precise"] = "s:generated::SYNTHESIZED::Example"
+        generated["symbols"][0]["location"] = authored["symbols"][0]["location"]
+        coverage = coverage_for([authored, generated])
+        self.assertEqual(coverage["authoredPublicSymbols"], 1)
+        self.assertEqual(coverage["documentedAuthoredPublicSymbols"], 1)
+        self.assertEqual(coverage["publicSymbols"], 2)
+
+    def test_maintenance_notes_cannot_enter_public_comments(self):
+        for text in ("Fixed BOOT-M0-17 in this slice.", "See DefaultStrings.java:2718.",
+                     "Run the development conformance executable.", "TODO: document this method."):
+            bad = graph()
+            bad["symbols"][0]["docComment"]["lines"][0]["text"] = text
+            with self.subTest(text=text), self.assertRaisesRegex(ValueError, "Internal maintenance notes"):
+                coverage_for([bad])
+
+    def test_public_signature_comparison_ignores_prose_and_locations(self):
+        first = graph()
+        second = graph(documented=False)
+        first["symbols"][0]["location"] = {"uri": "file:///old/path"}
+        second["symbols"][0]["location"] = {"uri": "file:///new/path"}
+        self.assertEqual(public_declarations([first]), public_declarations([second]))
+        second["symbols"][0]["declarationFragments"] = [{"kind": "keyword", "spelling": "class"}]
+        self.assertNotEqual(public_declarations([first]), public_declarations([second]))
+
+    def test_corrections_preserve_tokens_file_inventory_and_resources(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            compiler = Path(subprocess.check_output(["xcrun", "--find", "swiftc"], text=True).strip())
+            host = compiler.parents[1] / "lib/swift/host"
+            sdk = subprocess.check_output(["xcrun", "--sdk", "macosx", "--show-sdk-path"], text=True).strip()
+            checker = root / "tokens"
+            subprocess.run([str(compiler), "-sdk", sdk, "-module-cache-path", str(root / "module-cache"),
+                            "-I", str(host), "-L", str(host), "-Xlinker", "-rpath", "-Xlinker", str(host),
+                            str(ROOT / "Tools/documentation_source_tokens.swift"), "-o", str(checker)], check=True)
+            tokenize = lambda directory: json.loads(subprocess.check_output([str(checker), str(directory)]))
+            current, baseline = root / "current", root / "baseline"
+            source = 'let text = #"a /* literal */ and // text"#\nlet answer = 1 + 2\n'
+            for directory in (current, baseline):
+                library = directory / "Sources/Lokalized"
+                library.mkdir(parents=True)
+                (directory / "Package.swift").write_text("same package")
+                (library / "Example.swift").write_text(source)
+                (library / "PrivacyInfo.xcprivacy").write_text("same resource")
+            file = current / "Sources/Lokalized/Example.swift"
+            alias = root / "library-alias"
+            alias.symlink_to(file.parent, target_is_directory=True)
+            self.assertEqual(tokenize(file.parent), tokenize(alias))
+            file.write_text("/// Consumer prose\n/* nested /* comment */ note */\n" + source)
+            compare_documentation_inputs(current, baseline, tokenize)
+            for changed in (source.replace("1 + 2", "1 - 2"), source.replace("/* literal */", "/* changed */")):
+                file.write_text(changed)
+                with self.subTest(changed=changed), self.assertRaisesRegex(ValueError, "cannot change Swift code"):
+                    compare_documentation_inputs(current, baseline, tokenize)
+            file.write_text(source)
+            extra = file.with_name("Extra.swift")
+            extra.write_text("let extra = true")
+            with self.assertRaisesRegex(ValueError, "file inventory"):
+                compare_documentation_inputs(current, baseline, tokenize)
+            extra.unlink()
+            (current / "Sources/Lokalized/PrivacyInfo.xcprivacy").write_text("changed resource")
+            with self.assertRaisesRegex(ValueError, "cannot change library resources"):
+                compare_documentation_inputs(current, baseline, tokenize)
 
 
 if __name__ == "__main__":

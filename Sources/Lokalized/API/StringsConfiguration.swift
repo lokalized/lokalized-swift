@@ -5,9 +5,12 @@ public typealias LocaleSupplier = @Sendable (any LocaleMatcher) throws -> Locale
 /// Supplies an existing negotiation result; its reference identity is retained.
 public typealias LocaleMatchSupplier = @Sendable (any LocaleMatcher) throws -> LocaleMatchResult
 
-/// Immutable construction inputs. Validation belongs to `DefaultStrings` so
-/// invalid inputs retain the reference's construction and callback precedence.
-/// Exactly one locale supplier kind is required by that constructor.
+/// Immutable settings for constructing a `DefaultStrings` translation runtime.
+///
+/// Supply catalogs, a final fallback locale, and exactly one of `localeSupplier`
+/// or `localeMatchSupplier`. Construction invokes the catalog supplier once;
+/// each lookup without an explicit locale override consults the locale supplier.
+/// `DefaultStrings` validates these settings and resolves omitted defaults.
 public struct StringsConfiguration: Sendable {
     /// Supplies all immutable catalogs once during runtime construction.
     public let localizedStringSupplier: LocalizedStringSupplier?

@@ -1,20 +1,29 @@
-/// The immutable data baseline pinned by this build.
-///
-/// During development these values identify the intended compatibility baseline;
-/// they do not assert that the implementation passes the entire shared corpus.
-/// Run the development conformance executable for implementation coverage.
+/// Library version and bundled locale, plural, and Unicode data identifiers.
+/// Use these values to inspect catalog compatibility or record the data version
+/// used by a translation runtime.
 public struct BuildMetadata: Hashable, Sendable {
+    /// The identifier of the library that produced this build.
     public let producerImplementation: String
+    /// The library version, such as `1.0.0`.
     public let producerVersion: String
+    /// The bundled Unicode CLDR data version.
     public let cldrVersion: String
+    /// The SHA-256 fingerprint of the bundled locale and plural data.
     public let dataFingerprint: String
+    /// The snapshot date of the bundled IANA language subtag registry.
     public let ianaRegistryDate: String
+    /// The SHA-256 fingerprint of the bundled IANA registry data.
     public let ianaDataFingerprint: String
+    /// The version of the shared cross-platform compatibility data.
     public let behavioralVectorsVersion: String
+    /// The locale data source; this build uses `pinned` data.
     public let localeDataMode: String
+    /// The plural arithmetic mode; this build uses `exact` arithmetic.
     public let cardinalityMode: String
+    /// The Unicode version used to validate expression identifiers.
     public let identifierUnicodeVersion: String
 
+    /// The version and data identifiers for the running library.
     public static let current = Self(
         producerImplementation: "lokalized-swift",
         producerVersion: "1.0.0",

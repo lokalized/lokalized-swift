@@ -1,31 +1,53 @@
 /// Immutable safety limits for translation construction and evaluation.
 ///
-/// Defaults and hard ceilings match the Java implementation. Character limits
-/// count UTF-16 code units. Generated expansion has one cumulative budget per
-/// locale fallback attempt, shared by both generated-placeholder kinds.
+/// Character limits count UTF-16 code units. Each locale attempt has one
+/// cumulative expansion budget shared by language-form and expression fragments.
+/// Omitted initializer arguments use the documented defaults; custom values
+/// must remain within each setting's allowed range.
 public struct TranslationRuntimeLimits: Hashable, Sendable {
+    /// The default maximum decimal coefficient digits: 1,024.
     public static let defaultMaximumNumberPrecision = 1_024
+    /// The default maximum absolute decimal scale: 1,024.
     public static let defaultMaximumAbsoluteNumberScale = 1_024
+    /// The default maximum explicit visible fractional digits: 1,024.
     public static let defaultMaximumVisibleDecimalPlaces = 1_024
+    /// The default maximum compact-decimal exponent: 64.
     public static let defaultMaximumCompactExponent = 64
+    /// The default maximum UTF-16 code units in one expression: 2,048.
     public static let defaultMaximumExpressionCharacters = 2_048
+    /// The default maximum tokens in one expression: 256.
     public static let defaultMaximumExpressionTokens = 256
+    /// The default maximum nested expression groups: 32.
     public static let defaultMaximumExpressionNestingDepth = 32
+    /// The default maximum nested generated-placeholder definitions: 32.
     public static let defaultMaximumGeneratedPlaceholderDepth = 32
+    /// The default maximum UTF-16 code units in one output or phonetic input: 262,144.
     public static let defaultMaximumInterpolatedOutputCharacters = 262_144
+    /// The default maximum cumulative UTF-16 expansion units per locale attempt: 1,048,576.
     public static let defaultMaximumGeneratedExpansionCharacters = 1_048_576
 
+    /// The largest configurable maximum decimal coefficient digits: 4,096.
     public static let hardMaximumNumberPrecision = 4_096
+    /// The largest configurable maximum absolute decimal scale: 4,096.
     public static let hardMaximumAbsoluteNumberScale = 4_096
+    /// The largest configurable maximum explicit visible fractional digits: 4,096.
     public static let hardMaximumVisibleDecimalPlaces = 4_096
+    /// The largest configurable maximum compact-decimal exponent: 4,096.
     public static let hardMaximumCompactExponent = 4_096
+    /// The largest configurable maximum UTF-16 code units in one expression: 4,096.
     public static let hardMaximumExpressionCharacters = 4_096
+    /// The largest configurable maximum tokens in one expression: 512.
     public static let hardMaximumExpressionTokens = 512
+    /// The largest configurable maximum nested expression groups: 64.
     public static let hardMaximumExpressionNestingDepth = 64
+    /// The largest configurable maximum nested generated-placeholder definitions: 64.
     public static let hardMaximumGeneratedPlaceholderDepth = 64
+    /// The largest configurable maximum UTF-16 code units in one output or phonetic input: 1,048,576.
     public static let hardMaximumInterpolatedOutputCharacters = 1_048_576
+    /// The largest configurable maximum cumulative UTF-16 expansion units per locale attempt: 8,388,608.
     public static let hardMaximumGeneratedExpansionCharacters = 8_388_608
 
+    /// The default bounds for translation construction and evaluation.
     public static let defaults = Self()
 
     /// Maximum decimal precision; allowed range: 1 through 4,096.
@@ -114,10 +136,14 @@ public struct TranslationRuntimeLimits: Hashable, Sendable {
 
     /// The first invalid setting encountered in initializer parameter order.
     public struct ValidationError: Error, Equatable, Sendable, CustomStringConvertible {
+        /// The name of the first invalid initializer argument.
         public let parameter: String
+        /// The rejected argument value.
         public let value: Int
+        /// The inclusive range accepted for this setting.
         public let allowedRange: ClosedRange<Int>
 
+        /// The explanation of the rejected setting.
         public var description: String {
             if value < allowedRange.lowerBound {
                 let requirement = allowedRange.lowerBound == 1 ? "positive" : "non-negative"

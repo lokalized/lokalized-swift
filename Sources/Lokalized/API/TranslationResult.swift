@@ -1,15 +1,29 @@
 /// Immutable result with retained match and error references.
 public final class TranslationResult: Sendable {
+    /// The exact key requested by the caller.
     public let key: ExactString
+    /// The rendered catalog translation or the final failure handler's display text.
     public let translation: String
+    /// The requested or selected locale used to begin lookup.
     public let lookupLocale: LocaleTag
+    /// The negotiation result associated with this lookup, when available.
     public let localeMatchResult: LocaleMatchResult?
+    /// The catalog locale that supplied the translation, or `nil` for failure-handler text.
     public let resolvedLocale: LocaleTag?
+    /// The locale candidates attempted, in lookup order.
     public let attemptedLocales: [LocaleTag]
+    /// Whether the text came from a catalog, the requested key, or a handler replacement.
     public let status: TranslationResultStatus
+    /// The final failure category, or `nil` for a successful catalog translation.
     public let failureReason: TranslationFailureReason?
+    /// The retained resolution error, if the final failure was an evaluation failure.
     public let cause: (any Error)?
 
+    /// Creates a lookup result and validates its outcome.
+    ///
+    /// A translated result requires a resolved attempted locale and no failure reason or cause.
+    /// Handler text requires a failure reason and no resolved locale; a resolution failure requires a cause.
+    /// Invalid locale tags, repeated attempted locales, or inconsistent outcomes throw `TranslationEvaluationError`.
     public init(key: ExactString, translation: String, lookupLocale: LocaleTag,
                 localeMatchResult: LocaleMatchResult? = nil, resolvedLocale: LocaleTag?, attemptedLocales: [LocaleTag],
                 status: TranslationResultStatus, failureReason: TranslationFailureReason? = nil, cause: (any Error)? = nil) throws {
@@ -33,8 +47,13 @@ public final class TranslationResult: Sendable {
         }
     }
 
-    /// Negotiation fallback and per-key donor fallback are distinct from the
-    /// successful-fallback observer's "later candidate" condition.
+    /// Whether negotiation used a fallback strategy or a different locale supplied
+    /// the translation. Unmatched, CLDR-parent, likely-subtag, and primary-language
+    /// selections count as fallback; a resolved locale that is not CLDR-equivalent
+    /// to the lookup locale also counts.
+    ///
+    /// This can be true on the first attempted candidate. A fallback observer
+    /// runs only when an earlier candidate failed before a later one succeeded.
     public var isFallback: Bool {
         if let match = localeMatchResult {
             switch match.matchType {

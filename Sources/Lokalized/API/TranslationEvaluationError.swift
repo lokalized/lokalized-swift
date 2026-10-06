@@ -1,13 +1,22 @@
-/// An immutable, identity-preserving evaluation failure. Swift has no ambient
-/// IllegalArgumentException/IllegalStateException hierarchy; the category keeps
-/// those reference distinctions explicit through contextual wrappers.
+/// A failure evaluating an expression, selecting a generated fragment, or
+/// interpolating a translation. Inspect `kind`, `message`, and `cause` to
+/// understand the failed operation.
 public final class TranslationEvaluationError: Error, Sendable, CustomStringConvertible {
-    public enum Kind: String, Sendable { case expression, invalidArgument, invalidState }
+    /// The category of the failure.
+    public enum Kind: String, Sendable {
+        /// An `expression` failure concerns expression evaluation; `invalidArgument` rejects a supplied value; `invalidState` identifies a translation state that cannot be resolved.
+        case expression, invalidArgument, invalidState
+    }
+    /// The category of the failure.
     public let kind: Kind
+    /// The diagnostic explanation of the failure.
     public let message: String
+    /// The underlying error, if one was supplied.
     public let cause: (any Error)?
+    /// The diagnostic message.
     public var description: String { message }
 
+    /// Creates an evaluation error with its category, message, and optional underlying cause.
     public init(kind: Kind, message: String, cause: (any Error)? = nil) {
         self.kind = kind; self.message = message; self.cause = cause
     }
